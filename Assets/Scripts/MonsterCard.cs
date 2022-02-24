@@ -41,6 +41,7 @@ namespace MonsterArena
         private bool _isActive = true;
 
         public bool IsAlive => _ai.IsAlive;
+        public bool IsActive => _isActive;
 
         private void Awake()
         {

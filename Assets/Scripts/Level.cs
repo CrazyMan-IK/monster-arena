@@ -11,7 +11,7 @@ namespace MonsterArena
 
         private void Update()
         {
-            if (!_playerDeck.IsAnyMonsterAlive)
+            if (!_playerDeck.HasAliveMonsters)
             {
                 _enemyDeck.ActivateWinAnimation();
                 enabled = false;
@@ -19,7 +19,7 @@ namespace MonsterArena
                 return;
             }
 
-            if (!_enemyDeck.IsAnyMonsterAlive)
+            if (!_enemyDeck.HasAliveMonsters)
             {
                 _playerDeck.ActivateWinAnimation();
                 enabled = false;

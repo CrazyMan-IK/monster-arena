@@ -1,7 +1,8 @@
-using MonsterArena.Models;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MonsterArena.Models;
 
 namespace MonsterArena
 {
@@ -18,13 +19,29 @@ namespace MonsterArena
 
         private float _cooldownTime = 0;
 
-        public bool IsAnyMonsterAlive
+        public bool HasAliveMonsters
         {
             get
             {
                 foreach (var card in _cards)
                 {
                     if (card.IsAlive)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public bool HasActiveCards
+        {
+            get
+            {
+                foreach (var card in _cards)
+                {
+                    if (card.IsActive)
                     {
                         return true;
                     }
@@ -81,6 +98,21 @@ namespace MonsterArena
             {
                 card.ActivateWinAnimation();
             }
+        }
+
+        public MonsterCard GetRandomCard()
+        {
+            /*MonsterCard result;
+
+            do
+            {
+                result = _cards[Random.Range(0, _cards.Count)];
+            }
+            while (!result.IsAlive);
+
+            return result;*/
+
+            return _cards.Where(x => x.IsAlive && x.IsActive).OrderBy(x => Random.value).First();
         }
 
         private void SetLayerRecursively(GameObject go, int layerMask)
