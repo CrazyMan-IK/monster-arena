@@ -5,7 +5,6 @@ using MonsterArena.Extensions;
 
 namespace MonsterArena
 {
-    [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(MonsterAI))]
     public class MonsterAnimation : MonoBehaviour
@@ -16,7 +15,8 @@ namespace MonsterArena
         private const string _AttackSpeedMultiplier = "AttackSpeedMultiplier";
         private const string _Win = "Win";
 
-        private Animator _animator = null;
+        [SerializeField] private Animator _animator = null;
+
         private Rigidbody _rigidbody = null;
         private MonsterAI _ai = null;
 
@@ -24,7 +24,6 @@ namespace MonsterArena
 
         private void Awake()
         {
-            _animator = GetComponent<Animator>();
             _rigidbody = GetComponent<Rigidbody>();
             _ai = GetComponent<MonsterAI>();
 
@@ -44,6 +43,16 @@ namespace MonsterArena
             _animator.SetFloat(_AttackSpeedMultiplier, _ai.AttackSpeedMultiplier);
 
             _previousPosition = _rigidbody.position;
+        }
+
+        public void EnableAnimator()
+        {
+            _animator.enabled = true;
+        }
+
+        public void DisableAnimator()
+        {
+            _animator.enabled = false;
         }
 
         public void ActivateWinAnimation()

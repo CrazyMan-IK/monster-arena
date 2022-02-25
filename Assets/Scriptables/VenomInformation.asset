@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
   m_Name: VenomInformation
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 299712746543067620, guid: 20ff94ccccaaac347b79038de3933bea, type: 3}
+  _monsterPrefab: {fileID: 855850654327999106, guid: 16bf8b8cde6f0404bb3f350969779053, type: 3}
   _damage: 1
   _attackSpeed: 3
   _attackArea: 0.1

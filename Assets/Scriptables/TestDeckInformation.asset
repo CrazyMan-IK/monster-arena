@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: TestDeckInformation
   m_EditorClassIdentifier: 
   _monsters:
-  - {fileID: 11400000, guid: dde3ed2483eda1c4999c9c34e073965c, type: 2}
-  - {fileID: 11400000, guid: f50fc5504fefe554f86ea8469b5953b1, type: 2}
-  - {fileID: 11400000, guid: 6b816b5ae6a0fba42b1ad87fcda9b18f, type: 2}
-  - {fileID: 11400000, guid: e299874bcd2e06e478812b485d3ac461, type: 2}
-  - {fileID: 11400000, guid: 79a0e25c0112059448382cb09df86be7, type: 2}
+  - {fileID: 11400000, guid: 7e39cb62ee46756488f11bebd62a9aab, type: 2}
+  - {fileID: 11400000, guid: cab6b407bb04b4c47a4aaf26033dcc59, type: 2}

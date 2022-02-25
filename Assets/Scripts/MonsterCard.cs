@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using RootMotion.Dynamics;
 using MonsterArena.Models;
 using MonsterArena.Extensions;
 
@@ -19,6 +20,8 @@ namespace MonsterArena
 
         [SerializeField] private Transform _offsetPoint = null;
         [SerializeField] private ParticleSystem _dropEffect = null;
+        [SerializeField] private PuppetMaster _ragdoll = null;
+        [SerializeField] private Rigidbody _head = null;
 
         public event Action Used = null;
 
@@ -31,6 +34,7 @@ namespace MonsterArena
         private Quaternion _lastRotation = Quaternion.identity;
         private Vector3 _currentPosition = Vector3.zero;
         private Quaternion _currentRotation = Quaternion.identity;
+        //private Vector3 _currentOffset = Vector3.zero;
 
         private Transform _rotationTarget = null;
         private LayerMask _arenaLayerMask = default;
@@ -50,8 +54,10 @@ namespace MonsterArena
             _ai = GetComponent<MonsterAI>();
             _animation = GetComponent<MonsterAnimation>();
 
-            _currentPosition = transform.position - _offsetPoint.localPosition;
-            _currentRotation = transform.rotation;
+            _currentPosition = _head.transform.position;// - _offsetPoint.localPosition;
+            _currentRotation = _head.transform.rotation;
+
+            _head.isKinematic = true;
         }
 
         private void Update()
@@ -61,9 +67,13 @@ namespace MonsterArena
                 return;
             }
 
-            transform.SetPositionAndRotation(
-                Vector3.Lerp(transform.position, _currentPosition, Time.deltaTime * _SpeedMultiplier), 
-                Quaternion.Slerp(transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));
+            /*transform.SetPositionAndRotation(
+                Vector3.Lerp(transform.position, _currentPosition - _currentOffset, Time.deltaTime * _SpeedMultiplier), 
+                Quaternion.Slerp(transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));*/
+
+            _head.transform.SetPositionAndRotation(
+                Vector3.Lerp(_head.transform.position, _currentPosition, Time.deltaTime * _SpeedMultiplier), 
+                Quaternion.Slerp(_head.transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));
 
             //var deltaPosition = _SpeedMultiplier * Time.deltaTime * (_rigidbody.position - _currentPosition).normalized;
             //_rigidbody.MovePosition(_rigidbody.position + deltaPosition);
@@ -85,6 +95,9 @@ namespace MonsterArena
         {
             _lastPosition = _currentPosition;
             _lastRotation = _currentRotation;
+
+            _ragdoll.state = PuppetMaster.State.Dead;
+            _head.isKinematic = true;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -98,10 +111,11 @@ namespace MonsterArena
 
             _currentRotation = Quaternion.identity;
 
-            _currentPosition -= transform.InverseTransformPoint(_offsetPoint.position);
+            //_currentPosition -= transform.InverseTransformPoint(_offsetPoint.position);
+            //_currentOffset = transform.InverseTransformPoint(_offsetPoint.position);
             if (Physics.Raycast(_camera.transform.position, direction, out _lastHitInformation, 1000, _arenaLayerMask) && _lastHitInformation.collider.TryGetComponent(out _arenaBody))
             {
-                var upOffset = _lastHitInformation.transform.up * 2;
+                var upOffset = _lastHitInformation.transform.up * 4;
                 _currentPosition = _lastHitInformation.point + upOffset;
 
                 var angle = AngleByLookAt(_rotationTarget.position, _currentPosition);
@@ -112,17 +126,31 @@ namespace MonsterArena
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            _ragdoll.state = PuppetMaster.State.Alive;
+
             if (_arenaBody != null)
             {
-                transform.DOMove(_lastHitInformation.point, 0.5f).SetEase(Ease.InExpo).OnComplete(() =>
+                var seq = DOTween.Sequence();
+
+                transform.position = _lastHitInformation.point + _lastHitInformation.transform.up * 4;
+
+                //seq.Append(transform.DOMove(_lastHitInformation.point + _lastHitInformation.transform.up * 4, 0.5f));
+                seq.Append(transform.DOMove(_lastHitInformation.point, 0.5f).SetEase(Ease.InExpo));
+                seq.Join(transform.DORotate(_currentRotation.eulerAngles, 0.5f));
+
+                seq.OnComplete(() =>
                 {
+                    _ragdoll.mode = PuppetMaster.Mode.Disabled;
+
                     _rigidbody.isKinematic = false;
                     _ai.enabled = true;
                     _animation.enabled = true;
                     _dropEffect.Play();
                 });
-                transform.DORotate(_currentRotation.eulerAngles, 0.5f);
+
                 _isActive = false;
+
+                _ragdoll.mode = PuppetMaster.Mode.Kinematic;
 
                 Used?.Invoke();
             }

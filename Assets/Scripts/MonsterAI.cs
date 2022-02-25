@@ -18,6 +18,7 @@ namespace MonsterArena
         public event Action Died = null;
 
         [SerializeField] private Projector _shadow = null;
+        [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
 
         private Rigidbody _rigidbody = null;
         private Collider _collider = null;
@@ -37,6 +38,12 @@ namespace MonsterArena
         {
             _rigidbody = GetComponent<Rigidbody>();
             _collider = GetComponent<Collider>();
+        }
+
+        private void OnEnable()
+        {
+            _attackEventRepeater.Attacked += OnAttacked;
+            _attackEventRepeater.Died += OnDied;
         }
 
         private void Update()
@@ -84,7 +91,36 @@ namespace MonsterArena
             _hp = information.HP;
         }
 
-        public void Attack()
+        private void TakeDamage(float damage)
+        {
+            if (!enabled)
+            {
+                return;
+            }
+
+            if (damage <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(damage));
+            }
+
+            _hp -= damage;
+            if (!IsAlive)
+            {
+                Died?.Invoke();
+                enabled = false;
+                _collider.enabled = false;
+                _rigidbody.isKinematic = true;
+            }
+        }
+
+        private void OnDied()
+        {
+            transform.DOLocalMoveY(-1.5f, 10).SetRelative();
+            transform.DOScale(0.1f, 10);
+            _shadow.transform.DOLocalMove(Vector3.zero, 10);
+        }
+
+        private void OnAttacked()
         {
             //_target.TakeDamage(_information.Damage);
             if (!IsAlive)
@@ -105,35 +141,6 @@ namespace MonsterArena
                 {
                     other.TakeDamage(_information.Damage);
                 }
-            }
-        }
-
-        public void HideBody()
-        {
-            transform.DOLocalMoveY(-1.5f, 10).SetRelative();
-            transform.DOScale(0.1f, 10);
-            _shadow.transform.DOLocalMove(Vector3.zero, 10);
-        }
-
-        private void TakeDamage(float damage)
-        {
-            if (!enabled)
-            {
-                return;
-            }
-
-            if (damage <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(damage));
-            }
-
-            _hp -= damage;
-            if (!IsAlive)
-            {
-                Died?.Invoke();
-                enabled = false;
-                _collider.enabled = false;
-                _rigidbody.isKinematic = true;
             }
         }
 

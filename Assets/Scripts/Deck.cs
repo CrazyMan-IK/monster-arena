@@ -65,7 +65,8 @@ namespace MonsterArena
                 var rotation = monsterInfo.MonsterPrefab.transform.rotation * Quaternion.LookRotation(Camera.main.transform.position - position, Camera.main.transform.up);
 
                 var card = Instantiate(monsterInfo.MonsterPrefab, position, rotation, transform);
-                SetLayerRecursively(card.gameObject, gameObject.layer);
+                //SetLayerRecursively(card.gameObject, gameObject.layer);
+                card.gameObject.layer = gameObject.layer;
                 card.Initialize(_arena, _arenaLayerMask, _enemyLayerMask, monsterInfo);
 
                 card.Used += OnCardUsed;
