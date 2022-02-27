@@ -343,7 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cdadcbb420bfd4aaaa32793943e751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deck: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
+  _deck:
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
   _arena: {fileID: 543450653191466760}
   _arenaLayerMask:
     serializedVersion: 2
@@ -1105,7 +1106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cdadcbb420bfd4aaaa32793943e751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deck: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
+  _deck:
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
   _arena: {fileID: 543450653191466760}
   _arenaLayerMask:
     serializedVersion: 2

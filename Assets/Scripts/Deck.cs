@@ -2,7 +2,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MonsterArena.Models;
+using AYellowpaper;
+using MonsterArena.Interfaces;
 
 namespace MonsterArena
 {
@@ -10,7 +11,7 @@ namespace MonsterArena
     {
         const float _CooldownDuration = 5;
 
-        [SerializeField] private DeckInformation _deck = null;
+        [SerializeField] private InterfaceReference<IDeck> _deck = null;
         [SerializeField] private Transform _arena = null;
         [SerializeField] private LayerMask _arenaLayerMask = default;
         [SerializeField] private LayerMask _enemyLayerMask = default;
@@ -55,13 +56,13 @@ namespace MonsterArena
 
         private void Awake()
         {
-            var step = -10.0f / (_deck.Monsters.Count + 1);
+            var step = -10.0f / (_deck.Value.Monsters.Count + 1);
 
-            for (int i = 0; i < _deck.Monsters.Count; i++)
+            for (int i = 0; i < _deck.Value.Monsters.Count; i++)
             {
-                var monsterInfo = _deck.Monsters[i];
+                var monsterInfo = _deck.Value.Monsters[i];
 
-                var position = transform.position + step * (_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.right;// + step * Mathf.Abs(_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.up;
+                var position = transform.position + step * (_deck.Value.Monsters.Count / 2.0f - i - 0.5f) * transform.right;// + step * Mathf.Abs(_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.up;
                 var rotation = monsterInfo.MonsterPrefab.transform.rotation * Quaternion.LookRotation(Camera.main.transform.position - position, Camera.main.transform.up);
 
                 var card = Instantiate(monsterInfo.MonsterPrefab, position, rotation, transform);
