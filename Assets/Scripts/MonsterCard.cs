@@ -20,7 +20,8 @@ namespace MonsterArena
 
         [SerializeField] private Transform _offsetPoint = null;
         [SerializeField] private ParticleSystem _dropEffect = null;
-        [SerializeField] private Ragdoll _ragdoll = null;
+        [SerializeField] private PuppetMaster _ragdoll = null;
+        [SerializeField] private Rigidbody _head = null;
 
         public event Action Used = null;
 
@@ -53,10 +54,11 @@ namespace MonsterArena
             _ai = GetComponent<MonsterAI>();
             _animation = GetComponent<MonsterAnimation>();
 
-            _currentPosition = _ragdoll.Head.transform.position;// - _offsetPoint.localPosition;
-            _currentRotation = _ragdoll.Head.transform.rotation;
+            _currentPosition = _head.transform.position;// - _offsetPoint.localPosition;
+            _currentRotation = _head.transform.rotation;
 
-            _ragdoll.Head.isKinematic = true;
+            _head.isKinematic = true;
+            //_rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
         }
 
         private void Update()
@@ -70,9 +72,9 @@ namespace MonsterArena
                 Vector3.Lerp(transform.position, _currentPosition - _currentOffset, Time.deltaTime * _SpeedMultiplier), 
                 Quaternion.Slerp(transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));*/
 
-            _ragdoll.Head.transform.SetPositionAndRotation(
-                Vector3.Lerp(_ragdoll.Head.transform.position, _currentPosition, Time.deltaTime * _SpeedMultiplier), 
-                Quaternion.Slerp(_ragdoll.Head.transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));
+            _head.transform.SetPositionAndRotation(
+                Vector3.Lerp(_head.transform.position, _currentPosition, Time.deltaTime * _SpeedMultiplier),
+                Quaternion.Slerp(_head.transform.rotation, _currentRotation, Time.deltaTime * _SpeedMultiplier));
 
             //var deltaPosition = _SpeedMultiplier * Time.deltaTime * (_rigidbody.position - _currentPosition).normalized;
             //_rigidbody.MovePosition(_rigidbody.position + deltaPosition);
@@ -95,9 +97,9 @@ namespace MonsterArena
             _lastPosition = _currentPosition;
             _lastRotation = _currentRotation;
 
-            _ragdoll.Enable();
-            _ragdoll.Head.isKinematic = true;
-            _animation.DisableAnimator();
+            _ragdoll.state = PuppetMaster.State.Dead;
+            //_ragdoll.Kill();
+            _head.isKinematic = true;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -105,7 +107,7 @@ namespace MonsterArena
             _arenaBody = null;
 
             var distance = Vector3.Distance(_lastPosition, _camera.transform.position) - 5f;
-            
+
             _currentPosition = _camera.ScreenToWorldPoint((Vector3)eventData.position + Vector3.forward * distance);
             var direction = _currentPosition - _camera.transform.position;
 
@@ -126,21 +128,29 @@ namespace MonsterArena
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            _animation.EnableAnimator();
-            _ragdoll.Disable();
+            _ragdoll.state = PuppetMaster.State.Alive;
+            //_ragdoll.Resurrect();
 
             if (_arenaBody != null)
             {
                 var seq = DOTween.Sequence();
 
-                //transform.position = _lastHitInformation.point + _lastHitInformation.transform.up * 4;
+                //_ragdoll.state = PuppetMaster.State.Frozen;
 
-                //seq.Append(transform.DOMove(_lastHitInformation.point + _lastHitInformation.transform.up * 4, 0.5f));
+                transform.position = _lastHitInformation.point + _lastHitInformation.transform.up * 4;
+                _ragdoll.DisableImmediately();
+                //_ragdoll.SwitchToDisabledMode();
+
+                //seq.AppendInterval(0.5f);
+                //seq.Append(transform.DOMove(_lastHitInformation.point + _lastHitInformation.transform.up * 4, 0.5f).SetSpeedBased());
                 seq.Append(transform.DOMove(_lastHitInformation.point, 0.5f).SetEase(Ease.InExpo));
                 seq.Join(transform.DORotate(_currentRotation.eulerAngles, 0.5f));
 
                 seq.OnComplete(() =>
                 {
+                    //_ragdoll.mode = PuppetMaster.Mode.Disabled;
+                    //_ragdoll.DisableImmediately();
+
                     _rigidbody.isKinematic = false;
                     _ai.enabled = true;
                     _animation.enabled = true;
@@ -149,7 +159,13 @@ namespace MonsterArena
 
                 _isActive = false;
 
+                //_ragdoll.mode = PuppetMaster.Mode.Kinematic;
+
                 Used?.Invoke();
+            }
+            else
+            {
+                //_ragdoll.state = PuppetMaster.State.Alive;
             }
 
             _currentPosition = _lastPosition;
@@ -160,7 +176,7 @@ namespace MonsterArena
         {
             _animation.ActivateWinAnimation();
             _ai.enabled = false;
-            _rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
+            //_rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
         }
 
         private float AngleByLookAt(Vector3 a, Vector3 b)
@@ -168,7 +184,7 @@ namespace MonsterArena
             var diff = a.GetXZ() - b.GetXZ();
 
             float angle = Mathf.Atan2(diff.x, diff.y) * Mathf.Rad2Deg;
-            
+
             return angle;
         }
     }

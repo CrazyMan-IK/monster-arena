@@ -3148,7 +3148,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7373649494767124016}
-  - component: {fileID: 687965059425734703}
   m_Layer: 0
   m_Name: Armature
   m_TagString: Untagged
@@ -3171,19 +3170,6 @@ Transform:
   m_Father: {fileID: 6981580832670126963}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &687965059425734703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4217697175413517270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bab590583a2085408f759d207711236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _head: {fileID: 3530660311841703648}
 --- !u!1 &4239404991130118691
 GameObject:
   m_ObjectHideFlags: 0

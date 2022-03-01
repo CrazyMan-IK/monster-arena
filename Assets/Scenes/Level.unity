@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deck:
-    _underlyingValue: {fileID: 11400000, guid: 6707c6cc505ebce42afcd292d6943079, type: 2}
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
   _arena: {fileID: 543450653191466760}
   _arenaLayerMask:
     serializedVersion: 2
@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deck:
-    _underlyingValue: {fileID: 11400000, guid: 6707c6cc505ebce42afcd292d6943079, type: 2}
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
   _arena: {fileID: 543450653191466760}
   _arenaLayerMask:
     serializedVersion: 2

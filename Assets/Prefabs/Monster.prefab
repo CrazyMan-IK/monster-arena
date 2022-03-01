@@ -9692,7 +9692,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 3
 --- !u!136 &7976448907706315345
 CapsuleCollider:
@@ -9863,13 +9863,13 @@ MonoBehaviour:
   targetRoot: {fileID: 50104933481870035}
   state: 0
   stateSettings:
-    killDuration: 1
+    killDuration: 0
     deadMuscleWeight: 0.01
     deadMuscleDamper: 2
-    maxFreezeSqrVelocity: 0.02
-    freezePermanently: 0
-    enableAngularLimitsOnKill: 1
-    enableInternalCollisionsOnKill: 1
+    maxFreezeSqrVelocity: 1000.02
+    freezePermanently: 1
+    enableAngularLimitsOnKill: 0
+    enableInternalCollisionsOnKill: 0
   mode: 0
   blendTime: 0.1
   fixTargetTransforms: 1

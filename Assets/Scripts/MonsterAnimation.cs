@@ -39,10 +39,19 @@ namespace MonsterArena
             {
                 return;
             }
-            _animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
+            //_animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
             _animator.SetFloat(_AttackSpeedMultiplier, _ai.AttackSpeedMultiplier);
 
             _previousPosition = _rigidbody.position;
+        }
+
+        private void FixedUpdate()
+        {
+            if (_rigidbody.isKinematic)
+            {
+                return;
+            }
+            _animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
         }
 
         public void EnableAnimator()
