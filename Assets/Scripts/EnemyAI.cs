@@ -15,7 +15,10 @@ namespace MonsterArena
         private void Awake()
         {
             _camera = Camera.main;
+        }
 
+        public void StartAI()
+        {
             StartCoroutine(CustomUpdate());
         }
 
