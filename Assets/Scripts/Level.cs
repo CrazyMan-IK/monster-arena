@@ -1,3 +1,4 @@
+using MonsterArena.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,14 @@ namespace MonsterArena
     {
         [SerializeField] private Deck _playerDeck = null;
         [SerializeField] private Deck _enemyDeck = null;
+        [SerializeField] private WinnerPanel _winnerPanel = null;
 
         private void Update()
         {
             if (!_playerDeck.HasAliveMonsters)
             {
                 _enemyDeck.ActivateWinAnimation();
+                _winnerPanel.Show();
                 enabled = false;
 
                 return;
@@ -22,6 +25,7 @@ namespace MonsterArena
             if (!_enemyDeck.HasAliveMonsters)
             {
                 _playerDeck.ActivateWinAnimation();
+                _winnerPanel.Show();
                 enabled = false;
 
                 return;

@@ -52,13 +52,22 @@ namespace MonsterArena
             {
                 var colliders = Physics.OverlapSphere(transform.position, 20, _enemyLayerMask);
 
+                Collider result = null;
+                var minDistance = float.MaxValue;
                 foreach (var collider in colliders)
                 {
-                    if (collider.TryGetComponent(out MonsterAI other) && other.enabled && other.IsAlive && other != this)
+                    var distance = Vector3.Distance(collider.transform.position, transform.position);
+                    if (distance < minDistance)
                     {
-                        _target = other;
-                        _target.Died += OnTargetDied;
+                        minDistance = distance;
+                        result = collider;
                     }
+                }
+
+                if (result != null && result.TryGetComponent(out MonsterAI other) && other.enabled && other.IsAlive && other != this)
+                {
+                    _target = other;
+                    _target.Died += OnTargetDied;
                 }
 
                 IsAttacking = false;
