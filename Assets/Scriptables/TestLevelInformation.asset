@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: TestLevelInformation
   m_EditorClassIdentifier: 
   _playerDeck:
-    _underlyingValue: {fileID: 11400000, guid: 417d24de6c559d443922c519eaa1b7bd, type: 2}
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
+  _playerName: Tolyan
   _enemyDeck:
-    _underlyingValue: {fileID: 11400000, guid: 417d24de6c559d443922c519eaa1b7bd, type: 2}
+    _underlyingValue: {fileID: 11400000, guid: bf84c8a5166f9cc4e879aa8407141bea, type: 2}
+  _enemyName: Vasya

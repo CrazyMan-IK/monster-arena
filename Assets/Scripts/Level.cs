@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using TMPro;
 using MonsterArena.UI;
 using MonsterArena.Models;
 
@@ -16,6 +17,13 @@ namespace MonsterArena
 
         [SerializeField] private Image _fadeImage = null;
         [SerializeField] private List<LevelInformation> _levels = new List<LevelInformation>();
+
+        [Space]
+
+        [SerializeField] private TextMeshProUGUI _playerName = null;
+        [SerializeField] private TextMeshProUGUI _enemyName = null;
+
+        [Space]
 
         [SerializeField] private Deck _playerDeck = null;
         [SerializeField] private Deck _enemyDeck = null;
@@ -84,6 +92,9 @@ namespace MonsterArena
             _levelNum = levelNum;
             _level = _levels[levelNum];
 
+            _playerName.text = _level.PlayerName;
+            _enemyName.text = _level.EnemyName;
+
             _playerDeck.Initialize(_level.PlayerDeck);
             _enemyDeck.Initialize(_level.EnemyDeck);
         }
@@ -141,11 +152,10 @@ namespace MonsterArena
             if (_isPlayerWin)
             {
                 LoadNextLevel();
+                return;
             }
-            else
-            {
-                StartCoroutine(ReloadLevel(_levelNum));
-            }
+
+            StartCoroutine(ReloadLevel(_levelNum));
         }
 
         private void OnStartPanelClosed()

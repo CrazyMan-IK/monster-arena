@@ -3367,6 +3367,8 @@ MonoBehaviour:
   _fadeImage: {fileID: 1188867876}
   _levels:
   - {fileID: 11400000, guid: 5fd853f4d2eeb42439753f1e68d7e3ae, type: 2}
+  _playerName: {fileID: 866102879}
+  _enemyName: {fileID: 601762210}
   _playerDeck: {fileID: 798895548}
   _enemyDeck: {fileID: 259688869}
   _enemyAI: {fileID: 259688870}
