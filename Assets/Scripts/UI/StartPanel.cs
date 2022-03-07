@@ -57,5 +57,11 @@ namespace MonsterArena.UI
                 _group.blocksRaycasts = false;
             });
         }
+
+        /*public void Initialize(string playerNickname, string enemyNickname)
+        {
+            _topText.text = enemyNickname;
+            _bottomText.text = playerNickname;
+        }*/
     }
 }

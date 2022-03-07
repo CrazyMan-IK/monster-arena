@@ -16,6 +16,9 @@ namespace MonsterArena
         private const string _Win = "Win";
 
         [SerializeField] private Animator _animator = null;
+        [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
+        [SerializeField] private ParticleSystem _hitEffect = null;
+        [SerializeField] private Transform _hitPositionTarget = null;
 
         private Rigidbody _rigidbody = null;
         private MonsterAI _ai = null;
@@ -28,6 +31,16 @@ namespace MonsterArena
             _ai = GetComponent<MonsterAI>();
 
             _previousPosition = _rigidbody.position;
+        }
+
+        private void OnEnable()
+        {
+            _attackEventRepeater.Attacked += OnAttacked;
+        }
+
+        private void OnDisable()
+        {
+            _attackEventRepeater.Attacked -= OnAttacked;
         }
 
         private void Update()
@@ -69,6 +82,12 @@ namespace MonsterArena
             //_animator.SetBool(_Win, true);
             _animator.SetTrigger(_Win);
             enabled = false;
+        }
+
+        private void OnAttacked()
+        {
+            _hitEffect.transform.position = _hitPositionTarget.position;
+            _hitEffect.Play();
         }
     }
 }

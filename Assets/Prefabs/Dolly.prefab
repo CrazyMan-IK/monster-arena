@@ -3319,6 +3319,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 22b0f5dde635ab549944f334bc2a30f8, type: 2}
+    - target: {fileID: 4219709362662666422, guid: d5582dc5a12cd2749a47b93c251bd3ed, type: 3}
+      propertyPath: _hitPositionTarget
+      value: 
+      objectReference: {fileID: 8090043143160276131}
     - target: {fileID: 5436501772214970050, guid: d5582dc5a12cd2749a47b93c251bd3ed, type: 3}
       propertyPath: muscles.Array.size
       value: 15
@@ -4002,6 +4006,10 @@ PrefabInstance:
     - target: {fileID: 5436501772214970050, guid: d5582dc5a12cd2749a47b93c251bd3ed, type: 3}
       propertyPath: muscles.Array.data[14].targetSampledRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673022677721562843, guid: d5582dc5a12cd2749a47b93c251bd3ed, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7760013661943720738, guid: d5582dc5a12cd2749a47b93c251bd3ed, type: 3}
       propertyPath: _head

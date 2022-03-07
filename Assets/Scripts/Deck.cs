@@ -11,11 +11,11 @@ namespace MonsterArena
     {
         const float _CooldownDuration = 5;
 
-        [SerializeField] private InterfaceReference<IDeck> _deck = null;
         [SerializeField] private Transform _arena = null;
         [SerializeField] private LayerMask _arenaLayerMask = default;
         [SerializeField] private LayerMask _enemyLayerMask = default;
 
+        private IDeck _deck = null;
         private readonly List<MonsterCard> _cards = new List<MonsterCard>();
 
         private float _cooldownTime = 0;
@@ -54,28 +54,6 @@ namespace MonsterArena
 
         public float CooldownTime => _cooldownTime;
 
-        private void Awake()
-        {
-            var step = -10.0f / (_deck.Value.Monsters.Count + 1);
-
-            for (int i = 0; i < _deck.Value.Monsters.Count; i++)
-            {
-                var monsterInfo = _deck.Value.Monsters[i];
-
-                var position = transform.position + step * (_deck.Value.Monsters.Count / 2.0f - i - 0.5f) * transform.right;// + step * Mathf.Abs(_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.up;
-                var rotation = monsterInfo.MonsterPrefab.transform.rotation * Quaternion.LookRotation(Camera.main.transform.position - position, Camera.main.transform.up);
-
-                var card = Instantiate(monsterInfo.MonsterPrefab, position, rotation, transform);
-                //SetLayerRecursively(card.gameObject, gameObject.layer);
-                card.gameObject.layer = gameObject.layer;
-                card.Initialize(_arena, _arenaLayerMask, _enemyLayerMask, monsterInfo);
-
-                card.Used += OnCardUsed;
-
-                _cards.Add(card);
-            }
-        }
-
         private void Update()
         {
             if (_cooldownTime > 0)
@@ -91,6 +69,30 @@ namespace MonsterArena
                 {
                     card.enabled = true;
                 }
+            }
+        }
+
+        public void Initialize(IDeck deck)
+        {
+            _deck = deck;
+
+            var step = -10.0f / (_deck.Monsters.Count + 1);
+
+            for (int i = 0; i < _deck.Monsters.Count; i++)
+            {
+                var monsterInfo = _deck.Monsters[i];
+
+                var position = transform.position + step * (_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.right;// + step * Mathf.Abs(_deck.Monsters.Count / 2.0f - i - 0.5f) * transform.up;
+                var rotation = monsterInfo.MonsterPrefab.transform.rotation * Quaternion.LookRotation(Camera.main.transform.position - position, Camera.main.transform.up);
+
+                var card = Instantiate(monsterInfo.MonsterPrefab, position, rotation, transform);
+                //SetLayerRecursively(card.gameObject, gameObject.layer);
+                card.gameObject.layer = gameObject.layer;
+                card.Initialize(_arena, _arenaLayerMask, _enemyLayerMask, monsterInfo);
+
+                card.Used += OnCardUsed;
+
+                _cards.Add(card);
             }
         }
 
