@@ -71,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2291923502250142929}
   - component: {fileID: 5273328808768894635}
+  - component: {fileID: 8338347012300734588}
   m_Layer: 0
   m_Name: Fredy_Fnaf
   m_TagString: Untagged
@@ -113,6 +114,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8338347012300734588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478690189689583211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341fdecb1250a14428a408a62a71929e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 6096758411774476457}
 --- !u!1 &1675679540571837744
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
   m_Name: JackInformation
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 3374326114422315028, guid: 7ec5ac15747ce87459d284767f9394d5, type: 3}
-  _damage: 1
-  _attackSpeed: 2
-  _attackArea: 0.5
-  _movementSpeed: 2
+  _internalId: c9677bbc-b189-48de-8746-0d9bee6607ea
+  _monsterPrefab: {fileID: 0}
+  _forceUnlocked: 0
   _hp: 2
+  _damage: 1
+  _movementSpeed: 2
+  _attackArea: 0.5
+  _viewArea: 1

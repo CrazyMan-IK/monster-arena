@@ -11,6 +11,8 @@ namespace MonsterArena.UI
     [RequireComponent(typeof(RectTransform))]
     public class Carousel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
+        public event Action<MonsterMenuView> SelectionChanged = null;
+
         [SerializeField] private Pivot _pivotPrefab = null;
         [SerializeField] private Transform _content = null;
         [SerializeField] private Button _previousButton = null;
@@ -20,12 +22,15 @@ namespace MonsterArena.UI
         [SerializeField] private float _angle = 25;
         [SerializeField] private float _carouselRadius = 10;
 
+        private readonly List<MonsterMenuView> _monsters = new List<MonsterMenuView>();
         private readonly List<MonsterInformation> _availableMonsters = new List<MonsterInformation>();
         private RectTransform _rectTransform = null;
         private Vector2 _startMousePosition = Vector2.zero;
         private int _currentIndex = 0;
         private float _currentAngle = 0;
         private float _lastPercentage = 0;
+
+        public MonsterMenuView CurrentMonster => _monsters[_currentIndex];
 
         private void Awake()
         {
@@ -56,6 +61,9 @@ namespace MonsterArena.UI
 
         public void Initialize(List<MonsterInformation> availableMonsters)
         {
+            _availableMonsters.Clear();
+            _monsters.Clear();
+
             _availableMonsters.AddRange(availableMonsters);
 
             var newPosition = _content.transform.localPosition;
@@ -69,11 +77,13 @@ namespace MonsterArena.UI
 
             for (int i = 0; i < availableMonsters.Count; i++)
             {
-                var monsterPrefab = availableMonsters[i].MonsterPrefab;
+                var monsterInformation = availableMonsters[i];
 
                 var pivot = Instantiate(_pivotPrefab, _content);
                 var attachTransform = pivot.GetAttachTransform();
-                Instantiate(monsterPrefab, attachTransform.position, attachTransform.rotation, attachTransform);
+                var monster = Instantiate(monsterInformation.MonsterPrefab, attachTransform.position, attachTransform.rotation, attachTransform);
+                monster.Initialize(monsterInformation);
+                _monsters.Add(monster.gameObject.AddComponent<MonsterMenuView>());
 
                 pivot.transform.localRotation = Quaternion.AngleAxis(_angle * i, Vector3.down);
                 pivot.SetOffset(Vector3.back * _carouselRadius);
@@ -90,7 +100,6 @@ namespace MonsterArena.UI
             var delta = _startMousePosition.x - eventData.position.x - eventData.delta.x * _sensitivityMultiplier;
             _lastPercentage = delta / _rectTransform.rect.width * _sensitivityMultiplier;
 
-            //_currentAngle = _currentIndex * _angle + _angle * _lastPercentage;
             _currentAngle = _angle * (_currentIndex + _lastPercentage);
         }
 
@@ -98,8 +107,6 @@ namespace MonsterArena.UI
         {
             if (Mathf.Abs(_lastPercentage) >= 0.5f)
             {
-                //_currentIndex += Convert.ToInt32(Mathf.Sign(_lastPercentage));
-
                 _currentIndex = Convert.ToInt32(_currentAngle / _angle);
             }
 
@@ -127,6 +134,8 @@ namespace MonsterArena.UI
 
             _previousButton.gameObject.SetActive(_currentIndex != 0);
             _nextButton.gameObject.SetActive(_currentIndex != _availableMonsters.Count - 1);
+
+            SelectionChanged?.Invoke(_monsters[_currentIndex]);
         }
     }
 }

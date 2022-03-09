@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Dolly
   m_EditorClassIdentifier: 
   _internalId: 75f53a0a-1acc-4743-9976-d4295b8ec7cc
-  _monsterPrefab: {fileID: 7013994730290733424, guid: cf40291509e4dc54a8690d49dd98e8d5, type: 3}
+  _monsterPrefab: {fileID: 5930151306481945824, guid: cf40291509e4dc54a8690d49dd98e8d5, type: 3}
+  _name: Dolly
   _hp: 1
   _damage: 1
   _movementSpeed: 1
   _attackArea: 1
+  _forceUnlocked: 1
+  _price: 0
   _viewArea: 1

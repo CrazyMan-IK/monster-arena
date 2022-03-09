@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
   m_Name: DollyInformation
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 8157711650013300396, guid: f2f3db62de3e8b54a84d9d1a25090e5b, type: 3}
-  _damage: 1
-  _attackSpeed: 3
-  _attackArea: 0.1
-  _movementSpeed: 1
+  _internalId: 28143897-9430-4e13-b6cf-bfec32143b3e
+  _monsterPrefab: {fileID: 0}
+  _forceUnlocked: 0
   _hp: 1
+  _damage: 1
+  _movementSpeed: 1
+  _attackArea: 0.1
+  _viewArea: 1

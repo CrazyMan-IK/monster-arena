@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
   m_Name: HuggyInformation
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 6150823827547159496, guid: d20d4bed374c46d44a95e5b1ec66bce1, type: 3}
-  _damage: 1
-  _attackSpeed: 1
-  _attackArea: 1
-  _movementSpeed: 3
+  _internalId: 8a3ef69a-e1d2-4d59-8e63-f04134e17af1
+  _monsterPrefab: {fileID: 0}
+  _forceUnlocked: 0
   _hp: 3
+  _damage: 1
+  _movementSpeed: 3
+  _attackArea: 1
+  _viewArea: 1
