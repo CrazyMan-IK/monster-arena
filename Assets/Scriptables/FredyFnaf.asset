@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
+  m_Name: FredyFnaf
+  m_EditorClassIdentifier: 
+  _internalId: a92ed628-9f8f-4aae-bc0e-373d4e3719b1
+  _monsterPrefab: {fileID: 2291923502250142929, guid: a07a3dbc36fcf114087f1e13616e1751, type: 3}
+  _hp: 1
+  _damage: 1
+  _movementSpeed: 1
+  _attackArea: 1
+  _viewArea: 1

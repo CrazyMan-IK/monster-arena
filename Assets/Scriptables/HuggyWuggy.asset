@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
+  m_Name: HuggyWuggy
+  m_EditorClassIdentifier: 
+  _internalId: 75c13da1-aaac-4c08-b6ad-dd2a58d5c615
+  _monsterPrefab: {fileID: 2790506315518784181, guid: b5780e961e1452546be89401c61d067c, type: 3}
+  _hp: 1
+  _damage: 1
+  _movementSpeed: 1
+  _attackArea: 1
+  _viewArea: 1

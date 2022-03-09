@@ -32,7 +32,6 @@ namespace MonsterArena
 
         public bool IsAttacking { get; private set; }
         public bool IsAlive => _hp > 0;
-        public float AttackSpeedMultiplier => _information.AttackSpeed;
 
         private void Awake()
         {

@@ -25,9 +25,6 @@ namespace MonsterArena
 
         [Space]
 
-        [SerializeField] private Deck _playerDeck = null;
-        [SerializeField] private Deck _enemyDeck = null;
-        [SerializeField] private EnemyAI _enemyAI = null;
         [SerializeField] private StartPanel _startPanel = null;
         [SerializeField] private WinnerPanel _winnerPanel = null;
 
@@ -51,7 +48,7 @@ namespace MonsterArena
             Initialize(0);
         }
 
-        private void Update()
+        /*private void Update()
         {
             if (!_playerDeck.HasAliveMonsters)
             {
@@ -74,7 +71,7 @@ namespace MonsterArena
 
                 return;
             }
-        }
+        }*/
 
         public void GameStarted()
         {
@@ -94,9 +91,6 @@ namespace MonsterArena
 
             _playerName.text = _level.PlayerName;
             _enemyName.text = _level.EnemyName;
-
-            _playerDeck.Initialize(_level.PlayerDeck);
-            _enemyDeck.Initialize(_level.EnemyDeck);
         }
 
         public void LoadNextLevel()
@@ -161,8 +155,6 @@ namespace MonsterArena
         private void OnStartPanelClosed()
         {
             _startPanel.Closed -= OnStartPanelClosed;
-
-            _enemyAI.StartAI();
         }
     }
 }

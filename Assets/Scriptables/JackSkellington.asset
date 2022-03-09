@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c3b1f1aabca0748bf3b96b5f1bf88c, type: 3}
+  m_Name: JackSkellington
+  m_EditorClassIdentifier: 
+  _internalId: 06321ad8-261b-4264-b07b-49441f0c168b
+  _monsterPrefab: {fileID: 7916231177813418075, guid: e97a65e371cb0684ba312f05ace1abfd, type: 3}
+  _hp: 1
+  _damage: 1
+  _movementSpeed: 1
+  _attackArea: 1
+  _viewArea: 1
