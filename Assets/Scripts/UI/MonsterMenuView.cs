@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace MonsterArena.UI
     [RequireComponent(typeof(Monster))]
     public class MonsterMenuView : MonoBehaviour
     {
+        public event Action WinAnimationCompleted = null;
+
         private const float _AnimationDuration = 0.5f;
         private const string _ColorKey = "_Color";
         private const string _ColorDimKey = "_ColorDim";
@@ -24,6 +27,16 @@ namespace MonsterArena.UI
             _monster = GetComponent<Monster>();
         }
 
+        private void OnEnable()
+        {
+            _monster.WinAnimationCompleted += OnWinAnimationCompleted;
+        }
+
+        private void OnDisable()
+        {
+            _monster.WinAnimationCompleted -= OnWinAnimationCompleted;
+        }
+
         private void Start()
         {
             _baseColor = _monster.Renderer.material.GetColor(_ColorKey);
@@ -31,7 +44,7 @@ namespace MonsterArena.UI
 
             if (!Information.IsUnlocked)
             {
-                var targetColor = Color.white / 8;
+                var targetColor = Color.black; //Color.white / 8;
 
                 _monster.Renderer.material.DOColor(targetColor, _ColorKey, _AnimationDuration);
                 _monster.Renderer.material.DOColor(targetColor, _ColorDimKey, _AnimationDuration);
@@ -42,6 +55,13 @@ namespace MonsterArena.UI
         {
             _monster.Renderer.material.DOColor(_baseColor, _ColorKey, _AnimationDuration);
             _monster.Renderer.material.DOColor(_baseShadowColor, _ColorDimKey, _AnimationDuration);
+
+            _monster.RunWinningAnimationOnce();
+        }
+        
+        private void OnWinAnimationCompleted()
+        {
+            WinAnimationCompleted?.Invoke();
         }
     }
 }

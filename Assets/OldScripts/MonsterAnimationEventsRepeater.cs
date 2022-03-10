@@ -10,6 +10,7 @@ namespace MonsterArena
     {
         public event Action Attacked = null;
         public event Action Died = null;
+        public event Action Winned = null;
 
         public void Attack()
         {
@@ -19,6 +20,11 @@ namespace MonsterArena
         public void HideBody()
         {
             Died?.Invoke();
+        }
+
+        public void WinAnimEnd()
+        {
+            Winned?.Invoke();
         }
     }
 }

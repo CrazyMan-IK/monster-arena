@@ -30,6 +30,7 @@ namespace MonsterArena.UI
         private float _currentAngle = 0;
         private float _lastPercentage = 0;
 
+        public IReadOnlyList<MonsterMenuView> Monsters => _monsters;
         public MonsterMenuView CurrentMonster => _monsters[_currentIndex];
 
         private void Awake()

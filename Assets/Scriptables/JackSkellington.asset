@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _internalId: 06321ad8-261b-4264-b07b-49441f0c168b
   _monsterPrefab: {fileID: -992487622229847682, guid: e97a65e371cb0684ba312f05ace1abfd, type: 3}
-  _monsterName: Jack Skellington
+  _name: Jack Skellington
   _hp: 1
   _damage: 1
   _movementSpeed: 1

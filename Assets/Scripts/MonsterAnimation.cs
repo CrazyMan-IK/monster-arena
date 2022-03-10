@@ -6,7 +6,7 @@ using MonsterArena.Extensions;
 namespace MonsterArena
 {
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(MonsterAI))]
+    //[RequireComponent(typeof(MonsterAI))]
     public class MonsterAnimation : MonoBehaviour
     {
         private const string _Attack = "Attack";
@@ -14,6 +14,7 @@ namespace MonsterArena
         private const string _Speed = "Speed";
         private const string _AttackSpeedMultiplier = "AttackSpeedMultiplier";
         private const string _Win = "Win";
+        private const string _Once = "Once";
 
         [SerializeField] private Animator _animator = null;
         [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
@@ -21,14 +22,14 @@ namespace MonsterArena
         [SerializeField] private Transform _hitPositionTarget = null;
 
         private Rigidbody _rigidbody = null;
-        private MonsterAI _ai = null;
+        //private MonsterAI _ai = null;
 
         private Vector3 _previousPosition = Vector3.zero;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _ai = GetComponent<MonsterAI>();
+            //_ai = GetComponent<MonsterAI>();
 
             _previousPosition = _rigidbody.position;
         }
@@ -45,8 +46,8 @@ namespace MonsterArena
 
         private void Update()
         {
-            _animator.SetBool(_Attack, _ai.IsAttacking);
-            _animator.SetBool(_Alive, _ai.IsAlive);
+            //_animator.SetBool(_Attack, _ai.IsAttacking);
+            //_animator.SetBool(_Alive, _ai.IsAlive);
 
             if (_rigidbody.isKinematic)
             {
@@ -76,9 +77,10 @@ namespace MonsterArena
             _animator.enabled = false;
         }
 
-        public void ActivateWinAnimation()
+        public void ActivateWinAnimation(bool isOnce)
         {
             //_animator.SetBool(_Win, true);
+            _animator.SetBool(_Once, isOnce);
             _animator.SetTrigger(_Win);
             enabled = false;
         }

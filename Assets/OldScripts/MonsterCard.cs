@@ -174,7 +174,7 @@ namespace MonsterArena
 
         public void ActivateWinAnimation()
         {
-            _animation.ActivateWinAnimation();
+            _animation.ActivateWinAnimation(false);
             _ai.enabled = false;
             //_rigidbody.constraints |= RigidbodyConstraints.FreezeRotationY;
         }

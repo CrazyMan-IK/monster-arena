@@ -15,8 +15,9 @@ namespace MonsterArena
     {
         private const string _TotalPassedLevelsKey = "_passedLevels";
 
-        [SerializeField] private Image _fadeImage = null;
-        [SerializeField] private List<LevelInformation> _levels = new List<LevelInformation>();
+        [SerializeField] private SceneReference _mainMenuScene = null;
+        [SerializeField] private SceneTransition _sceneTransition = null;
+        /*[SerializeField] private List<LevelInformation> _levels = new List<LevelInformation>();
 
         [Space]
 
@@ -26,7 +27,7 @@ namespace MonsterArena
         [Space]
 
         [SerializeField] private StartPanel _startPanel = null;
-        [SerializeField] private WinnerPanel _winnerPanel = null;
+        [SerializeField] private WinnerPanel _winnerPanel = null;*/
 
         private LevelInformation _level = null;
         private int _levelNum = 0;
@@ -41,8 +42,8 @@ namespace MonsterArena
 
         private void Awake()
         {
-            _startPanel.Closed += OnStartPanelClosed;
-            _winnerPanel.Clicked += OnWinnerPanelClicked;
+            //_startPanel.Closed += OnStartPanelClosed;
+            //_winnerPanel.Clicked += OnWinnerPanelClicked;
 
             //_startPanel.Initialize(_playerDeck.Nickname, _enemyDeck.Nickname);
             Initialize(0);
@@ -73,9 +74,17 @@ namespace MonsterArena
             }
         }*/
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                LoadNextLevel();
+            }
+        }
+
         public void GameStarted()
         {
-            Initialize(TotalLevelsPassed % _levels.Count);
+            //Initialize(TotalLevelsPassed % _levels.Count);
         }
 
         public void Initialize(int levelNum)
@@ -87,61 +96,28 @@ namespace MonsterArena
             _inited = true;
 
             _levelNum = levelNum;
-            _level = _levels[levelNum];
+            //_level = _levels[levelNum];
 
-            _playerName.text = _level.PlayerName;
-            _enemyName.text = _level.EnemyName;
+            //_playerName.text = _level.PlayerName;
+            //_enemyName.text = _level.EnemyName;
         }
 
         public void LoadNextLevel()
         {
             var nextLevelNum = _levelNum + 1;
-            if (nextLevelNum >= _levels.Count)
+            //if (nextLevelNum >= _levels.Count)
             {
                 nextLevelNum = 0;
             }
 
             TotalLevelsPassed++;
-            StartCoroutine(ReloadLevel(nextLevelNum));
-        }
 
-        private IEnumerator ReloadLevel(int levelNum)
-        {
-            _fadeImage.raycastTarget = true;
-            _fadeImage.maskable = true;
-            yield return _fadeImage.DOFade(1, 0.5f).SetEase(Ease.OutQuad).WaitForCompletion();
-
-            Camera.main.gameObject.SetActive(false);
-
-            var currentScene = SceneManager.GetActiveScene();
-            foreach (var root in currentScene.GetRootGameObjects().Where(x => x.transform != transform))
-            {
-                root.SetActive(false);
-            }
-
-            yield return null;
-
-            var targetScene = SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, new LoadSceneParameters(LoadSceneMode.Additive));
-            while (!targetScene.isLoaded)
-            {
-                yield return null;
-            }
-
-            var rootGOs = targetScene.GetRootGameObjects();
-            var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-            level.Initialize(levelNum);
-
-            yield return _fadeImage.DOFade(0, 0.5f).SetEase(Ease.InQuad).WaitForCompletion();
-            _fadeImage.raycastTarget = false;
-            _fadeImage.maskable = false;
-
-            SceneManager.SetActiveScene(targetScene);
-            yield return SceneManager.UnloadSceneAsync(currentScene);
+            _sceneTransition.Load(_mainMenuScene);
         }
 
         private void OnWinnerPanelClicked()
         {
-            _winnerPanel.Clicked -= OnWinnerPanelClicked;
+            //_winnerPanel.Clicked -= OnWinnerPanelClicked;
 
             if (_isPlayerWin)
             {
@@ -149,12 +125,16 @@ namespace MonsterArena
                 return;
             }
 
-            StartCoroutine(ReloadLevel(_levelNum));
+            _sceneTransition.ReloadCurrent(rootGOs =>
+            {
+                var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
+                level.Initialize(_levelNum);
+            });
         }
 
         private void OnStartPanelClosed()
         {
-            _startPanel.Closed -= OnStartPanelClosed;
+            //_startPanel.Closed -= OnStartPanelClosed;
         }
     }
 }

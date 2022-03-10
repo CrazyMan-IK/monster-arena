@@ -13,6 +13,7 @@ namespace MonsterArena.UI
     [RequireComponent(typeof(Button))]
     public class MainButton : MonoBehaviour
     {
+        public event Action GameStarted = null;
         public event Action Unlocked = null;
 
         [SerializeField] private Wallet _wallet = null;
@@ -27,6 +28,7 @@ namespace MonsterArena.UI
         private Button _button = null;
         private MonsterInformation _information = null;
         private string _unlockTextValue = "";
+        private bool _unlockingAnimationRunning = false;
 
         private void Awake()
         {
@@ -59,27 +61,40 @@ namespace MonsterArena.UI
             _button.interactable = _information.IsUnlocked || _wallet.HaveCoins(_information.Price);
         }
 
+        public void CompleteAnimation()
+        {
+            _unlockingAnimationRunning = false;
+        }
+
         private void OnClicked()
         {
-            if (!_information.IsUnlocked)
+            if (_information.IsUnlocked)
             {
-                StartCoroutine(Unlock());
+                GameStarted?.Invoke();
 
-                _information.Unlock();
-
-                _playText.gameObject.SetActive(true);
-                _unlockText.gameObject.SetActive(false);
-                _image.DOBlendableColor(_unlockedColor, _animationDuration);
+                return;
             }
+
+            StartCoroutine(Unlock());
+
+            _information.Unlock();
+
+            _playText.gameObject.SetActive(true);
+            _unlockText.gameObject.SetActive(false);
+            _image.DOBlendableColor(_unlockedColor, _animationDuration);
         }
 
         private IEnumerator Unlock()
         {
-            yield return _rootTransform.DOSizeDelta(Vector2.one * 1024, _animationDuration / 2).WaitForCompletion();
+            //yield return _rootTransform.DOSizeDelta(Vector2.one * 1024, _animationDuration / 2).WaitForCompletion();
+            _rootTransform.DOSizeDelta(Vector2.one * 1024, _animationDuration / 2);
 
             yield return _wallet.Take(_information.Price);
 
             Unlocked?.Invoke();
+
+            _unlockingAnimationRunning = true;
+            yield return new WaitWhile(() => _unlockingAnimationRunning);
 
             yield return _rootTransform.DOSizeDelta(Vector2.zero, _animationDuration / 2).WaitForCompletion();
         }

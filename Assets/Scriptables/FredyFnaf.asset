@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _internalId: a92ed628-9f8f-4aae-bc0e-373d4e3719b1
   _monsterPrefab: {fileID: 8338347012300734588, guid: a07a3dbc36fcf114087f1e13616e1751, type: 3}
-  _monsterName: Fredy
+  _name: Fredy
   _hp: 1
   _damage: 1
   _movementSpeed: 1

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _internalId: 1bd5400c-e7e4-43ae-a246-56495b601bbd
   _monsterPrefab: {fileID: 7007175308815195450, guid: 0b52abe051f8b394892a2ba6b7b97766, type: 3}
-  _monsterName: Venom
+  _name: Venom
   _hp: 1
   _damage: 1
   _movementSpeed: 1
