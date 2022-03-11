@@ -87,7 +87,7 @@ namespace MonsterArena.UI
         private IEnumerator Unlock()
         {
             //yield return _rootTransform.DOSizeDelta(Vector2.one * 1024, _animationDuration / 2).WaitForCompletion();
-            _rootTransform.DOSizeDelta(Vector2.one * 1024, _animationDuration / 2);
+            _rootTransform.DOSizeDelta(Vector2.one * 1536, _animationDuration / 2);
 
             yield return _wallet.Take(_information.Price);
 

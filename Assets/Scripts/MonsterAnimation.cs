@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MonsterArena.Models;
 using MonsterArena.Extensions;
 
 namespace MonsterArena
@@ -20,11 +21,16 @@ namespace MonsterArena
         [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
         [SerializeField] private ParticleSystem _hitEffect = null;
         [SerializeField] private Transform _hitPositionTarget = null;
+        [SerializeField] private float _accelerationMultiplier = 5;
 
         private Rigidbody _rigidbody = null;
+        private MonsterInformation _information = null;
         //private MonsterAI _ai = null;
 
         private Vector3 _previousPosition = Vector3.zero;
+        private float _delta = 0;
+
+        public Rigidbody Rigidbody => _rigidbody;
 
         private void Awake()
         {
@@ -44,6 +50,11 @@ namespace MonsterArena
             _attackEventRepeater.Attacked -= OnAttacked;
         }
 
+        public void Initialize(MonsterInformation information)
+        {
+            _information = information;
+        }
+
         private void Update()
         {
             //_animator.SetBool(_Attack, _ai.IsAttacking);
@@ -55,16 +66,28 @@ namespace MonsterArena
             }
             //_animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
 
-            _previousPosition = _rigidbody.position;
+            //Debug.Log($"U = RB_Pos: {_rigidbody.position}\nPrev_Pos: {_previousPosition}\n{(_previousPosition - _rigidbody.position).GetXZ().magnitude}\n{_information.MovementSpeed * Time.deltaTime}");
+            //_previousPosition = _rigidbody.position;
         }
 
         private void FixedUpdate()
         {
-            if (_rigidbody.isKinematic)
+            if (_rigidbody.isKinematic || _information == null)
             {
                 return;
             }
-            _animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
+
+            var currentDelta = (_previousPosition - _rigidbody.position).GetXZ().magnitude;
+
+            //_delta = Mathf.Lerp(_delta, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100, _accelerationMultiplier * Time.deltaTime);
+            //Debug.Log($"FU = RB_Pos: {_rigidbody.position}\nPrev_Pos: {_previousPosition}\n{(_previousPosition - _rigidbody.position).GetXZ().magnitude}\n{_information.MovementSpeed * Time.deltaTime}");
+            //Debug.Log($"{_rigidbody.velocity.magnitude}\n{currentDelta}");
+            //var currentDelta = (_previousPosition - _rigidbody.position).GetXZ().magnitude * 50 / _information.MovementSpeed;
+            _delta = Mathf.Lerp(_delta, _information.MovementSpeed * (Mathf.Approximately(currentDelta, 0) ? 0 : 1), _accelerationMultiplier * Time.deltaTime);
+
+            _animator.SetFloat(_Speed, _delta);
+
+            _previousPosition = _rigidbody.position;
         }
 
         public void EnableAnimator()

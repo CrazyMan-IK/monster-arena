@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JackSkellington
   m_EditorClassIdentifier: 
   _internalId: 06321ad8-261b-4264-b07b-49441f0c168b
-  _monsterPrefab: {fileID: -992487622229847682, guid: e97a65e371cb0684ba312f05ace1abfd, type: 3}
+  _monsterPrefab: {fileID: 3107565083384402541, guid: 87ea75a852c42894b88a6cc05e3f9c54, type: 3}
   _name: Jack Skellington
   _hp: 1
   _damage: 1

@@ -76,7 +76,7 @@ namespace MonsterArena
             _sceneTransition.Load(_levelScene, rootGOs =>
             {
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(0);
+                level.Initialize(0, _carousel.CurrentMonster.Information);
             });
         }
 

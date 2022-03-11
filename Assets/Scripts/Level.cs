@@ -8,6 +8,7 @@ using DG.Tweening;
 using TMPro;
 using MonsterArena.UI;
 using MonsterArena.Models;
+using UnityEngine.Animations;
 
 namespace MonsterArena
 {
@@ -17,6 +18,10 @@ namespace MonsterArena
 
         [SerializeField] private SceneReference _mainMenuScene = null;
         [SerializeField] private SceneTransition _sceneTransition = null;
+        [SerializeField] private MonsterMovement _playerMovement = null;
+        [SerializeField] private MonsterInformation _playerInformation = null;
+        [SerializeField] private MonsterHealthBar _playerHealthBar = null;
+        [SerializeField] private PositionConstraint _cameraConstraint = null;
         /*[SerializeField] private List<LevelInformation> _levels = new List<LevelInformation>();
 
         [Space]
@@ -29,7 +34,6 @@ namespace MonsterArena
         [SerializeField] private StartPanel _startPanel = null;
         [SerializeField] private WinnerPanel _winnerPanel = null;*/
 
-        private LevelInformation _level = null;
         private int _levelNum = 0;
         private bool _inited = false;
         private bool _isPlayerWin = false;
@@ -46,7 +50,7 @@ namespace MonsterArena
             //_winnerPanel.Clicked += OnWinnerPanelClicked;
 
             //_startPanel.Initialize(_playerDeck.Nickname, _enemyDeck.Nickname);
-            Initialize(0);
+            //Initialize(0, _playerInformation);
         }
 
         /*private void Update()
@@ -74,20 +78,12 @@ namespace MonsterArena
             }
         }*/
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                LoadNextLevel();
-            }
-        }
-
         public void GameStarted()
         {
-            //Initialize(TotalLevelsPassed % _levels.Count);
+            Initialize(TotalLevelsPassed, _playerInformation);
         }
 
-        public void Initialize(int levelNum)
+        public void Initialize(int levelNum, MonsterInformation playerInformation)
         {
             if (_inited)
             {
@@ -96,6 +92,16 @@ namespace MonsterArena
             _inited = true;
 
             _levelNum = levelNum;
+            _playerInformation = playerInformation;
+
+            var monster = Instantiate(playerInformation.MonsterPrefab, _playerMovement.transform);
+            monster.Initialize(playerInformation);
+
+            _playerMovement.Initialize(monster);
+            _cameraConstraint.SetSource(0, new ConstraintSource() { sourceTransform = monster.transform, weight = 1 });
+
+            _playerHealthBar.Initialize(monster);
+
             //_level = _levels[levelNum];
 
             //_playerName.text = _level.PlayerName;
@@ -128,7 +134,7 @@ namespace MonsterArena
             _sceneTransition.ReloadCurrent(rootGOs =>
             {
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(_levelNum);
+                level.Initialize(_levelNum, _playerInformation);
             });
         }
 

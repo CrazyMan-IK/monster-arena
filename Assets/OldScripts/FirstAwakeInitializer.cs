@@ -27,7 +27,11 @@ namespace MonsterArena
             {
                 loadable.SceneLoaded();
             }*/
-            FindObjectOfType<Level>().GameStarted();
+            var level = FindObjectOfType<Level>();
+            if (level != null)
+            {
+                level.GameStarted();
+            }
 
             Application.targetFrameRate = 60;
             var sessionsCount = PlayerPrefs.GetInt(_SessionsCountKey, 0);

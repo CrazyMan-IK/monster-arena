@@ -10,5 +10,10 @@ namespace MonsterArena.Extensions
         {
             return new Vector2(position.x, position.z);
         }
+
+        public static Vector3 AsXZ(this Vector2 position)
+        {
+            return new Vector3(position.x, 0, position.y);
+        }
     }
 }
