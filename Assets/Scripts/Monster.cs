@@ -40,11 +40,7 @@ namespace MonsterArena
         private void Awake()
         {
             _animation = GetComponent<MonsterAnimation>();
-
-            //var oldMaterial = _shadow.material;
-            //_shadow.material = new Material(_shadow.material.shader);
-            //_shadow.material.CopyPropertiesFromMaterial(oldMaterial);
-
+            
             _shadow.material = new Material(_shadow.material);
 
             if (_information != null)
@@ -73,16 +69,6 @@ namespace MonsterArena
             {
                 return;
             }
-
-            /*URandom.InitState(Convert.ToInt32(transform.position.magnitude));
-            for (int i = 0; i < 50000; i++)
-            {
-                var point = _information.AttackArea * URandom.insideUnitCircle + transform.position.GetXZ();
-
-                var isInside = point.IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, _information.AttackArea, _information.AttackAngle);
-
-                Debug.DrawRay(point.AsXZ(), Vector3.up, isInside ? Color.blue : Color.red);
-            }*/
 
             var count = Physics.OverlapSphereNonAlloc(transform.position, _information.AttackArea, _lastColliders, _monstersLayerMask);
             for (int i = 0; i < count; i++)
