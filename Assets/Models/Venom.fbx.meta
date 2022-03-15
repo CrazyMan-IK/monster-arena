@@ -87,8 +87,8 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
@@ -112,8 +112,8 @@ ModelImporter:
       name: Death
       takeName: Armature|Armature|Armature|Venom_02_Rig|Venom_02_Rig|Death|Venom_02_Rig|
       internalID: 0
-      firstFrame: 0
-      lastFrame: 138
+      firstFrame: 15
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

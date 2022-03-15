@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7007175308815195450}
   - component: {fileID: 9198950949748636790}
   - component: {fileID: 6460624711226307148}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,8 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
+  _shadow: {fileID: 3266140198621508558}
   _collider: {fileID: -8457940167223531592}
   _repeater: {fileID: 9198950949748636790}
+  _monstersLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &9198950949748636790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +178,7 @@ Projector:
   m_FarClipPlane: 7
   m_FieldOfView: 50
   m_AspectRatio: 1
-  m_Orthographic: 0
+  m_Orthographic: 1
   m_OrthographicSize: 2
   m_Material: {fileID: 2100000, guid: 194e0168f97f1d94487b40f98bf5ee3d, type: 2}
   m_IgnoreLayers:

@@ -15,10 +15,11 @@ MonoBehaviour:
   _internalId: 75c13da1-aaac-4c08-b6ad-dd2a58d5c615
   _monsterPrefab: {fileID: 3693192343343402149, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}
   _name: Huggy Wuggy
-  _hp: 1
+  _hp: 5
   _damage: 1
   _movementSpeed: 5
-  _attackArea: 1
+  _attackArea: 4
+  _attackAngle: 45
   _forceUnlocked: 0
   _price: 400
-  _viewArea: 1
+  _viewArea: 8

@@ -31,6 +31,7 @@ namespace MonsterArena.UI
         {
             InitCoinsPool();
             _targetValue = PlayerPrefs.GetInt(_WalletCoinsKey, 0);
+            _targetValue = 3000;
             if (_targetValue > 0)
             {
                 UpdateValue(_targetValue);
@@ -109,7 +110,14 @@ namespace MonsterArena.UI
                 }
 
                 var coin = _availableCoins.Dequeue();
-                coin.position = from.position;
+
+                var targetPosition = from.position;
+                if (!from.TryGetComponent(out RectTransform _))
+                {
+                    targetPosition = Camera.main.WorldToScreenPoint(targetPosition);
+                }
+                coin.position = targetPosition;
+
                 coin.gameObject.SetActive(true);
 
                 var spreadOffset = (Vector3)(URandom.insideUnitCircle * _spawnSpreadMultiplier);
@@ -140,6 +148,7 @@ namespace MonsterArena.UI
                 }
 
                 animation.Append(coin.DOMove(spreadOffset, duration / 4).SetEase(Ease.InCubic).SetRelative());
+
                 animation.Append(coin.DOMove(to.position, duration / 4 * 3).SetEase(Ease.InOutBack));
 
                 rootAnimation.Join(animation);

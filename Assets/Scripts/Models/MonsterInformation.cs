@@ -15,6 +15,7 @@ namespace MonsterArena.Models
         //[SerializeField] private float _attackSpeed = 1;
         [SerializeField] private float _movementSpeed = 1;
         [SerializeField] private float _attackArea = 1;
+        [SerializeField] private float _attackAngle = 25;
 
         [Header("Player")]
         [SerializeField] private bool _forceUnlocked = false;
@@ -30,8 +31,10 @@ namespace MonsterArena.Models
         //public float AttackSpeed => _attackSpeed;
         public float MovementSpeed => _movementSpeed;
         public float AttackArea => _attackArea;
+        public float AttackAngle => _attackAngle;
         public bool IsUnlocked => _forceUnlocked || PlayerPrefs.GetInt($"{InternalID}_unlocked", 0) != 0;
         public int Price => _price;
+        public float ViewArea => _viewArea;
 
         public void Unlock()
         {

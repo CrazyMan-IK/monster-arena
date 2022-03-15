@@ -7,7 +7,6 @@ using MonsterArena.Extensions;
 namespace MonsterArena
 {
     [RequireComponent(typeof(Rigidbody))]
-    //[RequireComponent(typeof(MonsterAI))]
     public class MonsterAnimation : MonoBehaviour
     {
         private const string _Attack = "Attack";
@@ -25,17 +24,17 @@ namespace MonsterArena
 
         private Rigidbody _rigidbody = null;
         private MonsterInformation _information = null;
-        //private MonsterAI _ai = null;
 
         private Vector3 _previousPosition = Vector3.zero;
         private float _delta = 0;
 
-        public Rigidbody Rigidbody => _rigidbody;
+        public Rigidbody Rigidbody => _rigidbody;// != null ? _rigidbody : _rigidbody = GetComponent<Rigidbody>();
+        public bool IsAttacking { get; set; } = false;
+        public bool IsAlive { get; set; } = true;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            //_ai = GetComponent<MonsterAI>();
 
             _previousPosition = _rigidbody.position;
         }
@@ -57,17 +56,13 @@ namespace MonsterArena
 
         private void Update()
         {
-            //_animator.SetBool(_Attack, _ai.IsAttacking);
-            //_animator.SetBool(_Alive, _ai.IsAlive);
+            _animator.SetBool(_Attack, IsAttacking);
+            _animator.SetBool(_Alive, IsAlive);
 
             if (_rigidbody.isKinematic)
             {
                 return;
             }
-            //_animator.SetFloat(_Speed, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100);
-
-            //Debug.Log($"U = RB_Pos: {_rigidbody.position}\nPrev_Pos: {_previousPosition}\n{(_previousPosition - _rigidbody.position).GetXZ().magnitude}\n{_information.MovementSpeed * Time.deltaTime}");
-            //_previousPosition = _rigidbody.position;
         }
 
         private void FixedUpdate()
@@ -79,11 +74,7 @@ namespace MonsterArena
 
             var currentDelta = (_previousPosition - _rigidbody.position).GetXZ().magnitude;
 
-            //_delta = Mathf.Lerp(_delta, (_previousPosition - _rigidbody.position).GetXZ().magnitude * 100, _accelerationMultiplier * Time.deltaTime);
-            //Debug.Log($"FU = RB_Pos: {_rigidbody.position}\nPrev_Pos: {_previousPosition}\n{(_previousPosition - _rigidbody.position).GetXZ().magnitude}\n{_information.MovementSpeed * Time.deltaTime}");
-            //Debug.Log($"{_rigidbody.velocity.magnitude}\n{currentDelta}");
-            //var currentDelta = (_previousPosition - _rigidbody.position).GetXZ().magnitude * 50 / _information.MovementSpeed;
-            _delta = Mathf.Lerp(_delta, _information.MovementSpeed * (Mathf.Approximately(currentDelta, 0) ? 0 : 1), _accelerationMultiplier * Time.deltaTime);
+            _delta = Mathf.Lerp(_delta, _information.MovementSpeed * Mathf.Clamp01(currentDelta * 50), _accelerationMultiplier * Time.deltaTime);
 
             _animator.SetFloat(_Speed, _delta);
 
@@ -110,8 +101,8 @@ namespace MonsterArena
 
         private void OnAttacked()
         {
-            _hitEffect.transform.position = _hitPositionTarget.position;
-            _hitEffect.Play();
+            //_hitEffect.transform.position = _hitPositionTarget.position;
+            //_hitEffect.Play();
         }
     }
 }

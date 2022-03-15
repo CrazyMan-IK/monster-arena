@@ -257,7 +257,7 @@ ModelImporter:
       name: Attack
       takeName: Attack
       internalID: 0
-      firstFrame: -2
+      firstFrame: 0
       lastFrame: 67
       wrapMode: 0
       orientationOffsetY: 0
@@ -268,8 +268,8 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0

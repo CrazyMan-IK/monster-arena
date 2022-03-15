@@ -1,14 +1,12 @@
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using DG.Tweening;
+using UnityEngine.Animations;
+using AYellowpaper;
+using MonsterArena.Models;
+using MonsterArena.Interfaces;
 using TMPro;
 using MonsterArena.UI;
-using MonsterArena.Models;
-using UnityEngine.Animations;
 
 namespace MonsterArena
 {
@@ -16,9 +14,24 @@ namespace MonsterArena
     {
         private const string _TotalPassedLevelsKey = "_passedLevels";
 
+        [SerializeField] private int _killReward = 300;
+        [SerializeField] private List<MonsterMovement> _enemies = new List<MonsterMovement>();
+
+        [Header("Scene")]
         [SerializeField] private SceneReference _mainMenuScene = null;
         [SerializeField] private SceneTransition _sceneTransition = null;
-        [SerializeField] private MonsterMovement _playerMovement = null;
+        [SerializeField] private TextMeshProUGUI _levelNumberText = null;
+        [SerializeField] private WinnerPanel _winnerUI = null;
+        [SerializeField] private Wallet _wallet = null;
+
+        [Header("Logic")]
+        [SerializeField] private InterfaceReference<IInput> _input = null;
+        [SerializeField] private Transform _playerSpawn = null;
+        [SerializeField] private MonsterHealthBar _healthBarPrefab = null;
+        [SerializeField] private Transform _healthBarsRoot = null;
+
+        [Header("Player")]
+        //[SerializeField] private MonsterMovement _playerMovement = null;
         [SerializeField] private MonsterInformation _playerInformation = null;
         [SerializeField] private MonsterHealthBar _playerHealthBar = null;
         [SerializeField] private PositionConstraint _cameraConstraint = null;
@@ -34,6 +47,7 @@ namespace MonsterArena
         [SerializeField] private StartPanel _startPanel = null;
         [SerializeField] private WinnerPanel _winnerPanel = null;*/
 
+        private Monster _playerMonster = null;
         private int _levelNum = 0;
         private bool _inited = false;
         private bool _isPlayerWin = false;
@@ -44,39 +58,20 @@ namespace MonsterArena
             set => PlayerPrefs.SetInt(_TotalPassedLevelsKey, value);
         }
 
-        private void Awake()
-        {
-            //_startPanel.Closed += OnStartPanelClosed;
-            //_winnerPanel.Clicked += OnWinnerPanelClicked;
+        public IReadOnlyList<MonsterMovement> Enemies => _enemies;
 
-            //_startPanel.Initialize(_playerDeck.Nickname, _enemyDeck.Nickname);
-            //Initialize(0, _playerInformation);
+        private void OnEnable()
+        {
+            _winnerUI.Clicked += OnWinnerUIClicked;
         }
 
-        /*private void Update()
+        private void OnDisable()
         {
-            if (!_playerDeck.HasAliveMonsters)
-            {
-                _enemyDeck.ActivateWinAnimation();
-                _winnerPanel.Activate(false);
+            _playerMonster.Killed -= OnEnemyKilled;
+            _playerMonster.Died -= OnPlayerDied;
 
-                _isPlayerWin = false;
-                enabled = false;
-
-                return;
-            }
-
-            if (!_enemyDeck.HasAliveMonsters)
-            {
-                _playerDeck.ActivateWinAnimation();
-                _winnerPanel.Activate(true);
-
-                _isPlayerWin = true;
-                enabled = false;
-
-                return;
-            }
-        }*/
+            _winnerUI.Clicked -= OnWinnerUIClicked;
+        }
 
         public void GameStarted()
         {
@@ -94,13 +89,30 @@ namespace MonsterArena
             _levelNum = levelNum;
             _playerInformation = playerInformation;
 
-            var monster = Instantiate(playerInformation.MonsterPrefab, _playerMovement.transform);
-            monster.Initialize(playerInformation);
+            _levelNumberText.text = (TotalLevelsPassed + 1).ToString();
 
-            _playerMovement.Initialize(monster);
-            _cameraConstraint.SetSource(0, new ConstraintSource() { sourceTransform = monster.transform, weight = 1 });
+            _playerMonster = Instantiate(playerInformation.MonsterPrefab, _playerSpawn);
+            _playerMonster.Initialize(playerInformation, true);
 
-            _playerHealthBar.Initialize(monster);
+            _playerMonster.Killed += OnEnemyKilled;
+            _playerMonster.Died += OnPlayerDied;
+
+            _playerHealthBar.Initialize(_playerMonster, null);
+
+            var movement = _playerMonster.gameObject.AddComponent<MonsterMovement>();
+            movement.Initialize(_input.Value);
+
+            _cameraConstraint.SetSource(0, new ConstraintSource() { sourceTransform = _playerMonster.transform, weight = 1 });
+
+            var names = AINamesGenerator.Utils.GetRandomNames(_enemies.Count);
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                var enemy = _enemies[i];
+                var name = names[i];
+
+                var healthBar = Instantiate(_healthBarPrefab, _healthBarsRoot);
+                healthBar.Initialize(enemy.Monster, name);
+            }
 
             //_level = _levels[levelNum];
 
@@ -110,18 +122,52 @@ namespace MonsterArena
 
         public void LoadNextLevel()
         {
-            var nextLevelNum = _levelNum + 1;
-            //if (nextLevelNum >= _levels.Count)
-            {
-                nextLevelNum = 0;
-            }
-
             TotalLevelsPassed++;
 
             _sceneTransition.Load(_mainMenuScene);
         }
 
-        private void OnWinnerPanelClicked()
+        public void Restart()
+        {
+            _sceneTransition.ReloadCurrent(rootGOs =>
+            {
+                var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
+                level.Initialize(_levelNum, _playerInformation);
+            });
+        }
+
+        private void OnEnemyKilled(Transform enemy)
+        {
+            _isPlayerWin = true;
+
+            _wallet.Add(enemy, _killReward);
+
+            if (!_enemies.Any(x => x.Monster.IsAlive))
+            {
+                TotalLevelsPassed++;
+                _winnerUI.Activate(true);
+            }
+        }
+
+        private void OnPlayerDied()
+        {
+            _isPlayerWin = false;
+
+            _winnerUI.Activate(false);
+        }
+
+        private void OnWinnerUIClicked()
+        {
+            if (_isPlayerWin)
+            {
+                LoadNextLevel();
+                return;
+            }
+
+            LoadNextLevel();
+        }
+
+        /*private void OnWinnerPanelClicked()
         {
             //_winnerPanel.Clicked -= OnWinnerPanelClicked;
 
@@ -136,11 +182,11 @@ namespace MonsterArena
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
                 level.Initialize(_levelNum, _playerInformation);
             });
-        }
+        }*/
 
-        private void OnStartPanelClosed()
+        /*private void OnStartPanelClosed()
         {
             //_startPanel.Closed -= OnStartPanelClosed;
-        }
+        }*/
     }
 }
