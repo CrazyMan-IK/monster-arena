@@ -441,7 +441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f609f7b5335654696f805a84f4c189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenBoundOffset: {x: 80, y: 80}
+  screenBoundOffset: {x: 32, y: 32}
+  _minDistance: 196
 --- !u!1 &569581061 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4841487472173634321, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}

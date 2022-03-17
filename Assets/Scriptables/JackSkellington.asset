@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: JackSkellington
   m_EditorClassIdentifier: 
   _internalId: 06321ad8-261b-4264-b07b-49441f0c168b
-  _monsterPrefab: {fileID: 3107565083384402541, guid: 87ea75a852c42894b88a6cc05e3f9c54, type: 3}
-  _name: Jack Skellington
-  _hp: 4
-  _damage: 2
-  _movementSpeed: 6
-  _attackArea: 3
-  _attackAngle: 60
-  _forceUnlocked: 0
-  _price: 800
-  _viewArea: 6
+  <MonsterPrefab>k__BackingField: {fileID: 3107565083384402541, guid: 87ea75a852c42894b88a6cc05e3f9c54, type: 3}
+  <Name>k__BackingField: Jack Skellington
+  <HP>k__BackingField: 4
+  <Damage>k__BackingField: 2
+  <MovementSpeed>k__BackingField: 6
+  <AttackArea>k__BackingField: 3
+  <AttackAngle>k__BackingField: 60
+  <ForceUnlocked>k__BackingField: 0
+  <Price>k__BackingField: 800
+  <ViewArea>k__BackingField: 6

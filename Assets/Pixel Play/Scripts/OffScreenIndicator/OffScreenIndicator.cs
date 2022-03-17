@@ -14,6 +14,7 @@ public class OffScreenIndicator : MonoBehaviour
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     //[SerializeField] private float screenBoundOffset = 0.9f;
     [SerializeField] private Vector2 screenBoundOffset = Vector2.one * 32;
+    [SerializeField] private float _minDistance = 16;
 
     private Camera mainCamera;
     private Vector2 screenCentre;
@@ -70,6 +71,38 @@ public class OffScreenIndicator : MonoBehaviour
             else
             {
                 target.indicator?.Activate(false);
+            }
+        }
+
+        foreach (var target1 in targets)
+        {
+            if (target1.indicator == null)
+            {
+                continue;
+            }
+
+            foreach (var target2 in targets)
+            {
+                if (target2.indicator == null)
+                {
+                    continue;
+                }
+
+                var pos1 = target1.indicator.transform.position;
+                var pos2 = target2.indicator.transform.position;
+                if (Vector3.Distance(pos1, pos2) <= _minDistance)
+                {
+                    var center = (pos1 + pos2) / 2;
+                    var direction = pos2 - pos1;
+                    direction.Normalize();
+                    direction /= 2;
+
+                    pos1 = center + direction * _minDistance;
+                    pos2 = center - direction * _minDistance;
+
+                    target1.indicator.transform.position = pos1;
+                    target2.indicator.transform.position = pos2;
+                }
             }
         }
     }

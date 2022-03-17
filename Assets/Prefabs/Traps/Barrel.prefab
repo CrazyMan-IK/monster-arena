@@ -111,6 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _range: 3.5
   _damage: 3
+  _explodeDelay: 2
+  _ticks: 2
   _monsterLayerMask:
     serializedVersion: 2
     m_Bits: 1024

@@ -8,33 +8,22 @@ namespace MonsterArena.Models
     [CreateAssetMenu(fileName = "New MonsterInformation", menuName = "Monster Arena/Monster Information", order = 50)]
     public class MonsterInformation : ScriptableObjectWithID
     {
-        [SerializeField] private Monster _monsterPrefab = null;
-        [SerializeField] private string _name = "<UNKNOWN>";
-        [SerializeField] private float _hp = 1;
-        [SerializeField] private float _damage = 1;
-        //[SerializeField] private float _attackSpeed = 1;
-        [SerializeField] private float _movementSpeed = 1;
-        [SerializeField] private float _attackArea = 1;
-        [SerializeField] private float _attackAngle = 25;
+        [field: SerializeField] public Monster MonsterPrefab { get; private set; } = null;
+        [field: SerializeField] public string Name { get; private set; } = "<UNKNOWN>";
+        [field: SerializeField] public float HP { get; private set; } = 1;
+        [field: SerializeField] public float Damage { get; private set; } = 1;
+        [field: SerializeField] public float MovementSpeed { get; private set; } = 1;
+        [field: SerializeField] public float AttackArea { get; private set; } = 1;
+        [field: SerializeField] public float AttackAngle { get; private set; } = 25;
 
-        [Header("Player")]
-        [SerializeField] private bool _forceUnlocked = false;
-        [SerializeField] private int _price = 100;
+        [field: Header("Player")]
+        [field: SerializeField] private bool ForceUnlocked { get; set; } = false;
+        [field: SerializeField] public int Price { get; private set; } = 100;
 
-        [Header("Enemy")]
-        [SerializeField] private float _viewArea = 1;
+        [field: Header("Enemy")]
+        [field: SerializeField] public float ViewArea { get; private set; } = 1;
 
-        public Monster MonsterPrefab => _monsterPrefab;
-        public string Name => _name;
-        public float HP => _hp;
-        public float Damage => _damage;
-        //public float AttackSpeed => _attackSpeed;
-        public float MovementSpeed => _movementSpeed;
-        public float AttackArea => _attackArea;
-        public float AttackAngle => _attackAngle;
-        public bool IsUnlocked => _forceUnlocked || PlayerPrefs.GetInt($"{InternalID}_unlocked", 0) != 0;
-        public int Price => _price;
-        public float ViewArea => _viewArea;
+        public bool IsUnlocked => ForceUnlocked || PlayerPrefs.GetInt($"{InternalID}_unlocked", 0) != 0;
 
         public void Unlock()
         {
