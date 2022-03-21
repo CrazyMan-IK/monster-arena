@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: HuggyWuggy
   m_EditorClassIdentifier: 
   _internalId: 75c13da1-aaac-4c08-b6ad-dd2a58d5c615
-  _monsterPrefab: {fileID: 3693192343343402149, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}
-  _name: Huggy Wuggy
-  _hp: 5
-  _damage: 1
-  _movementSpeed: 5
-  _attackArea: 4
-  _attackAngle: 45
-  _forceUnlocked: 0
-  _price: 400
-  _viewArea: 8
+  <MonsterPrefab>k__BackingField: {fileID: 3693192343343402149, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}
+  <Name>k__BackingField: Huggy Wuggy
+  <HP>k__BackingField: 5
+  <Damage>k__BackingField: 1
+  <MovementSpeed>k__BackingField: 5
+  <AttackArea>k__BackingField: 4
+  <AttackAngle>k__BackingField: 45
+  <ForceUnlocked>k__BackingField: 0
+  <Price>k__BackingField: 400
+  <ViewArea>k__BackingField: 8

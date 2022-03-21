@@ -73,9 +73,11 @@ struct InputObject
     float2 uv_MainTex;
     float2 uv_BumpMap;
 
+    //float3 normal;
     float3 viewDir;
     float3 lightDir;
     float3 worldPos;
+    float2 worldScale;
     float3 worldNormalCustom;  // "worldNormal" is a reserved Unity variable.
 
     #ifdef DR_VERTEX_COLORS_ON
@@ -219,6 +221,50 @@ inline void LightingDustyroomStylizedSpecular_GI (
 void vertObject(inout appdata_full v, out InputObject o) {
     UNITY_INITIALIZE_OUTPUT(InputObject, o);
     o.lightDir = WorldSpaceLightDir(v.vertex);
+#if DR_WORLD_SCALE_ON
+        float3 worldScale = float3(
+            length(float3(unity_ObjectToWorld[0].x, unity_ObjectToWorld[1].x, unity_ObjectToWorld[2].x)), // scale x axis
+            length(float3(unity_ObjectToWorld[0].y, unity_ObjectToWorld[1].y, unity_ObjectToWorld[2].y)), // scale y axis
+            length(float3(unity_ObjectToWorld[0].z, unity_ObjectToWorld[1].z, unity_ObjectToWorld[2].z))  // scale z axis
+        );
+
+        float d1 = dot(v.normal, float3(1, 0, 0));
+        float d2 = dot(v.normal, float3(0, 1, 0));
+        float d3 = dot(v.normal, float3(0, 0, 1));
+
+        if (d1 > d2 && d1 > d3)
+        {
+            o.worldScale = lerp(worldScale.yz, worldScale.zy, d1 > 0);
+#if DR_VERTEX_COLORS_ON
+            o.color = float4(1, 0, 0, 1);
+#endif
+        }
+        else if (d2 > d1 && d2 > d3)
+        {
+            o.worldScale = lerp(worldScale.zx, worldScale.xz, d2 > 0);
+#if DR_VERTEX_COLORS_ON
+            o.color = float4(0, 1, 0, 1);
+#endif
+        }
+        else
+        {
+            o.worldScale = lerp(worldScale.xy, worldScale.yx, d3 > 0);
+#if DR_VERTEX_COLORS_ON
+            o.color = float4(0, 0, 1, 1);
+#endif
+        }
+#else
+        o.worldScale = float2(1.0, 1.0);
+#endif
+
+    //|/
+    //--
+
+    //o.normal = v.normal;
+    //0.7, 0.7, 0 == x0.3 y0.3 z1
+    //1, 0, 0 == x0 y1 z1
+    //0, 1, 0 == x1 y0 z1
+    //0, 0, 1 == x1 y1 z0
     o.worldNormalCustom = mul(unity_ObjectToWorld, float4(v.normal, 0.0)).xyz;
 }
 
@@ -305,10 +351,10 @@ void surfObject(InputObject IN, inout SurfaceOutputDustyroom o) {
 
     {
         #if defined(_TEXTUREBLENDINGMODE_ADD)
-            c += lerp(half4(0.0, 0.0, 0.0, 0.0), tex2D(_MainTex, IN.uv_MainTex), _TextureImpact);
+            c += lerp(half4(0.0, 0.0, 0.0, 0.0), tex2D(_MainTex, IN.uv_MainTex * IN.worldScale), _TextureImpact);
         #else  // _TEXTUREBLENDINGMODE_MULTIPLY
             // This is the default blending mode for compatibility with the v.1 of the asset.
-            c *= lerp(half4(1.0, 1.0, 1.0, 1.0), tex2D(_MainTex, IN.uv_MainTex), _TextureImpact);
+            c *= lerp(half4(1.0, 1.0, 1.0, 1.0), tex2D(_MainTex, IN.uv_MainTex * IN.worldScale), _TextureImpact);
         #endif
     }
 

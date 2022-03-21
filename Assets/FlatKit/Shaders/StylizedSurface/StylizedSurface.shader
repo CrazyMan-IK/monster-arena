@@ -72,6 +72,7 @@
         [MainTexture] _MainTex("[FOLDOUT(Texture maps){4}]Albedo", 2D) = "white" {}
         [KeywordEnum(Multiply, Add)]_TextureBlendingMode("Blending Mode", Float) = 0
         _TextureImpact("Texture Impact", Range(0, 1)) = 1.0
+        [Toggle(DR_WORLD_SCALE_ON)] _UseWorldScale("Use World Scale", Int) = 0
         
         [Space(10)]
         _BumpMap ("Bump Map", 2D) = "bump" {}
@@ -113,6 +114,7 @@
         #pragma shader_feature_local DR_SPECULAR_ON
         #pragma shader_feature_local DR_RIM_ON
         #pragma shader_feature_local DR_VERTEX_COLORS_ON
+        #pragma shader_feature_local DR_WORLD_SCALE_ON
         #pragma shader_feature_local __ _UNITYSHADOWMODE_MULTIPLY _UNITYSHADOWMODE_COLOR
         #pragma shader_feature_local _TEXTUREBLENDINGMODE_MULTIPLY _TEXTUREBLENDINGMODE_ADD
 
