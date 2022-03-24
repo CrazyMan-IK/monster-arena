@@ -14,7 +14,9 @@ public class OffScreenIndicator : MonoBehaviour
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     //[SerializeField] private float screenBoundOffset = 0.9f;
     [SerializeField] private Vector2 screenBoundOffset = Vector2.one * 32;
-    [SerializeField] private float _minDistance = 16;
+    [SerializeField] private float _minDistance = 192;
+    [SerializeField] private float _minAngle = 15;
+    [SerializeField] private float _radius = 3;
 
     private Camera mainCamera;
     private Vector2 screenCentre;
@@ -56,8 +58,7 @@ public class OffScreenIndicator : MonoBehaviour
             }
             else if(target.NeedArrowIndicator && !isTargetVisible)
             {
-                float angle = float.MinValue;
-                OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
+                var angle = OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, screenCentre, screenBounds, _radius);
                 indicator = GetIndicator(ref target.indicator, IndicatorType.ARROW); // Gets the arrow indicator from the pool.
                 indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg); // Sets the rotation for the arrow indicator.
             }
@@ -65,31 +66,43 @@ public class OffScreenIndicator : MonoBehaviour
             {
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
-                indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
+                //indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
+                indicator.TargetPosition = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
             }
-            else
+            else if (target.indicator != null)
             {
-                target.indicator?.Activate(false);
+                target.indicator.Activate(false);
             }
         }
 
-        foreach (var target1 in targets)
+        for (int i = 0; i < targets.Count; i++)
         {
+            var target1 = targets[i];
             if (target1.indicator == null)
             {
                 continue;
             }
 
-            foreach (var target2 in targets)
+            //Debug.DrawRay(target1.indicator.TargetPosition, Vector3.forward * 100, Color.red);
+
+            //for (int j = i + 1; j < targets.Count; j++)
+            for (int j = 0; j < targets.Count; j++)
             {
+                if (j == i)
+                {
+                    continue;
+                }
+
+                var target2 = targets[j];
                 if (target2.indicator == null)
                 {
                     continue;
                 }
 
-                var pos1 = target1.indicator.transform.position;
-                var pos2 = target2.indicator.transform.position;
+                /*var pos1 = target1.indicator.TargetPosition;
+                var pos2 = target2.indicator.TargetPosition;
+
                 if (Vector3.Distance(pos1, pos2) <= _minDistance)
                 {
                     var center = (pos1 + pos2) / 2;
@@ -100,8 +113,28 @@ public class OffScreenIndicator : MonoBehaviour
                     pos1 = center + direction * _minDistance;
                     pos2 = center - direction * _minDistance;
 
-                    target1.indicator.transform.position = pos1;
-                    target2.indicator.transform.position = pos2;
+                    target1.indicator.TargetPosition = pos1;
+                    target2.indicator.TargetPosition = pos2;
+
+                    Debug.DrawRay(target1.indicator.TargetPosition, Vector3.forward * 90, Color.blue);
+                }*/
+
+                var a1 = target1.indicator.transform.eulerAngles.z;
+                var a2 = target2.indicator.transform.eulerAngles.z;
+
+                if (Mathf.Abs(a1 - a2) < _minAngle)
+                {
+                    var avg = (a1 + a2) / 2;
+                    var sign = Mathf.Sign(a1 - a2) / 2;
+
+                    a1 = avg + sign * _minAngle;
+                    a2 = avg - sign * _minAngle;
+
+                    target1.indicator.TargetPosition = OffScreenIndicatorCore.GetArrowIndicatorPositionByAngle(a1 * Mathf.Deg2Rad, screenCentre, screenBounds, _radius);
+                    target2.indicator.TargetPosition = OffScreenIndicatorCore.GetArrowIndicatorPositionByAngle(a2 * Mathf.Deg2Rad, screenCentre, screenBounds, _radius);
+
+                    target1.indicator.transform.rotation = Quaternion.Euler(0, 0, a1);
+                    target2.indicator.transform.rotation = Quaternion.Euler(0, 0, a2);
                 }
             }
         }

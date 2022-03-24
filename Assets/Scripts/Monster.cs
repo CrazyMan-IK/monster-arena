@@ -29,6 +29,7 @@ namespace MonsterArena
         private MonsterAnimation _animation = null;
         private float _maxHP = 0;
         private float _hp = 0;
+        private bool _isPlayer = false;
 
         public Renderer Renderer => _renderer;
         public Collider Collider => _collider;
@@ -45,13 +46,13 @@ namespace MonsterArena
 
             if (_information != null)
             {
-                Initialize(_information, false);
+                Initialize(_information);
             }
         }
 
-        public void Initialize(MonsterInformation information, bool isPlayer)
+        public void Initialize(MonsterInformation information)
         {
-            _maxHP = information.HP / (isPlayer ? 1 : 1.75f);
+            _maxHP = information.HP;
             _hp = _maxHP;
 
             _information = information;
@@ -60,6 +61,16 @@ namespace MonsterArena
             _shadow.material.SetFloat(_Angle, information.AttackAngle);
 
             _animation.Initialize(information);
+        }
+
+        public void InitializeAsPlayer(MonsterInformation information, int enemyCount)
+        {
+            Initialize(information);
+
+            _maxHP = enemyCount + 1;
+            _hp = _maxHP;
+
+            _isPlayer = true;
         }
 
         private void Update()
@@ -110,15 +121,24 @@ namespace MonsterArena
 
             if (_hp <= 0)
             {
-                _hp = 0;
-                _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-                _animation.Rigidbody.isKinematic = true;
-                _collider.enabled = false;
+                Die();
 
-                Died?.Invoke();
+                return;
             }
 
-            _animation.IsAlive = IsAlive;
+            _animation.IsAlive = true;
+        }
+
+        public void Die()
+        {
+            _hp = 0;
+            _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            _animation.Rigidbody.isKinematic = true;
+            _collider.enabled = false;
+
+            Died?.Invoke();
+
+            _animation.IsAlive = false;
         }
 
         public void RunWinningAnimation()
@@ -150,7 +170,14 @@ namespace MonsterArena
 
                 if (collider.TryGetComponent(out Monster monster) && monster != this && monster.IsAlive && collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, _information.AttackArea, _information.AttackAngle))
                 {
-                    monster.TakeDamage(_information.Damage);
+                    if (_isPlayer)
+                    {
+                        monster.Die();
+                    }
+                    else
+                    {
+                        monster.TakeDamage(_information.Damage);
+                    }
 
                     if (monster.IsAlive)
                     {

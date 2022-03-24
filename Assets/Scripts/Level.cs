@@ -92,7 +92,7 @@ namespace MonsterArena
             _levelNumberText.text = (TotalLevelsPassed + 1).ToString();
 
             _playerMonster = Instantiate(playerInformation.MonsterPrefab, _playerSpawn);
-            _playerMonster.Initialize(playerInformation, true);
+            _playerMonster.InitializeAsPlayer(playerInformation, _enemies.Count);
 
             _playerMonster.Killed += OnEnemyKilled;
             _playerMonster.Died += OnPlayerDied;

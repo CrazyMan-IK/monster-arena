@@ -31,10 +31,10 @@ namespace PixelPlay.OffScreenIndicator
         /// Gets the screen position and angle for the arrow indicator. 
         /// </summary>
         /// <param name="screenPosition">Position of the target mapped to screen cordinates</param>
-        /// <param name="angle">Angle of the arrow</param>
-        /// <param name="screenCentre">The screen  centre</param>
+        /// <param name="screenCentre">The screen centre</param>
         /// <param name="screenBounds">The screen bounds</param>
-        public static void GetArrowIndicatorPositionAndAngle(ref Vector3 screenPosition, ref float angle, Vector2 screenCentre, Vector2 screenBounds)
+        /// <returns>Angle of indicator</returns>
+        /*public static float GetArrowIndicatorPositionAndAngle(ref Vector3 screenPosition, Vector2 screenCentre, Vector2 screenBounds)
         {
             // Our screenPosition's origin is screen's bottom-left corner.
             // But we have to get the arrow's screenPosition and rotation with respect to screenCentre.
@@ -48,9 +48,11 @@ namespace PixelPlay.OffScreenIndicator
             }
 
             // Angle between the x-axis (bottom of screen) and a vector starting at zero(bottom-left corner of screen) and terminating at screenPosition.
-            angle = Mathf.Atan2(screenPosition.y, screenPosition.x);
+            var angle = Mathf.Atan2(screenPosition.y, screenPosition.x);
             // Slope of the line starting from zero and terminating at screenPosition.
-            float slope = Mathf.Tan(angle);
+            var slope = Mathf.Tan(angle);
+
+            //float deltaD = 1.5 - (vector.x * Vector.x * vector.x * Vector.x + Vector.y * vector.y * Vector.y * vector.y) / 4.0;
 
             // Two point's line's form is (y2 - y1) = m (x2 - x1) + c, 
             // starting point (x1, y1) is screen botton-left (0, 0),
@@ -79,8 +81,118 @@ namespace PixelPlay.OffScreenIndicator
             {
                 screenPosition = new Vector3(-screenBounds.y / slope, -screenBounds.y, 0);
             }
+
             // Bring the ScreenPosition back to its original reference.
             screenPosition += (Vector3)screenCentre;
+
+            return angle;
+        }*/
+
+        /// <summary>
+        /// Gets the screen position and angle for the arrow indicator. 
+        /// </summary>
+        /// <param name="screenPosition">Position of the target mapped to screen cordinates</param>
+        /// <param name="screenCentre">The screen centre</param>
+        /// <param name="screenBounds">The screen bounds</param>
+        /// <returns>Angle of indicator</returns>
+        public static float GetArrowIndicatorPositionAndAngle(ref Vector3 screenPosition, Vector2 screenCentre, Vector2 screenBounds, float radius)
+        {
+            // Our screenPosition's origin is screen's bottom-left corner.
+            // But we have to get the arrow's screenPosition and rotation with respect to screenCentre.
+            screenPosition -= (Vector3)screenCentre;
+
+            // When the targets are behind the camera their projections on the screen (WorldToScreenPoint) are inverted,
+            // so just invert them.
+            if(screenPosition.z < 0)
+            {
+                screenPosition *= -1;
+            }
+
+            screenPosition.Normalize();
+
+            // Angle between the x-axis (bottom of screen) and a vector starting at zero(bottom-left corner of screen) and terminating at screenPosition.
+            var angle = Mathf.Atan2(screenPosition.y, screenPosition.x);
+            var aspectRatio = screenBounds.y / screenBounds.x;
+
+            radius *= 2;
+
+            var px = Mathf.Pow(screenPosition.x, radius);
+            var py = Mathf.Pow(screenPosition.y / aspectRatio, radius);
+
+            var x = Mathf.Pow(px / (px + py), 1 / radius);
+
+            //Debug.Log(x);
+
+            var y = screenPosition.x == 0 ? aspectRatio * Mathf.Sign(screenPosition.y) : screenPosition.y / screenPosition.x * x;
+
+            var sign = Mathf.Sign(screenPosition.x);
+
+            screenPosition = new Vector2(x * screenBounds.x, y * screenBounds.x) * sign;
+
+            // Bring the ScreenPosition back to its original reference.
+            screenPosition += (Vector3)screenCentre;
+
+            return angle;
         }
+
+        public static Vector3 GetArrowIndicatorPositionByAngle(float angle, Vector2 screenCentre, Vector2 screenBounds, float radius)
+        {
+            var direction = Vector2.right;
+            //direction.x = Mathf.Cos(angle) * x + Mathf.Sin(angle) * y;
+            //direction.y = -Mathf.Sin(angle) * x + Mathf.Cos(angle) * y;
+            direction.x = Mathf.Cos(angle);
+            direction.y = Mathf.Sin(angle);
+
+            // Angle between the x-axis (bottom of screen) and a vector starting at zero(bottom-left corner of screen) and terminating at screenPosition.
+            var aspectRatio = screenBounds.y / screenBounds.x;
+            direction.y *= aspectRatio / 3f;
+            direction.Normalize();
+
+            radius *= 2;
+
+            var px = Mathf.Pow(direction.x, radius);
+            var py = Mathf.Pow(direction.y, radius);
+
+            var x = Mathf.Pow(px / (px + py), 1 / radius);
+
+            //Debug.Log(x);
+
+            var y = direction.x == 0 ? aspectRatio / 2 * Mathf.Sign(direction.y) : direction.y / direction.x * x;
+
+            var sign = Mathf.Sign(direction.x);
+
+            //return new Vector3(x * screenBounds.x * sign, y * screenBounds.x * sign, 0) + (Vector3)screenCentre;
+
+            return new Vector3(x * screenBounds.x, y * screenBounds.y, 0) * sign + (Vector3)screenCentre;
+        }
+
+        /*public static Vector3 GetArrowIndicatorPositionByAngle(float angle, Vector2 screenCentre, Vector2 screenBounds, float radius)
+        {
+            var direction = Vector2.right;
+            //direction.x = Mathf.Cos(angle) * x + Mathf.Sin(angle) * y;
+            //direction.y = -Mathf.Sin(angle) * x + Mathf.Cos(angle) * y;
+            direction.x = Mathf.Cos(angle);
+            direction.y = Mathf.Sin(angle);
+
+            // Angle between the x-axis (bottom of screen) and a vector starting at zero(bottom-left corner of screen) and terminating at screenPosition.
+            var aspectRatio = screenBounds.y / screenBounds.x;
+
+            radius *= 2;
+
+            var px = Mathf.Pow(direction.x, radius);
+            var py = Mathf.Pow(direction.y / aspectRatio, radius);
+
+            var x = Mathf.Pow(px / (px + py), 1 / radius);
+
+            //Debug.Log(x);
+
+            var y = direction.x == 0 ? aspectRatio * Mathf.Sign(direction.y) : direction.y / direction.x * x;
+
+            var sign = Mathf.Sign(direction.x);
+
+            //return new Vector3(x * screenBounds.x * sign, y * screenBounds.x * sign, 0) + (Vector3)screenCentre;
+
+            return new Vector3(x * screenBounds.x, y * screenBounds.x, 0) * sign + (Vector3)screenCentre;
+        }*/
     }
 }

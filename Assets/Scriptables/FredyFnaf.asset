@@ -15,11 +15,11 @@ MonoBehaviour:
   _internalId: a92ed628-9f8f-4aae-bc0e-373d4e3719b1
   <MonsterPrefab>k__BackingField: {fileID: 9206530454268144359, guid: b342f9d869380c7408515367b12c378b, type: 3}
   <Name>k__BackingField: Fredy
-  <HP>k__BackingField: 1
+  <HP>k__BackingField: 3
   <Damage>k__BackingField: 1
-  <MovementSpeed>k__BackingField: 1
-  <AttackArea>k__BackingField: 1
-  <AttackAngle>k__BackingField: 25
+  <MovementSpeed>k__BackingField: 3
+  <AttackArea>k__BackingField: 3.5
+  <AttackAngle>k__BackingField: 35
   <ForceUnlocked>k__BackingField: 0
   <Price>k__BackingField: 200
-  <ViewArea>k__BackingField: 1
+  <ViewArea>k__BackingField: 7

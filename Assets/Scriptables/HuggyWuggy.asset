@@ -15,7 +15,7 @@ MonoBehaviour:
   _internalId: 75c13da1-aaac-4c08-b6ad-dd2a58d5c615
   <MonsterPrefab>k__BackingField: {fileID: 3693192343343402149, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}
   <Name>k__BackingField: Huggy Wuggy
-  <HP>k__BackingField: 5
+  <HP>k__BackingField: 3
   <Damage>k__BackingField: 1
   <MovementSpeed>k__BackingField: 5
   <AttackArea>k__BackingField: 4

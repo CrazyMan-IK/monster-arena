@@ -83,7 +83,7 @@ namespace MonsterArena.UI
                 var pivot = Instantiate(_pivotPrefab, _content);
                 var attachTransform = pivot.GetAttachTransform();
                 var monster = Instantiate(monsterInformation.MonsterPrefab, attachTransform.position, attachTransform.rotation, attachTransform);
-                monster.Initialize(monsterInformation, true);
+                monster.Initialize(monsterInformation);
                 _monsters.Add(monster.gameObject.AddComponent<MonsterMenuView>());
 
                 pivot.transform.localRotation = Quaternion.AngleAxis(_angle * i, Vector3.down);

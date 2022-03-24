@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Indicator : MonoBehaviour
 {
     [SerializeField] private IndicatorType indicatorType;
+    [SerializeField] private float _speedMultiplier = 5;
     private Image indicatorImage;
     private Text distanceText;
 
@@ -32,10 +33,22 @@ public class Indicator : MonoBehaviour
         }
     }
 
+    public Vector3 TargetPosition { get; set; }
+
     void Awake()
     {
         indicatorImage = transform.GetComponent<Image>();
         distanceText = transform.GetComponentInChildren<Text>();
+    }
+
+    private void Update()
+    {
+        transform.position = Vector3.Lerp(transform.position, TargetPosition, _speedMultiplier * Time.deltaTime);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 96);
     }
 
     /// <summary>
