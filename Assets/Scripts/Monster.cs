@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using URandom = UnityEngine.Random;
 using MonsterArena.Models;
 using MonsterArena.Extensions;
+using MonsterArena.Interfaces;
 
 namespace MonsterArena
 {
     [RequireComponent(typeof(MonsterAnimation))]
+    [RequireComponent(typeof(IMonsterAbility))]
     public class Monster : MonoBehaviour
     {
         private const string _Radius = "_Radius";
@@ -27,6 +28,7 @@ namespace MonsterArena
 
         private readonly Collider[] _lastColliders = new Collider[8];
         private MonsterAnimation _animation = null;
+        private IMonsterAbility _ability = null;
         private float _maxHP = 0;
         private float _hp = 0;
         private bool _isPlayer = false;
@@ -37,10 +39,13 @@ namespace MonsterArena
         public MonsterInformation Information => _information;
         public float HP => _hp / _maxHP;
         public bool IsAlive => _hp > 0;
+        public float AbilityCooldown => _ability.Cooldown;
+        public float MovementSpeed => _ability.TransformSpeed(_information.MovementSpeed);
 
         private void Awake()
         {
             _animation = GetComponent<MonsterAnimation>();
+            _ability = GetComponent<IMonsterAbility>();
             
             _shadow.material = new Material(_shadow.material);
 
@@ -52,6 +57,8 @@ namespace MonsterArena
 
         public void Initialize(MonsterInformation information)
         {
+            _ability.Initialize(information, _monstersLayerMask);
+
             _maxHP = information.HP;
             _hp = _maxHP;
 
@@ -110,16 +117,23 @@ namespace MonsterArena
             _repeater.Attacked -= OnAttacked;
         }
 
+        public void UseAbility()
+        {
+            _ability.Use();
+        }
+
         public void TakeDamage(float damage)
         {
-            if (damage <= 0)
+            damage = _ability.TransformDamage(damage);
+
+            if (damage < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(damage));
             }
 
             _hp -= damage;
 
-            if (_hp <= 0)
+            if (!IsAlive)
             {
                 Die();
 
@@ -131,6 +145,11 @@ namespace MonsterArena
 
         public void Die()
         {
+            if (!IsAlive || _ability.TransformDamage(100) <= 0)
+            {
+                return;
+            }
+
             _hp = 0;
             _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             _animation.Rigidbody.isKinematic = true;

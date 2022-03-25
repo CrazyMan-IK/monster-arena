@@ -72,7 +72,7 @@ namespace MonsterArena
 
             var direction = _input.Value.Direction.AsXZ();
 
-            _currentSpeed = Mathf.Lerp(_currentSpeed, _monster.Information.MovementSpeed * _speedFactor, _AccelerationSpeed * Time.deltaTime);
+            _currentSpeed = Mathf.Lerp(_currentSpeed, _monster.MovementSpeed * _speedFactor, _AccelerationSpeed * Time.deltaTime);
 
             _monster.Rigidbody.MoveRotation(Quaternion.Lerp(_monster.Rigidbody.rotation, Quaternion.LookRotation(direction, Vector3.up), _RotationSpeedMultiplier * Time.deltaTime));
             _monster.Rigidbody.MovePosition(_monster.Rigidbody.position + _currentSpeed * Time.deltaTime * direction);

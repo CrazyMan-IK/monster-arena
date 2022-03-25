@@ -1,12 +1,13 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Animations;
 using AYellowpaper;
-using MonsterArena.Models;
-using MonsterArena.Interfaces;
 using TMPro;
 using MonsterArena.UI;
+using MonsterArena.Models;
+using MonsterArena.Interfaces;
 
 namespace MonsterArena
 {
@@ -23,6 +24,7 @@ namespace MonsterArena
         [SerializeField] private TextMeshProUGUI _levelNumberText = null;
         [SerializeField] private WinnerPanel _winnerUI = null;
         [SerializeField] private Wallet _wallet = null;
+        [SerializeField] private Button _abilityButton = null;
 
         [Header("Logic")]
         [SerializeField] private InterfaceReference<IInput> _input = null;
@@ -63,6 +65,8 @@ namespace MonsterArena
         private void OnEnable()
         {
             _winnerUI.Clicked += OnWinnerUIClicked;
+
+            _abilityButton.onClick.AddListener(UsePlayerAbility);
         }
 
         private void OnDisable()
@@ -71,6 +75,8 @@ namespace MonsterArena
             _playerMonster.Died -= OnPlayerDied;
 
             _winnerUI.Clicked -= OnWinnerUIClicked;
+
+            _abilityButton.onClick.RemoveListener(UsePlayerAbility);
         }
 
         public void GameStarted()
@@ -165,6 +171,20 @@ namespace MonsterArena
             }
 
             LoadNextLevel();
+        }
+
+        private void UsePlayerAbility()
+        {
+            _playerMonster.UseAbility();
+
+            _abilityButton.interactable = false;
+
+            Invoke(nameof(ActivateAbilityButton), _playerMonster.AbilityCooldown);
+        }
+
+        private void ActivateAbilityButton()
+        {
+            _abilityButton.interactable = true;
         }
 
         /*private void OnWinnerPanelClicked()

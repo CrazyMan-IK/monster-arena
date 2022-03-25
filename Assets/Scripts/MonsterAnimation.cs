@@ -15,6 +15,7 @@ namespace MonsterArena
         private const string _AttackSpeedMultiplier = "AttackSpeedMultiplier";
         private const string _Win = "Win";
         private const string _Once = "Once";
+        private const string _Ability = "Ability";
 
         [SerializeField] private Animator _animator = null;
         [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
@@ -81,14 +82,14 @@ namespace MonsterArena
             _previousPosition = _rigidbody.position;
         }
 
-        public void EnableAnimator()
+        public void StartAbility()
         {
-            _animator.enabled = true;
+            _animator.SetBool(_Ability, true);
         }
 
-        public void DisableAnimator()
+        public void StopAbility()
         {
-            _animator.enabled = false;
+            _animator.SetBool(_Ability, false);
         }
 
         public void ActivateWinAnimation(bool isOnce)

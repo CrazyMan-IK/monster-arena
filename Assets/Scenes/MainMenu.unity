@@ -638,6 +638,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9154931536081109920, guid: ce1319d9342e1684dac51a480d930c17, type: 3}
   m_PrefabInstance: {fileID: 315533760}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &315533762 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9154931536081109923, guid: ce1319d9342e1684dac51a480d930c17, type: 3}
+  m_PrefabInstance: {fileID: 315533760}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a388a9af05f936341a72c8e422fdae1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &370420612
 GameObject:
   m_ObjectHideFlags: 0
@@ -16106,8 +16117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelScene:
-    sceneAsset: {fileID: 102900000, guid: 68927cf7520702b4b9a2bc324ac194a4, type: 3}
-    scenePath: Assets/Scenes/Level.unity
+    sceneAsset: {fileID: 102900000, guid: fed91327998c578498416f4440a4ab09, type: 3}
+    scenePath: Assets/Scenes/Level Test.unity
   _sceneTransition: {fileID: 1771149986}
   _availableMonsters:
   - {fileID: 11400000, guid: b2502103142fb6340afde5fa68c9dbeb, type: 2}
@@ -16115,6 +16126,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d083bf6f2a0a0cf4a93b6c081f7b044c, type: 2}
   - {fileID: 11400000, guid: aea7885e5df9a544d9cc1723c64615ce, type: 2}
   - {fileID: 11400000, guid: 0204afc39feb31d49b1ab51d59242b39, type: 2}
+  - {fileID: 11400000, guid: f921b9397bae38846a323c3ff132a954, type: 2}
   _unlockParticles: {fileID: 1275689129}
   _carousel: {fileID: 961271928}
   _monsterName: {fileID: 370420614}
@@ -16561,7 +16573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfdc0b14887d0a04f966bb487be1eeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallet: {fileID: 0}
+  _wallet: {fileID: 315533762}
   _rootTransform: {fileID: 1346496023}
   _playText: {fileID: 2082264634942812332}
   _unlockText: {fileID: 171258809}
