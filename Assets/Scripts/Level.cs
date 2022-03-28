@@ -62,6 +62,14 @@ namespace MonsterArena
 
         public IReadOnlyList<MonsterMovement> Enemies => _enemies;
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F) && _abilityButton.interactable)
+            {
+                UsePlayerAbility();
+            }
+        }
+
         private void OnEnable()
         {
             _winnerUI.Clicked += OnWinnerUIClicked;

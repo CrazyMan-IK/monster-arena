@@ -11,6 +11,16 @@ namespace MonsterArena.Extensions
 			return a.x * b.y - a.y * b.x;
         }
 
+		public static Vector3 Multiply(this Vector3 a, Vector3 b)
+        {
+			return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+        }
+
+		public static Vector3 Divide(this Vector3 a, Vector3 b)
+        {
+			return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+        }
+
         public static Vector2 GetXZ(this Vector3 position)
         {
             return new Vector2(position.x, position.z);

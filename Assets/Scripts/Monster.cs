@@ -14,6 +14,7 @@ namespace MonsterArena
     {
         private const string _Radius = "_Radius";
         private const string _Angle = "_Angle";
+        private const float _RadiusChangingSpeedMultiplier = 5;
 
         public event Action WinAnimationCompleted = null;
         public event Action<Transform> Killed = null;
@@ -41,6 +42,7 @@ namespace MonsterArena
         public bool IsAlive => _hp > 0;
         public float AbilityCooldown => _ability.Cooldown;
         public float MovementSpeed => _ability.TransformSpeed(_information.MovementSpeed);
+        public float AttackArea => _ability.TransformRange(_information.AttackArea);
 
         private void Awake()
         {
@@ -64,7 +66,7 @@ namespace MonsterArena
 
             _information = information;
 
-            _shadow.material.SetFloat(_Radius, information.AttackArea);
+            _shadow.material.SetFloat(_Radius, AttackArea);
             _shadow.material.SetFloat(_Angle, information.AttackAngle);
 
             _animation.Initialize(information);
@@ -88,12 +90,14 @@ namespace MonsterArena
                 return;
             }
 
-            var count = Physics.OverlapSphereNonAlloc(transform.position, _information.AttackArea, _lastColliders, _monstersLayerMask);
+            _shadow.material.SetFloat(_Radius, Mathf.Lerp(_shadow.material.GetFloat(_Radius), AttackArea, Time.deltaTime * _RadiusChangingSpeedMultiplier));
+
+            var count = Physics.OverlapSphereNonAlloc(transform.position, AttackArea, _lastColliders, _monstersLayerMask);
             for (int i = 0; i < count; i++)
             {
                 var collider = _lastColliders[i];
                     
-                if (collider.TryGetComponent(out Monster monster) && monster != this && collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, _information.AttackArea, _information.AttackAngle))
+                if (collider.TryGetComponent(out Monster monster) && monster != this && collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, AttackArea, _information.AttackAngle))
                 {
                     _animation.IsAttacking = true;
                 }
@@ -124,7 +128,7 @@ namespace MonsterArena
 
         public void TakeDamage(float damage)
         {
-            damage = _ability.TransformDamage(damage);
+            damage = _ability.TransformReceivedDamage(damage);
 
             if (damage < 0)
             {
@@ -145,7 +149,7 @@ namespace MonsterArena
 
         public void Die()
         {
-            if (!IsAlive || _ability.TransformDamage(100) <= 0)
+            if (!_animation.IsAlive || _ability.TransformReceivedDamage(100) <= 0)
             {
                 return;
             }
@@ -182,12 +186,12 @@ namespace MonsterArena
                 return;
             }
 
-            var count = Physics.OverlapSphereNonAlloc(transform.position, _information.AttackArea, _lastColliders, _monstersLayerMask);
+            var count = Physics.OverlapSphereNonAlloc(transform.position, AttackArea, _lastColliders, _monstersLayerMask);
             for (int i = 0; i < count; i++)
             {
                 var collider = _lastColliders[i];
 
-                if (collider.TryGetComponent(out Monster monster) && monster != this && monster.IsAlive && collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, _information.AttackArea, _information.AttackAngle))
+                if (collider.TryGetComponent(out Monster monster) && monster != this && monster.IsAlive && collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, AttackArea, _information.AttackAngle))
                 {
                     if (_isPlayer)
                     {

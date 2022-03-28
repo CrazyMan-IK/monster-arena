@@ -12,6 +12,7 @@ namespace MonsterArena.Interfaces
         void Initialize(MonsterInformation information, LayerMask monstersLayerMask);
         void Use();
         float TransformSpeed(float speed);
-        float TransformDamage(float damage);
+        float TransformReceivedDamage(float damage);
+        float TransformRange(float range);
     }
 }

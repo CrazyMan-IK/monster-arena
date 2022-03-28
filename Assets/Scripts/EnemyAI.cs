@@ -65,7 +65,7 @@ namespace MonsterArena
             {
                 var target = (_lastTarget.transform.position - transform.position).GetXZ();
 
-                Direction = target.magnitude > _monster.Information.AttackArea / 1.25f ? (target / Mathf.Max(target.magnitude, _monster.Information.AttackArea)) : (target.normalized / 500);
+                Direction = target.magnitude > _monster.AttackArea / 1.25f ? (target / Mathf.Max(target.magnitude, _monster.AttackArea)) : (target.normalized / 500);
                 //Direction = (target / Mathf.Max(target.magnitude, 5)).GetXZ();
             }
             else

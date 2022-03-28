@@ -25,9 +25,14 @@ namespace MonsterArena
             return speed;
         }
 
-        public float TransformDamage(float damage)
+        public float TransformReceivedDamage(float damage)
         {
             return damage;
+        }
+
+        public float TransformRange(float range)
+        {
+            return range;
         }
     }
 }

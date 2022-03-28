@@ -11,7 +11,7 @@ namespace MonsterArena
         [SerializeField] private Transform _root = null;
         [SerializeField] private LayerMask _monsterLayerMask = default;
         [SerializeField] private float _damage = 1;
-        [SerializeField] private float _height = 5;
+        [SerializeField] private float _disabledVerticalPosition = 5;
         [SerializeField] private float _animationDuration = 0.4f;
 
         private BoxCollider _collider = null;
@@ -28,12 +28,12 @@ namespace MonsterArena
             {
                 _lastSequence = DOTween.Sequence();
 
-                _lastSequence.Append(_root.DOLocalMoveY(_height, _animationDuration).SetEase(Ease.InExpo).OnComplete(() =>
+                _lastSequence.Append(_root.DOLocalMoveY(0, _animationDuration).SetEase(Ease.InExpo).OnComplete(() =>
                 {
                     HitStayedMonsters();
                 }));
                 _lastSequence.AppendInterval(_animationDuration);
-                _lastSequence.Append(_root.DOLocalMoveY(-_height, _animationDuration).SetEase(Ease.Linear));
+                _lastSequence.Append(_root.DOLocalMoveY(_disabledVerticalPosition, _animationDuration).SetEase(Ease.Linear));
                 _lastSequence.AppendInterval(_animationDuration);
             }
         }

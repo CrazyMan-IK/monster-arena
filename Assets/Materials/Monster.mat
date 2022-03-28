@@ -119,6 +119,7 @@ Material:
     - _UnityShadowMode: 0
     - _UnityShadowPower: 0.2
     - _UnityShadowSharpness: 1
+    - _UseWorldScale: 0
     - _UvFadeX: 0.1
     - _UvFadeY: 0.1
     - _VertexColorsEnabled: 0

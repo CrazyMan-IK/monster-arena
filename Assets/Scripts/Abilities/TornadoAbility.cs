@@ -72,7 +72,7 @@ namespace MonsterArena.Abilities
             return speed;
         }
 
-        public float TransformDamage(float damage)
+        public float TransformReceivedDamage(float damage)
         {
             if (_isUse)
             {
@@ -80,6 +80,11 @@ namespace MonsterArena.Abilities
             }
 
             return damage;
+        }
+
+        public float TransformRange(float range)
+        {
+            return range;
         }
 
         private void Stop()

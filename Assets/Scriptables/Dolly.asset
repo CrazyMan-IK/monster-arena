@@ -20,6 +20,6 @@ MonoBehaviour:
   <MovementSpeed>k__BackingField: 8
   <AttackArea>k__BackingField: 2.5
   <AttackAngle>k__BackingField: 30
-  <ForceUnlocked>k__BackingField: 0
-  <Price>k__BackingField: 100
+  <ForceUnlocked>k__BackingField: 1
+  <Price>k__BackingField: 0
   <ViewArea>k__BackingField: 5
