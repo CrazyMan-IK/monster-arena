@@ -849,6 +849,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3266140198621508558, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_OrthographicSize
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5540889081796887118, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
       propertyPath: m_Avatar
       value: 

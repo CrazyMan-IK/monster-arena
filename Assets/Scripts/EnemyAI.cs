@@ -22,6 +22,7 @@ namespace MonsterArena
         private Target _target = null;
         private Monster _lastTarget = null;
         private int _currentWaypoint = 0;
+        private bool _isLocked = false;
 
         public Vector2 Direction { get; private set; }
 
@@ -35,6 +36,11 @@ namespace MonsterArena
 
         private void Update()
         {
+            if (_isLocked)
+            {
+                return;
+            }
+
             _target.enabled = _monster.IsAlive;
             if (_target.indicator != null)
             {
@@ -109,6 +115,11 @@ namespace MonsterArena
 
                 Gizmos.DrawSphere(waypoint.position + Vector3.up, 0.1f);
             }
+        }
+
+        public void Lock()
+        {
+            _isLocked = true;
         }
     }
 }

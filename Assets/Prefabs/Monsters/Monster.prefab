@@ -49,7 +49,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -180,7 +180,7 @@ Projector:
   m_FieldOfView: 50
   m_AspectRatio: 1
   m_Orthographic: 1
-  m_OrthographicSize: 2
+  m_OrthographicSize: 1.5
   m_Material: {fileID: 2100000, guid: 194e0168f97f1d94487b40f98bf5ee3d, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2

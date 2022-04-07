@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MonsterArena.Models;
@@ -8,9 +8,10 @@ using DG.Tweening;
 
 namespace MonsterArena.Abilities
 {
-    [RequireComponent(typeof(Collider))]
     public class LongArmsAbility : MonoBehaviour, IMonsterAbility
     {
+        public event Action<Transform> Killed = null;
+
         [SerializeField] private List<Transform> _arms = new List<Transform>();
         [SerializeField] private float _animationDuration = 0.5f;
         [SerializeField] private float _cooldown = 2;
@@ -21,6 +22,7 @@ namespace MonsterArena.Abilities
         private bool _isUse = false;
 
         public float Cooldown => _cooldown + _duration;
+        public bool CanUse => true;
 
         public void Initialize(MonsterInformation information, LayerMask monstersLayerMask)
         {

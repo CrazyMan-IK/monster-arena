@@ -54,7 +54,7 @@ namespace MonsterArena
         private bool _inited = false;
         private bool _isPlayerWin = false;
 
-        public int TotalLevelsPassed
+        public static int TotalLevelsPassed
         {
             get => PlayerPrefs.GetInt(_TotalPassedLevelsKey, 0);
             set => PlayerPrefs.SetInt(_TotalPassedLevelsKey, value);
@@ -64,7 +64,14 @@ namespace MonsterArena
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F) && _abilityButton.interactable)
+            if (_playerMonster == null)
+            {
+                return;
+            }
+
+            _abilityButton.gameObject.SetActive(_playerMonster.CanUseAbility);
+
+            if (Input.GetKeyDown(KeyCode.F) && _abilityButton.gameObject.activeSelf && _abilityButton.interactable)
             {
                 UsePlayerAbility();
             }
@@ -134,10 +141,8 @@ namespace MonsterArena
             //_enemyName.text = _level.EnemyName;
         }
 
-        public void LoadNextLevel()
+        public void BackToMainMenu()
         {
-            TotalLevelsPassed++;
-
             _sceneTransition.Load(_mainMenuScene);
         }
 
@@ -152,14 +157,17 @@ namespace MonsterArena
 
         private void OnEnemyKilled(Transform enemy)
         {
-            _isPlayerWin = true;
-
             _wallet.Add(enemy, _killReward);
 
             if (!_enemies.Any(x => x.Monster.IsAlive))
             {
+                _input.Value.Lock();
+
+                _isPlayerWin = true;
+
                 TotalLevelsPassed++;
                 _winnerUI.Activate(true);
+                _playerMonster.RunWinningAnimation();
             }
         }
 
@@ -174,11 +182,11 @@ namespace MonsterArena
         {
             if (_isPlayerWin)
             {
-                LoadNextLevel();
+                BackToMainMenu();
                 return;
             }
 
-            LoadNextLevel();
+            BackToMainMenu();
         }
 
         private void UsePlayerAbility()

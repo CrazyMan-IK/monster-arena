@@ -16,6 +16,7 @@ namespace MonsterArena.UI
         private const string _ColorKey = "_Color";
         private const string _ColorDimKey = "_ColorDim";
 
+        private Renderer[] _renderers = null;
         private Monster _monster = null;
         private Color _baseColor = Color.white;
         private Color _baseShadowColor = Color.white;
@@ -25,6 +26,8 @@ namespace MonsterArena.UI
         private void Awake()
         {
             _monster = GetComponent<Monster>();
+
+            _renderers = GetComponentsInChildren<Renderer>();
         }
 
         private void OnEnable()
@@ -48,6 +51,18 @@ namespace MonsterArena.UI
 
                 _monster.Renderer.material.DOColor(targetColor, _ColorKey, _AnimationDuration);
                 _monster.Renderer.material.DOColor(targetColor, _ColorDimKey, _AnimationDuration);
+            }
+
+            _monster.DisableRadiusPreview();
+        }
+
+        private void Update()
+        {
+            var isActive = Vector3.Dot(transform.forward, Camera.main.transform.forward) < 0;
+
+            foreach (var renderer in _renderers)
+            {
+                renderer.enabled = isActive;
             }
         }
 

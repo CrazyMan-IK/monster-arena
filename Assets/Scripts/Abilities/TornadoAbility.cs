@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using MonsterArena.Models;
 using MonsterArena.Interfaces;
@@ -10,6 +9,8 @@ namespace MonsterArena.Abilities
     [RequireComponent(typeof(Collider))]
     public class TornadoAbility : MonoBehaviour, IMonsterAbility
     {
+        public event Action<Transform> Killed = null;
+
         [SerializeField] private GameObject _particles = null;
         [SerializeField] private float _cooldown = 2;
         [SerializeField] private float _duration = 3;
@@ -23,6 +24,7 @@ namespace MonsterArena.Abilities
         private LayerMask _monstersLayerMask = default;
 
         public float Cooldown => _cooldown + _duration;
+        public bool CanUse => true;
 
         private void Awake()
         {
@@ -39,9 +41,11 @@ namespace MonsterArena.Abilities
                 {
                     var collider = _lastColliders[i];
 
-                    if (collider != _collider && collider.TryGetComponent(out Monster monster))
+                    if (collider != _collider && collider.TryGetComponent(out Monster monster) && monster.IsAlive)
                     {
                         monster.Die();
+
+                        Killed?.Invoke(collider.transform);
                     }
                 }
             }

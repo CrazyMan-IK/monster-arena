@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: ae84d2b25d605a24c93396a1fb602c92, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 30652fdc12432884c8eb732dd243add9, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -443,6 +443,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenBoundOffset: {x: 32, y: 32}
   _minDistance: 196
+  _minAngle: 15
+  _radius: 3
 --- !u!1 &569581061 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4841487472173634321, guid: 0dddfb8f168788e49aef7b72df7ab938, type: 3}
@@ -2398,7 +2400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _current:
     sceneAsset: {fileID: 102900000, guid: 68927cf7520702b4b9a2bc324ac194a4, type: 3}
-    scenePath: Assets/Scenes/Level.unity
+    scenePath: Assets/Scenes/Level Base.unity
   _fadeImage: {fileID: 1188867876}
 --- !u!114 &1460364233
 MonoBehaviour:
@@ -2423,6 +2425,7 @@ MonoBehaviour:
   _levelNumberText: {fileID: 713475294}
   _winnerUI: {fileID: 1986949037}
   _wallet: {fileID: 1391315087}
+  _abilityButton: {fileID: 0}
   _input:
     _underlyingValue: {fileID: 1792775884}
   _playerSpawn: {fileID: 2090793098}

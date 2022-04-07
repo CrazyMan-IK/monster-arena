@@ -18,8 +18,8 @@ MonoBehaviour:
   <HP>k__BackingField: 3
   <Damage>k__BackingField: 1
   <MovementSpeed>k__BackingField: 5
-  <AttackArea>k__BackingField: 5
+  <AttackArea>k__BackingField: 3.5
   <AttackAngle>k__BackingField: 55
   <ForceUnlocked>k__BackingField: 0
   <Price>k__BackingField: 2000
-  <ViewArea>k__BackingField: 8
+  <ViewArea>k__BackingField: 7

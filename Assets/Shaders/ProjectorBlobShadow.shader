@@ -8,6 +8,7 @@ Shader "Projector/BlobShadow" {
 		_Angle("Angle", float) = 90
 		_Radius("Radius", float) = 1
 		_Thickness("Thickness", Range(0, 1)) = 0.2
+		[Toggle]_CircleActive("Circle Active", int) = 1
 		[Toggle(DRAW_CIRCLE)]_DrawCircle("Draw Circle", int) = 0
 		[Toggle(IS_FILLED)]_IsFilled("Is Filled", int) = 1
 	}
@@ -52,13 +53,13 @@ Shader "Projector/BlobShadow" {
 
 				sampler2D _ShadowTex;
 				sampler2D _FalloffTex;
+				bool _CircleActive = 1;
 
 #if DRAW_CIRCLE
 				float4 _Color;
 				float _Angle;
 				float _Radius;
 				float _Thickness;
-				bool _T;
 
 				float cross(float2 a, float2 b)
 				{
@@ -121,7 +122,7 @@ Shader "Projector/BlobShadow" {
 					fixed4 texF = tex2Dproj(_FalloffTex, i.uvFalloff);
 					fixed4 res = lerp(fixed4(0, 0, 0, 0), texS, texF.a * i.intensity);
 					//res += draw((i.uvShadow.xy - 12.5) / 10) * i.intensity;
-					float4 result = draw(i.uvShadow.xy / i.uvShadow.w - 0.5) * i.intensity;
+					float4 result = draw(i.uvShadow.xy / i.uvShadow.w - 0.5) * i.intensity * _CircleActive;
 					res.rgb = result.rgb;
 					res.a = max(res.a, result.a);
 

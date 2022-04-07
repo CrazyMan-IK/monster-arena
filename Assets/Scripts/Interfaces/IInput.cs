@@ -8,5 +8,7 @@ namespace MonsterArena.Interfaces
         event Action AbilityUsed;
 
         Vector2 Direction { get; }
+
+        void Lock();
     }
 }

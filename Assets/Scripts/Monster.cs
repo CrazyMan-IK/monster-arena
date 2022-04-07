@@ -33,6 +33,7 @@ namespace MonsterArena
         private float _maxHP = 0;
         private float _hp = 0;
         private bool _isPlayer = false;
+        private bool _isWin = false;
 
         public Renderer Renderer => _renderer;
         public Collider Collider => _collider;
@@ -43,6 +44,7 @@ namespace MonsterArena
         public float AbilityCooldown => _ability.Cooldown;
         public float MovementSpeed => _ability.TransformSpeed(_information.MovementSpeed);
         public float AttackArea => _ability.TransformRange(_information.AttackArea);
+        public bool CanUseAbility => _ability.CanUse;
 
         private void Awake()
         {
@@ -82,6 +84,22 @@ namespace MonsterArena
             _isPlayer = true;
         }
 
+        private void OnEnable()
+        {
+            _repeater.Winned += OnWinAnimationCompleted;
+            _repeater.Attacked += OnAttacked;
+
+            _ability.Killed += OnKilledByAbility;
+        }
+
+        private void OnDisable()
+        {
+            _repeater.Winned -= OnWinAnimationCompleted;
+            _repeater.Attacked -= OnAttacked;
+
+            _ability.Killed -= OnKilledByAbility;
+        }
+
         private void Update()
         {
             _animation.IsAttacking = false;
@@ -109,16 +127,14 @@ namespace MonsterArena
             Gizmos.DrawWireSphere(transform.position, _information.ViewArea);
         }
 
-        private void OnEnable()
+        public void EnableRadiusPreview()
         {
-            _repeater.Winned += OnWinAnimationCompleted;
-            _repeater.Attacked += OnAttacked;
+            _shadow.material.SetInt("_CircleActive", 1);
         }
 
-        private void OnDisable()
+        public void DisableRadiusPreview()
         {
-            _repeater.Winned -= OnWinAnimationCompleted;
-            _repeater.Attacked -= OnAttacked;
+            _shadow.material.SetInt("_CircleActive", 0);
         }
 
         public void UseAbility()
@@ -128,6 +144,11 @@ namespace MonsterArena
 
         public void TakeDamage(float damage)
         {
+            if (_isWin)
+            {
+                return;
+            }
+
             damage = _ability.TransformReceivedDamage(damage);
 
             if (damage < 0)
@@ -149,7 +170,7 @@ namespace MonsterArena
 
         public void Die()
         {
-            if (!_animation.IsAlive || _ability.TransformReceivedDamage(100) <= 0)
+            if (!_animation.IsAlive || _ability.TransformReceivedDamage(100) <= 0 || _isWin)
             {
                 return;
             }
@@ -167,6 +188,7 @@ namespace MonsterArena
         public void RunWinningAnimation()
         {
             _animation.ActivateWinAnimation(false);
+            _isWin = true;
         }
 
         public void RunWinningAnimationOnce()
@@ -210,6 +232,11 @@ namespace MonsterArena
                     Killed?.Invoke(monster.transform);
                 }
             }
+        }
+
+        private void OnKilledByAbility(Transform target)
+        {
+            Killed?.Invoke(target);
         }
     }
 }

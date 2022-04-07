@@ -16,6 +16,7 @@ namespace MonsterArena
         private const string _Win = "Win";
         private const string _Once = "Once";
         private const string _Ability = "Ability";
+        private const string _AbilitySpeedMultiplier = "AbilitySpeedMultiplier";
 
         [SerializeField] private Animator _animator = null;
         [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
@@ -75,16 +76,17 @@ namespace MonsterArena
 
             var currentDelta = (_previousPosition - _rigidbody.position).GetXZ().magnitude;
 
-            _delta = Mathf.Lerp(_delta, _information.MovementSpeed * Mathf.Clamp01(currentDelta * 50), _accelerationMultiplier * Time.deltaTime);
+            _delta = Mathf.Lerp(_delta, _information.MovementSpeed * Mathf.Clamp01(currentDelta * 10), _accelerationMultiplier * Time.deltaTime);
 
             _animator.SetFloat(_Speed, _delta);
 
             _previousPosition = _rigidbody.position;
         }
-
-        public void StartAbility()
+        
+        public void StartAbility(float speed = 1.0f)
         {
             _animator.SetBool(_Ability, true);
+            _animator.SetFloat(_AbilitySpeedMultiplier, speed);
         }
 
         public void StopAbility()

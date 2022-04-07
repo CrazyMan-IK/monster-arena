@@ -11,7 +11,7 @@ namespace MonsterArena
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private SceneReference _levelScene = null;
+        [SerializeField] private List<SceneReference> _levels = new List<SceneReference>();
         [SerializeField] private SceneTransition _sceneTransition = null;
 
         [Space]
@@ -57,23 +57,18 @@ namespace MonsterArena
         {
             _mainButton.ChangeInformation(monster.Information);
 
-            if (monster.Information.IsUnlocked)
-            {
-                _questions.gameObject.SetActive(false);
-                _monsterName.gameObject.SetActive(true);
-            }
-            else
-            {
-                _questions.gameObject.SetActive(true);
-                _monsterName.gameObject.SetActive(false);
-            }
+            var isUnlocked = monster.Information.IsUnlocked;
+            _questions.gameObject.SetActive(!isUnlocked);
+            _monsterName.gameObject.SetActive(isUnlocked);
 
             _monsterName.text = monster.Information.Name;
         }
 
         private void OnGameStarted()
         {
-            _sceneTransition.Load(_levelScene, rootGOs =>
+            var index = Level.TotalLevelsPassed % _levels.Count;
+
+            _sceneTransition.Load(_levels[index], rootGOs =>
             {
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
                 level.Initialize(0, _carousel.CurrentMonster.Information);
