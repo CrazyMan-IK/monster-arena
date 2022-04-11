@@ -37280,6 +37280,14 @@ MonoBehaviour:
     scenePath: Assets/Scenes/Levels/Level 5.unity
   - sceneAsset: {fileID: 102900000, guid: 458635430266f9c4cb53c14b96aa5487, type: 3}
     scenePath: Assets/Scenes/Levels/Level 6.unity
+  - sceneAsset: {fileID: 102900000, guid: 8ec2c6183dc03ae46b6da4d897636cce, type: 3}
+    scenePath: Assets/Scenes/Levels/Level 7.unity
+  - sceneAsset: {fileID: 102900000, guid: cc04fb88c56a9ae4ba39d6e215dba527, type: 3}
+    scenePath: Assets/Scenes/Levels/Level 8.unity
+  - sceneAsset: {fileID: 102900000, guid: aadd3240c04352542b1585a279d8ea1d, type: 3}
+    scenePath: Assets/Scenes/Levels/Level 9.unity
+  - sceneAsset: {fileID: 102900000, guid: 49b10a9d4956852458e30e1c5a00095c, type: 3}
+    scenePath: Assets/Scenes/Levels/Level 10.unity
   _sceneTransition: {fileID: 1771149986}
   _availableMonsters:
   - {fileID: 11400000, guid: b2502103142fb6340afde5fa68c9dbeb, type: 2}

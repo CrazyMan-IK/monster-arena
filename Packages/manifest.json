@@ -3,6 +3,7 @@
     "com.coffee.ui-particle": "https://github.com/mob-sakai/ParticleEffectForUGUI.git",
     "com.johannesmp.unityscenereference": "1.1.1",
     "com.unity.2d.sprite": "1.0.0",
+    "com.unity.build-report-inspector": "0.2.2-preview",
     "com.unity.cinemachine": "2.6.11",
     "com.unity.collab-proxy": "1.13.5",
     "com.unity.ide.rider": "2.0.7",

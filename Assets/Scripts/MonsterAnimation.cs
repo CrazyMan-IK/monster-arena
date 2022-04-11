@@ -99,6 +99,8 @@ namespace MonsterArena
             //_animator.SetBool(_Win, true);
             _animator.SetBool(_Once, isOnce);
             _animator.SetTrigger(_Win);
+            _animator.SetTrigger(_Win);
+            _animator.SetTrigger(_Win);
             enabled = false;
         }
 
