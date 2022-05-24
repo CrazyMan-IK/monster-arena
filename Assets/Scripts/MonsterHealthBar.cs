@@ -10,7 +10,8 @@ namespace MonsterArena
     [RequireComponent(typeof(CanvasGroup))]
     public class MonsterHealthBar : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _name = null;
+        [SerializeField] private TextMeshProUGUI _level = null;
+        [SerializeField] private TextMeshProUGUI _resources = null;
         [SerializeField] private Vector3 _offset = Vector3.zero;
         [SerializeField] private float _lerpSpeedMultiplier = 5;
 
@@ -25,17 +26,12 @@ namespace MonsterArena
             _group = GetComponent<CanvasGroup>();
         }
 
-        public void Initialize(Monster monster, string name)
+        public void Initialize(Monster monster)
         {
             _monster = monster;
 
-            if (string.IsNullOrEmpty(name))
-            {
-                _name.gameObject.SetActive(false);
-                return;
-            }
-
-            _name.text = name;
+            _level.text = _monster.Level.ToString();
+            _resources.text = monster.ResourcesCount.ToString();
         }
 
         private void Update()
@@ -48,20 +44,12 @@ namespace MonsterArena
             _targetValue = _monster.HP;
             _bar.value = Mathf.Lerp(_bar.value, _targetValue, _lerpSpeedMultiplier * Time.deltaTime);
 
-            if (_monster.HP <= 0)
-            {
-                _group.alpha = Mathf.Lerp(_group.alpha, 0, _lerpSpeedMultiplier * Time.deltaTime);
-
-                if (_group.alpha <= 0)
-                {
-                    Destroy(gameObject);
-                }
-            }
+            _group.alpha = Mathf.Lerp(_group.alpha, _monster.IsAlive ? 1 : 0, _lerpSpeedMultiplier * Time.deltaTime);
         }
 
         private void LateUpdate()
         {
-            if (_monster == null)
+            if (_monster == null || _monster.HP <= 0)
             {
                 return;
             }

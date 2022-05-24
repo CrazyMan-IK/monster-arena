@@ -13,18 +13,18 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - HelicopterForwardTrigger
+  - Helicopter
   - Monster
   - 
   - 
+  - Prop
   - 
+  - Resource
   - 
+  - Clouds
   - 
-  - 
-  - 
-  - 
-  - 
+  - Market
   - Arena
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Overlay
+    uniqueID: 1445251583
     locked: 0

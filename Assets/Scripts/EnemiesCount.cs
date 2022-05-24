@@ -11,7 +11,12 @@ namespace MonsterArena
         [SerializeField] private Level _level = null;
         [SerializeField] private TextMeshProUGUI _text = null;
 
-        private void Update()
+        private void OnEnable()
+        {
+            _level.EnemyDied += OnEnemyDied;
+        }
+
+        private void OnEnemyDied()
         {
             _text.text = $"{_level.Enemies.Count(x => x.Monster.IsAlive)}/{_level.Enemies.Count}";
         }

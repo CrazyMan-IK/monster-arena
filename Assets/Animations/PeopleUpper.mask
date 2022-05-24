@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PeopleUpper
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Camera
+    m_Weight: 1
+  - m_Path: Hips
+    m_Weight: 1
+  - m_Path: Hips/Hips 1
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/Head
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/Head/Head_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/Head/Head_end/Head_end_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L/UpperArm.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L/UpperArm.L/LowerArm.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Hand.L_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.L/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Hand.L_end/Hand.L_end_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R/UpperArm.R/LowerArm.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Hand.R_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/LowerSpine/Chest/ShoulderConnector.R/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Hand.R_end/Hand.R_end_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L/LowerLeg.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L/LowerLeg.L/Foot.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L/Toe.L_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L/Toe.L_end/Toe.L_end_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R/LowerLeg.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R/LowerLeg.R/Foot.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R/Toe.R_end
+    m_Weight: 1
+  - m_Path: Hips/Hips 1/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R/Toe.R_end/Toe.R_end_end
+    m_Weight: 1
+  - m_Path: Human_Female_Head_Dark
+    m_Weight: 1
+  - m_Path: Human_Female_Head_Light
+    m_Weight: 1
+  - m_Path: Human_General_Rigged
+    m_Weight: 1
+  - m_Path: Human_Male_Head_Dark
+    m_Weight: 1
+  - m_Path: Human_Male_Head_Light
+    m_Weight: 1
+  - m_Path: Human_Military_Helmet
+    m_Weight: 1
+  - m_Path: Human_Soldier_Female_Rigged_Dark
+    m_Weight: 1
+  - m_Path: Human_Soldier_Female_Rigged_Light
+    m_Weight: 1
+  - m_Path: Human_Soldier_Male_Rigged_Dark
+    m_Weight: 1
+  - m_Path: Human_Soldier_Male_Rigged_Light
+    m_Weight: 1

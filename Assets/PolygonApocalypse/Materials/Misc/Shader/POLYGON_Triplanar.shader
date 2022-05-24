@@ -134,9 +134,9 @@ Shader "SyntyStudios/Triplanar"
 				return o;
 			}
 			half4 frag( v2f IN
-			#if !defined( CAN_SKIP_VPOS )
+			/*#if !defined( CAN_SKIP_VPOS )
 			, UNITY_VPOS_TYPE vpos : VPOS
-			#endif
+			#endif*/
 			) : SV_Target
 			{
 				UNITY_SETUP_INSTANCE_ID( IN );

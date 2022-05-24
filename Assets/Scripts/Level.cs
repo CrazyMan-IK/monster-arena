@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,18 @@ using UnityEngine.UI;
 using UnityEngine.Animations;
 using AYellowpaper;
 using TMPro;
+using Cinemachine;
 using MonsterArena.UI;
-using MonsterArena.Models;
 using MonsterArena.Interfaces;
+using System.Collections;
 
 namespace MonsterArena
 {
     public class Level : MonoBehaviour
     {
         private const string _TotalPassedLevelsKey = "_passedLevels";
+
+        public event Action EnemyDied = null;
 
         [SerializeField] private int _killReward = 300;
         [SerializeField] private List<MonsterMovement> _enemies = new List<MonsterMovement>();
@@ -22,21 +26,21 @@ namespace MonsterArena
         [SerializeField] private SceneReference _mainMenuScene = null;
         [SerializeField] private SceneTransition _sceneTransition = null;
         [SerializeField] private TextMeshProUGUI _levelNumberText = null;
-        [SerializeField] private WinnerPanel _winnerUI = null;
         [SerializeField] private Wallet _wallet = null;
         [SerializeField] private Button _abilityButton = null;
 
         [Header("Logic")]
         [SerializeField] private InterfaceReference<IInput> _input = null;
-        [SerializeField] private Transform _playerSpawn = null;
+        [SerializeField] private Helicopter _player = null;
         [SerializeField] private MonsterHealthBar _healthBarPrefab = null;
         [SerializeField] private Transform _healthBarsRoot = null;
 
         [Header("Player")]
+        [SerializeField] private CinemachineVirtualCamera _deathCam = null;
         //[SerializeField] private MonsterMovement _playerMovement = null;
-        [SerializeField] private MonsterInformation _playerInformation = null;
-        [SerializeField] private MonsterHealthBar _playerHealthBar = null;
-        [SerializeField] private PositionConstraint _cameraConstraint = null;
+        //[SerializeField] private MonsterInformation _playerInformation = null;
+        //[SerializeField] private MonsterHealthBar _playerHealthBar = null;
+        //[SerializeField] private PositionConstraint _cameraConstraint = null;
         /*[SerializeField] private List<LevelInformation> _levels = new List<LevelInformation>();
 
         [Space]
@@ -49,7 +53,7 @@ namespace MonsterArena
         [SerializeField] private StartPanel _startPanel = null;
         [SerializeField] private WinnerPanel _winnerPanel = null;*/
 
-        private Monster _playerMonster = null;
+        //private Monster _playerMonster = null;
         private int _levelNum = 0;
         private bool _inited = false;
         private bool _isPlayerWin = false;
@@ -62,44 +66,48 @@ namespace MonsterArena
 
         public IReadOnlyList<MonsterMovement> Enemies => _enemies;
 
-        private void Update()
+        /*private void Update()
         {
             if (_playerMonster == null)
             {
                 return;
             }
 
-            _abilityButton.gameObject.SetActive(_playerMonster.CanUseAbility);
+            Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, Vector3.back * _playerMonster.CameraDistance, Time.deltaTime * _CameraDistanceChangingSpeedMultiplier);
 
-            if (Input.GetKeyDown(KeyCode.F) && _abilityButton.gameObject.activeSelf && _abilityButton.interactable)
-            {
-                UsePlayerAbility();
-            }
-        }
+            _abilityButton.gameObject.SetActive(_playerMonster.CanUseAbility);
+        }*/
 
         private void OnEnable()
         {
-            _winnerUI.Clicked += OnWinnerUIClicked;
-
-            _abilityButton.onClick.AddListener(UsePlayerAbility);
+            _player.Died += OnPlayerDied;
+            
+            foreach (var enemy in _enemies)
+            {
+                enemy.Monster.Died += OnEnemyDied;
+                enemy.Monster.Killed += OnEnemyKilledByEnemy;
+            }
         }
 
         private void OnDisable()
         {
-            _playerMonster.Killed -= OnEnemyKilled;
-            _playerMonster.Died -= OnPlayerDied;
+            /*_playerMonster.LevelChanged -= OnLevelChanged;
+            _playerMonster.Killed -= OnEnemyKilled;*/
+            _player.Died -= OnPlayerDied;
 
-            _winnerUI.Clicked -= OnWinnerUIClicked;
-
-            _abilityButton.onClick.RemoveListener(UsePlayerAbility);
+            foreach (var enemy in _enemies)
+            {
+                enemy.Monster.Died -= OnEnemyDied;
+                enemy.Monster.Killed -= OnEnemyKilledByEnemy;
+            }
         }
 
         public void GameStarted()
         {
-            Initialize(TotalLevelsPassed, _playerInformation);
+            Initialize(TotalLevelsPassed);
         }
 
-        public void Initialize(int levelNum, MonsterInformation playerInformation)
+        public void Initialize(int levelNum)
         {
             if (_inited)
             {
@@ -108,31 +116,29 @@ namespace MonsterArena
             _inited = true;
 
             _levelNum = levelNum;
-            _playerInformation = playerInformation;
 
             _levelNumberText.text = (TotalLevelsPassed + 1).ToString();
 
-            _playerMonster = Instantiate(playerInformation.MonsterPrefab, _playerSpawn);
+            /*_playerMonster = Instantiate(playerInformation.MonsterPrefab, _playerSpawn);
             _playerMonster.InitializeAsPlayer(playerInformation, _enemies.Count);
 
+            _playerMonster.LevelChanged += OnLevelChanged;
             _playerMonster.Killed += OnEnemyKilled;
             _playerMonster.Died += OnPlayerDied;
 
-            _playerHealthBar.Initialize(_playerMonster, null);
+            _playerHealthBar.Initialize(_playerMonster, null);*/
 
-            var movement = _playerMonster.gameObject.AddComponent<MonsterMovement>();
-            movement.Initialize(_input.Value);
+            //var movement = _playerMonster.gameObject.AddComponent<MonsterMovement>();
+            //movement.Initialize(_input.Value);
 
-            _cameraConstraint.SetSource(0, new ConstraintSource() { sourceTransform = _playerMonster.transform, weight = 1 });
+            //_cameraConstraint.SetSource(0, new ConstraintSource() { sourceTransform = _playerMonster.transform, weight = 1 });
 
-            var names = AINamesGenerator.Utils.GetRandomNames(_enemies.Count);
             for (int i = 0; i < _enemies.Count; i++)
             {
                 var enemy = _enemies[i];
-                var name = names[i];
 
                 var healthBar = Instantiate(_healthBarPrefab, _healthBarsRoot);
-                healthBar.Initialize(enemy.Monster, name);
+                healthBar.Initialize(enemy.Monster);
             }
 
             //_level = _levels[levelNum];
@@ -151,31 +157,65 @@ namespace MonsterArena
             _sceneTransition.ReloadCurrent(rootGOs =>
             {
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(_levelNum, _playerInformation);
+                level.Initialize(_levelNum);
             });
         }
 
-        private void OnEnemyKilled(Transform enemy)
+        private IEnumerator RevivePlayer(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+
+            _deathCam.Priority = 0;
+
+            _player.Revive();
+        }
+
+        private void OnLevelChanged(int level)
+        {
+            ActivateAbilityButton();
+        }
+        
+        private void OnEnemyKilled(Monster monster, Transform enemy)
         {
             _wallet.Add(enemy, _killReward);
 
-            if (!_enemies.Any(x => x.Monster.IsAlive))
+            /*if (!_enemies.Any(x => x.Monster.IsAlive))
             {
                 _input.Value.Lock();
 
                 _isPlayerWin = true;
 
                 TotalLevelsPassed++;
-                _winnerUI.Activate(true);
+                _winnerUI.Activate(true, _results);
                 _playerMonster.RunWinningAnimation();
-            }
+            }*/
+        }
+
+        private void OnEnemyKilledByEnemy(Monster monster, Transform enemy)
+        {
+            
+        }
+
+        private void OnEnemyDied(Monster monster, DamageSource source)
+        {
+            EnemyDied?.Invoke();
+
+            /*if (!_enemies.Any(x => x.Monster.IsAlive))// && _playerMonster.IsAlive)
+            {
+                _input.Value.Lock();
+
+                _isPlayerWin = true;
+
+                TotalLevelsPassed++;
+                //_playerMonster.RunWinningAnimation();
+            }*/
         }
 
         private void OnPlayerDied()
         {
-            _isPlayerWin = false;
+            _deathCam.Priority = 10;
 
-            _winnerUI.Activate(false);
+            StartCoroutine(RevivePlayer(2));
         }
 
         private void OnWinnerUIClicked()
@@ -187,15 +227,6 @@ namespace MonsterArena
             }
 
             BackToMainMenu();
-        }
-
-        private void UsePlayerAbility()
-        {
-            _playerMonster.UseAbility();
-
-            _abilityButton.interactable = false;
-
-            Invoke(nameof(ActivateAbilityButton), _playerMonster.AbilityCooldown);
         }
 
         private void ActivateAbilityButton()

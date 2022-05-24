@@ -32,32 +32,11 @@ namespace MonsterArena.UI
 
         public IReadOnlyList<MonsterMenuView> Monsters => _monsters;
         public MonsterMenuView CurrentMonster => _monsters[_currentIndex];
+        public int Index => _currentIndex;
 
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
-        }
-
-        private void Start()
-        {
-            UpdateCurrentAngle();
-        }
-
-        private void OnEnable()
-        {
-            _previousButton.onClick.AddListener(Previous);
-            _nextButton.onClick.AddListener(Next);
-        }
-
-        private void OnDisable()
-        {
-            _previousButton.onClick.RemoveListener(Previous);
-            _nextButton.onClick.RemoveListener(Next);
-        }
-
-        private void Update()
-        {
-            _content.localRotation = Quaternion.Lerp(_content.localRotation, Quaternion.AngleAxis(_currentAngle, Vector3.up), _speedMultiplier * Time.deltaTime);
         }
 
         public void Initialize(List<MonsterInformation> availableMonsters)
@@ -89,6 +68,35 @@ namespace MonsterArena.UI
                 pivot.transform.localRotation = Quaternion.AngleAxis(_angle * i, Vector3.down);
                 pivot.SetOffset(Vector3.back * _carouselRadius);
             }
+        }
+
+        private void Start()
+        {
+            UpdateCurrentAngle();
+        }
+
+        private void OnEnable()
+        {
+            _previousButton.onClick.AddListener(Previous);
+            _nextButton.onClick.AddListener(Next);
+        }
+
+        private void OnDisable()
+        {
+            _previousButton.onClick.RemoveListener(Previous);
+            _nextButton.onClick.RemoveListener(Next);
+        }
+
+        private void Update()
+        {
+            _content.localRotation = Quaternion.Lerp(_content.localRotation, Quaternion.AngleAxis(_currentAngle, Vector3.up), _speedMultiplier * Time.deltaTime);
+        }
+        
+        public void SetIndex(int index)
+        {
+            _currentIndex = index;
+
+            UpdateCurrentAngle();
         }
 
         public void OnBeginDrag(PointerEventData eventData)

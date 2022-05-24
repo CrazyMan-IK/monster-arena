@@ -825,14 +825,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8457940167223531592, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
-      propertyPath: m_Height
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: -8457940167223531592, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
-      propertyPath: m_Center.y
-      value: 0.625
-      objectReference: {fileID: 0}
     - target: {fileID: 1247159801383060110, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
       propertyPath: m_Name
       value: Dolly
@@ -889,6 +881,22 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 22b0f5dde635ab549944f334bc2a30f8, type: 2}
+    - target: {fileID: 6154978011652642108, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6154978011652642108, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6460624711226307148, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: _attackClip
+      value: 
+      objectReference: {fileID: 6720303635017113406, guid: 48f7e1f2fa964fd41b5569947ea4758c, type: 3}
+    - target: {fileID: 7007175308815195450, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: _propRoot
+      value: 
+      objectReference: {fileID: 8302637810223518610}
     - target: {fileID: 7007175308815195450, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
       propertyPath: _renderer
       value: 

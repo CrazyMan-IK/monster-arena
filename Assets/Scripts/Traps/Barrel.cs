@@ -64,7 +64,7 @@ namespace MonsterArena.Traps
             {
                 if (collider.TryGetComponent(out Monster monster))
                 {
-                    monster.TakeDamage(_damage);
+                    monster.TakeDamage(_damage, DamageSource.Other);
                 }
             }
 

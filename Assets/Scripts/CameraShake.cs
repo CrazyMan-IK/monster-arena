@@ -25,7 +25,7 @@ namespace MonsterArena
 		private Vector3 _originalPos = Vector3.zero;
 		private readonly List<Shake> _shakes = new List<Shake>();
 
-		/*private void Awake()
+		private void Awake()
 		{
 			if (_instance == null)
 			{
@@ -37,15 +37,15 @@ namespace MonsterArena
             }
 
 			_originalPos = transform.localPosition;
-		}*/
+		}
 
 		private void LateUpdate()
 		{
-			if (!_initialized)
+			/*if (!_initialized)
             {
 				Destroy(this);
 				return;
-            }
+            }*/
 
 			if (_shakes.Count < 1)
 			{
@@ -79,8 +79,8 @@ namespace MonsterArena
             {
 				_instance = Camera.main.gameObject.AddComponent<CameraShake>();
 
-				_instance._originalPos = _instance.transform.localPosition;
-				_instance._initialized = true;
+				//_instance._originalPos = _instance.transform.localPosition;
+				//_instance._initialized = true;
             }
 
 			_instance._shakes.Add(new Shake() { Duration = duration, Strength = strength });

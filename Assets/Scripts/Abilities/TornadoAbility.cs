@@ -43,7 +43,7 @@ namespace MonsterArena.Abilities
 
                     if (collider != _collider && collider.TryGetComponent(out Monster monster) && monster.IsAlive)
                     {
-                        monster.Die();
+                        monster.Die(DamageSource.Player);
 
                         Killed?.Invoke(collider.transform);
                     }

@@ -35,6 +35,24 @@ namespace MonsterArena
             }*/
         }
 
+        private void OnEnable()
+        {
+            if (_input != null && _input.Value != null)
+            {
+                _input.Value.AbilityUsed += OnAbilityUsed;
+                _input.Value.PropThrowed += OnPropThrowed;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_input != null && _input.Value != null)
+            {
+                _input.Value.AbilityUsed -= OnAbilityUsed;
+                _input.Value.PropThrowed -= OnPropThrowed;
+            }
+        }
+
         private void Start()
         {
             _monster.Rigidbody.isKinematic = false;
@@ -45,7 +63,15 @@ namespace MonsterArena
         public void Initialize(IInput input)
         {
             //_input.Value = input;
+
+            if (_input != null && _input.Value != null)
+            {
+                _input.Value.AbilityUsed -= OnAbilityUsed;
+                _input.Value.PropThrowed -= OnPropThrowed;
+            }
             _input = new InterfaceReference<IInput>() { Value = input };
+            _input.Value.AbilityUsed += OnAbilityUsed;
+            _input.Value.PropThrowed += OnPropThrowed;
 
             /*if (_monster == null)
             {
@@ -65,10 +91,17 @@ namespace MonsterArena
 
         private void FixedUpdate()
         {
-            if (!_monster.IsAlive || _input.Value == null || _input.Value.Direction == Vector2.zero)
+            if (!_monster.IsAlive || _monster.IsStunned || _input.Value == null)
             {
                 return;
             }
+
+            /*if (_input.Value.Direction == Vector2.zero)
+            {
+                OnPropThrowed();
+
+                return;
+            }*/
 
             var direction = _input.Value.Direction.AsXZ();
 
@@ -86,6 +119,16 @@ namespace MonsterArena
         public void ApplySpeedFactor(float factor)
         {
             _speedFactor = factor;
+        }
+
+        private void OnAbilityUsed()
+        {
+            _monster.UseAbility();
+        }
+
+        private void OnPropThrowed()
+        {
+            //_monster.ThrowProp();
         }
     }
 }

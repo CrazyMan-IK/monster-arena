@@ -79,7 +79,7 @@ namespace MonsterArena.UI
 
         public bool HaveCoins(int count)
         {
-            return _currentValue >= count;
+            return _targetValue >= count;
         }
         
         private YieldInstruction AnimateCoin(Transform from, Transform to, int count)

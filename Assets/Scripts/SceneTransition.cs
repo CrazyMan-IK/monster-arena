@@ -11,7 +11,6 @@ namespace MonsterArena
 {
     public class SceneTransition : MonoBehaviour
     {
-        [SerializeField] private SceneReference _current = null;
         [SerializeField] private Image _fadeImage = null;
 
         public void Load(SceneReference scene, Action<GameObject[]> onLoaded = null)
@@ -26,15 +25,20 @@ namespace MonsterArena
 
         public void ReloadCurrent(Action<GameObject[]> onLoaded = null)
         {
-            LoadAsync(_current, onLoaded);
+            ReloadCurrentAsync(onLoaded);
         }
 
         public YieldInstruction ReloadCurrentAsync(Action<GameObject[]> onLoaded = null)
         {
-            return LoadAsync(_current, onLoaded);
+            return StartCoroutine(LoadScene(SceneManager.GetActiveScene().path, onLoaded));
         }
 
         private IEnumerator LoadScene(SceneReference scene, Action<GameObject[]> onLoaded = null)
+        {
+            return LoadScene(scene.ScenePath, onLoaded);
+        }
+
+        private IEnumerator LoadScene(string path, Action<GameObject[]> onLoaded = null)
         {
             _fadeImage.raycastTarget = true;
             _fadeImage.maskable = true;
@@ -50,7 +54,7 @@ namespace MonsterArena
 
             yield return null;
 
-            var targetScene = SceneManager.LoadScene(scene, new LoadSceneParameters(LoadSceneMode.Additive));
+            var targetScene = SceneManager.LoadScene(path, new LoadSceneParameters(LoadSceneMode.Additive));
             while (!targetScene.isLoaded)
             {
                 yield return null;

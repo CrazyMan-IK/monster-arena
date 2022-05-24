@@ -11,6 +11,8 @@ namespace MonsterArena
 {
     public class MainMenu : MonoBehaviour
     {
+        private const string _CarouselIndexKey = "_carouselIndex";
+
         [SerializeField] private List<SceneReference> _levels = new List<SceneReference>();
         [SerializeField] private SceneTransition _sceneTransition = null;
 
@@ -23,10 +25,18 @@ namespace MonsterArena
         [SerializeField] private RectTransform _questions = null;
         [SerializeField] private MainButton _mainButton = null;
         [SerializeField] private CinemachineVirtualCamera _unlockCamera = null;
+        
+        public static int CarouselIndex
+        {
+            get => PlayerPrefs.GetInt(_CarouselIndexKey, 0);
+            set => PlayerPrefs.SetInt(_CarouselIndexKey, value);
+        }
 
         private void Awake()
         {
             _carousel.Initialize(_availableMonsters);
+
+            _carousel.SetIndex(CarouselIndex);
         }
 
         private void OnEnable()
@@ -62,16 +72,18 @@ namespace MonsterArena
             _monsterName.gameObject.SetActive(isUnlocked);
 
             _monsterName.text = monster.Information.Name;
+
+            CarouselIndex = _carousel.Index;
         }
 
         private void OnGameStarted()
         {
-            var index = Level.TotalLevelsPassed % _levels.Count;
+            var index = 0;//Level.TotalLevelsPassed % _levels.Count;
 
             _sceneTransition.Load(_levels[index], rootGOs =>
             {
                 var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(0, _carousel.CurrentMonster.Information);
+                level.Initialize(0);
             });
         }
 

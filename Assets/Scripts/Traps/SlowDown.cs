@@ -58,7 +58,7 @@ namespace MonsterArena.Traps
         {
             foreach (var monster in _monsters)
             {
-                monster.Monster.TakeDamage(_damage);
+                monster.Monster.TakeDamage(_damage, DamageSource.Other);
             }
         }
     }

@@ -17,7 +17,7 @@ MonoBehaviour:
   <Name>k__BackingField: Venom
   <HP>k__BackingField: 3
   <Damage>k__BackingField: 1
-  <MovementSpeed>k__BackingField: 3
+  <MovementSpeed>k__BackingField: 2
   <AttackArea>k__BackingField: 4
   <AttackAngle>k__BackingField: 25
   <ForceUnlocked>k__BackingField: 0

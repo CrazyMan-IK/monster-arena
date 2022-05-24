@@ -24,9 +24,14 @@ namespace MonsterArena.Extensions
         public static Vector2 GetXZ(this Vector3 position)
         {
             return new Vector2(position.x, position.z);
-        }
+		}
 
-        public static Vector3 AsXZ(this Vector2 position)
+		public static Vector3 AsXZ(this Vector3 position)
+		{
+			return new Vector3(position.x, 0, position.y);
+		}
+
+		public static Vector3 AsXZ(this Vector2 position)
         {
             return new Vector3(position.x, 0, position.y);
         }
@@ -44,6 +49,8 @@ namespace MonsterArena.Extensions
 		{
 			point = position - point;
 
+			Vector2 point2 = point - radius / 3.5f * Vector2.up.Rotate(Mathf.Deg2Rad * rotation);
+
 			float mag = point.magnitude;
 
 			var rot1 = Vector2.down.Rotate(Mathf.Deg2Rad * (angle / -2 + rotation));
@@ -54,15 +61,15 @@ namespace MonsterArena.Extensions
 			Debug.DrawRay(position, Vector3.forward, Color.black, 0.2f);
 			Debug.DrawRay(point, Vector3.forward, Color.yellow, 0.2f);*/
 
-			float ld = Cross(rot1, point);
-			float rd = Cross(rot2, point);
+			float ld = Cross(rot1, point2);
+			float rd = Cross(rot2, point2);
 
 			bool isInsideCircle = mag <= radius;
 
 			bool c2 = ld <= 0;
 			bool c3 = rd >= 0;
 
-			return isInsideCircle && c2 && c3;
+			return isInsideCircle && c2 && c3 && point2.Rotate(Mathf.Deg2Rad * rotation).y < radius / -3.5f;
 		}
     }
 }

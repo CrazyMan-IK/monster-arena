@@ -3093,9 +3093,9 @@ RectTransform:
   m_Father: {fileID: 1346496023}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -256}
+  m_AnchorMin: {x: 0.5, y: 0.8860196}
+  m_AnchorMax: {x: 0.5, y: 0.8860196}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &237799785
@@ -37251,9 +37251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf5f31740caa0941ade19e5d2765b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _current:
-    sceneAsset: {fileID: 102900000, guid: 023e3bf83d0141541ae4a5c416764224, type: 3}
-    scenePath: Assets/Scenes/MainMenu.unity
   _fadeImage: {fileID: 706651390}
 --- !u!114 &1771149987
 MonoBehaviour:
@@ -37268,6 +37265,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levels:
+  - sceneAsset: {fileID: 102900000, guid: deff3f2e77dd1964d9909bc8d9c9fd91, type: 3}
+    scenePath: Assets/Scenes/Levels/Level Tutorial.unity
   - sceneAsset: {fileID: 102900000, guid: ab579371c853c494caa9d1f338ca4fac, type: 3}
     scenePath: Assets/Scenes/Levels/Level 1.unity
   - sceneAsset: {fileID: 102900000, guid: 028918935ddcc2745a551b0f773c501a, type: 3}

@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Shadow
   m_Shader: {fileID: 4800000, guid: 199750a2c36633647a1b17dd0288c1ce, type: 3}
-  m_ShaderKeywords: DRAW_CIRCLE IS_FILLED
+  m_ShaderKeywords: DRAW_CIRCLE IS_FILLED _CIRCLEACTIVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -64,13 +64,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Angle: 45
+    - _Angle: 55
     - _BumpScale: 1
+    - _CircleActive: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _Draw: 0
     - _DrawCircle: 1
     - _DstBlend: 0
+    - _Fill: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -78,9 +80,12 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Offset: 0.25
     - _Orthogonal: 0
+    - _OrthographicSize: 10
     - _Parallax: 0.02
-    - _Radius: 3
+    - _Radius: 0
+    - _ShadowRadius: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -89,6 +94,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.2509804}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FilledColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

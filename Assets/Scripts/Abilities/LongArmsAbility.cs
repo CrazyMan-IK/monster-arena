@@ -38,10 +38,10 @@ namespace MonsterArena.Abilities
             {
                 sequence.Join(arm.DOScale(arm.localScale.Multiply(_scaleMultiplier), _animationDuration));
             }
-            sequence.Join(Camera.main.transform.DOBlendableLocalMoveBy(Vector3.back * _rangeMultiplier * 2, _animationDuration));
+            //sequence.Join(Camera.main.transform.DOBlendableLocalMoveBy(Vector3.back * _rangeMultiplier * 2, _animationDuration));
             sequence.AppendInterval(_duration);
             sequence.AppendCallback(Stop);
-            sequence.Join(Camera.main.transform.DOBlendableLocalMoveBy(Vector3.forward * _rangeMultiplier * 2, _animationDuration));
+            //sequence.Join(Camera.main.transform.DOBlendableLocalMoveBy(Vector3.forward * _rangeMultiplier * 2, _animationDuration));
             foreach (var arm in _arms)
             {
                 sequence.Join(arm.DOScale(arm.localScale, _animationDuration));
