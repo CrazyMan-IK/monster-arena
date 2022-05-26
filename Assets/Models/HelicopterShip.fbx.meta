@@ -3,7 +3,12 @@ guid: b601b4854875c6f42a7573cfcb663c61
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SPW_Vehicle_Water_Cargo Ship
+    second: {fileID: 2100000, guid: 95d4b72af12bd4849a9f324134694823, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
