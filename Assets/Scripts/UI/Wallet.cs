@@ -5,6 +5,7 @@ using UnityEngine;
 using URandom = UnityEngine.Random;
 using DG.Tweening;
 using TMPro;
+using MonsterArena.Extensions;
 
 namespace MonsterArena.UI
 {
@@ -71,6 +72,7 @@ namespace MonsterArena.UI
             }
 
             _targetValue -= count;
+            AnalyticsExtensions.UpdateUserSoft(_targetValue);
             PlayerPrefs.SetInt(_WalletCoinsKey, _targetValue);
             UpdateValue(_targetValue);
 
@@ -96,6 +98,7 @@ namespace MonsterArena.UI
 
             var coinsToSpawn = _maxSpawnedCoins / 4;
             _targetValue += count;
+            AnalyticsExtensions.UpdateUserSoft(_targetValue);
             PlayerPrefs.SetInt(_WalletCoinsKey, _targetValue);
             var rootAnimation = DOTween.Sequence().OnComplete(() =>
             {

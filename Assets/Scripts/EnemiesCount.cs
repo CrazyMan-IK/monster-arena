@@ -16,7 +16,7 @@ namespace MonsterArena
             _level.EnemyDied += OnEnemyDied;
         }
 
-        private void OnEnemyDied()
+        private void OnEnemyDied(Monster enemy)
         {
             _text.text = $"{_level.Enemies.Count(x => x.Monster.IsAlive)}/{_level.Enemies.Count}";
         }

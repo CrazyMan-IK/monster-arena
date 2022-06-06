@@ -57,7 +57,7 @@ namespace MonsterArena
             transform.position = (Vector2)Camera.main.WorldToScreenPoint(_player.transform.position + _offset);
         }
 
-        private void OnPlayerCargoChanged()
+        private void OnPlayerCargoChanged(int difference, CauseType cause)
         {
             _cargo.text = $"{_player.Cargo}/{_player.MaxCargo}";
         }

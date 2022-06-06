@@ -13,16 +13,25 @@ using UnityEngine.AI;
 
 namespace MonsterArena
 {
+    public enum CauseType
+    {
+        None,
+        Pickup,
+        Die,
+        Sell
+    }
+
     [RequireComponent(typeof(HelicopterMovement))]
-    public class Helicopter : MonoBehaviour
+    public class Helicopter : MonoBehaviour, IHealthComponent
     {
         private const string _CargoKey = "_cargo";
         private const string _CircleActive = "_CircleActive";
         private const string _Radius = "_Radius";
         private const float _CameraSpeed = 5;
         private const float _RadiusChangingSpeedMultiplier = 15;
-
-        public event Action CargoChanged = null;
+        
+        public event Action<int, CauseType> CargoChanged = null;
+        public event Action ModifiersChanged = null;
         public event Action LevelChanged = null;
         public event Action Died = null;
 
@@ -57,14 +66,15 @@ namespace MonsterArena
         private readonly Dictionary<Monster, CinemachineTargetGroup.Target> _constraints = new Dictionary<Monster, CinemachineTargetGroup.Target>();
 
         public float CurrentHeight => _movement.CurrentHeight;
-        public float MaxHP => _modifiers.TransformHealth(10);
         public float HP => _hp / MaxHP;
+        public float MaxHP => _modifiers.TransformHealth(10);
         public float Radius => _radius;
         public bool IsAlive => _hp > 0;
         public int MaxCargo => _modifiers.TransformCargo(5);
         public int Cargo { get; private set; } = 0;
         public int Level => _modifiers.CurrentLevel;
         public float CargoVisual => _modifiers.CargoVisual;
+        public HelicopterModifiers Modifiers => _modifiers;
 
         private void Awake()
         {
@@ -241,7 +251,7 @@ namespace MonsterArena
                     return;
                 }
 
-                OnCargoChanged();
+                OnCargoChanged(1, CauseType.Pickup);
 
                 resource.Consume();
             }
@@ -257,9 +267,10 @@ namespace MonsterArena
                     {
                         market.Sell(Cargo);
 
+                        var oldCargo = Cargo;
                         Cargo = 0;
-
-                        OnCargoChanged();
+                        
+                        OnCargoChanged(-oldCargo, CauseType.Sell);
                     }
                     if (zone is HealZone)
                     {
@@ -345,8 +356,9 @@ namespace MonsterArena
             Died?.Invoke();
 
             SpawnResources();
+            var oldCargo = Cargo;
             Cargo = 0;
-            OnCargoChanged();
+            OnCargoChanged(-oldCargo, CauseType.Die);
 
             //_constraints.Clear();
             //_cameraPosition.m_Targets = new CinemachineTargetGroup.Target[1] { _cameraPosition.m_Targets[0] };
@@ -386,7 +398,7 @@ namespace MonsterArena
             var sp = _isLeft ? _leftSP : _rightSP;
             var missile = Instantiate(_missilePrefab, sp.position, sp.rotation);
             //missile.Initialize(_target.transform.position + Vector3.up, _modifiers.TransformDamage(1));
-            missile.Initialize(_target.transform, _modifiers.TransformDamage(0.5f), _modifiers.DamageVisual);
+            missile.Initialize(_target, _modifiers.TransformDamage(0.5f), _modifiers.DamageVisual);
 
             _isLeft = !_isLeft;
         }
@@ -407,12 +419,14 @@ namespace MonsterArena
             transform.localScale = _baseSize * (_modifiers.CargoVisual + 1);
             _rotor.localScale = _baseRotorSize * (_modifiers.SpeedVisual + 1);
 
-            OnCargoChanged();
+            OnCargoChanged(0, CauseType.None);
+
+            ModifiersChanged?.Invoke();
         }
 
-        private void OnCargoChanged()
+        private void OnCargoChanged(int difference, CauseType cause)
         {
-            CargoChanged?.Invoke();
+            CargoChanged?.Invoke(difference, cause);
             
             PlayerPrefs.SetInt(_CargoKey, Cargo);
         }

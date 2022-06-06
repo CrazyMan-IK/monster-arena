@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
+using MonsterArena.Extensions;
 using MonsterArena.Models;
 using TMPro;
 using UnityEngine;
@@ -65,6 +67,8 @@ namespace MonsterArena.UI
         {
             _wallet.Take(_healthUpgradeButton.transform, _modifiers.HealthPrice);
 
+            AnalyticsExtensions.SendSoftSpentEvent("Health", _modifiers.HealthPrice);
+
             _modifiers.HealthLevel++;
             UpdateButtons();
         }
@@ -72,6 +76,8 @@ namespace MonsterArena.UI
         private void UpgradeDamage()
         {
             _wallet.Take(_damageUpgradeButton.transform, _modifiers.DamagePrice);
+
+            AnalyticsExtensions.SendSoftSpentEvent("Damage", _modifiers.DamagePrice);
 
             _modifiers.DamageLevel++;
             UpdateButtons();
@@ -81,6 +87,8 @@ namespace MonsterArena.UI
         {
             _wallet.Take(_cargoUpgradeButton.transform, _modifiers.CargoPrice);
 
+            AnalyticsExtensions.SendSoftSpentEvent("Cargo", _modifiers.CargoPrice);
+
             _modifiers.CargoLevel++;
             UpdateButtons();
         }
@@ -88,6 +96,8 @@ namespace MonsterArena.UI
         private void UpgradeSpeed()
         {
             _wallet.Take(_speedUpgradeButton.transform, _modifiers.SpeedPrice);
+
+            AnalyticsExtensions.SendSoftSpentEvent("Speed", _modifiers.SpeedPrice);
 
             _modifiers.SpeedLevel++;
             UpdateButtons();

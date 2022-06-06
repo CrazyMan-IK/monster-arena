@@ -10,6 +10,9 @@ using Cinemachine;
 using MonsterArena.UI;
 using MonsterArena.Interfaces;
 using System.Collections;
+using GameAnalyticsSDK;
+using MonsterArena.Extensions;
+using MonsterArena.TasksSystem;
 
 namespace MonsterArena
 {
@@ -17,13 +20,13 @@ namespace MonsterArena
     {
         private const string _TotalPassedLevelsKey = "_passedLevels";
 
-        public event Action EnemyDied = null;
+        public event Action<Monster> EnemyDied = null;
 
         [SerializeField] private int _killReward = 300;
         [SerializeField] private List<MonsterMovement> _enemies = new List<MonsterMovement>();
 
         [Header("Scene")]
-        [SerializeField] private SceneReference _mainMenuScene = null;
+        [SerializeField] private LevelTasks _levelTasks = null;
         [SerializeField] private SceneTransition _sceneTransition = null;
         [SerializeField] private TextMeshProUGUI _levelNumberText = null;
         [SerializeField] private Wallet _wallet = null;
@@ -145,11 +148,13 @@ namespace MonsterArena
 
             //_playerName.text = _level.PlayerName;
             //_enemyName.text = _level.EnemyName;
+
+            AnalyticsExtensions.SendLevelStartEvent(_levelNum);
         }
 
         public void BackToMainMenu()
         {
-            _sceneTransition.Load(_mainMenuScene);
+            //_sceneTransition.Load(_mainMenuScene);
         }
 
         public void Restart()
@@ -198,7 +203,7 @@ namespace MonsterArena
 
         private void OnEnemyDied(Monster monster, DamageSource source)
         {
-            EnemyDied?.Invoke();
+            EnemyDied?.Invoke(monster);
 
             /*if (!_enemies.Any(x => x.Monster.IsAlive))// && _playerMonster.IsAlive)
             {

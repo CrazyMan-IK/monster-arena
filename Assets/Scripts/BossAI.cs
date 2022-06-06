@@ -69,11 +69,11 @@ namespace MonsterArena
             {
                 var minDist = float.MaxValue;
 
-                var count = Physics.OverlapSphereNonAlloc(transform.position, 100, _lastColliders, _propLayerMask);
+                var count = Physics.OverlapSphereNonAlloc(_basePosition, 100, _lastColliders, _propLayerMask);
                 for (int i = 0; i < count; i++)
                 {
                     var collider = _lastColliders[i];
-                    var dist = Vector3.Distance(transform.position, collider.transform.position);
+                    var dist = Vector3.Distance(_basePosition, collider.transform.position);
 
                     if (collider.TryGetComponent(out Prop prop) && !prop.IsFaded && !prop.IsThrowed && dist < minDist)
                     {

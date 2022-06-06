@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MonsterArena.Interfaces;
 using UnityEngine;
 
 namespace MonsterArena
@@ -20,7 +21,7 @@ namespace MonsterArena
         private Renderer _renderer = null;
         private Collider _collider = null;
         //private Vector3 _targetPosition = Vector3.zero;
-        private Transform _target = null;
+        private IHealthComponent _target = null;
         private float _currentSpeed = 0;
         private float _damage = 0;
         private Timer _timer = null;
@@ -49,7 +50,7 @@ namespace MonsterArena
             _damage = damage;
         }*/
 
-        public void Initialize(Transform target, float damage, Material material)
+        public void Initialize(IHealthComponent target, float damage, Material material)
         {
             _target = target;
             _damage = damage;
@@ -58,11 +59,18 @@ namespace MonsterArena
 
         private void FixedUpdate()
         {
+            if (!_target.IsAlive && _collider.enabled)
+            {
+                Explode();
+                
+                return;
+            }
+
             _currentSpeed = Mathf.Lerp(_currentSpeed, _maxSpeed, _acceleration * Time.deltaTime);
 
             if (_collider.enabled)
             {
-                _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, Quaternion.LookRotation(_target.position + Vector3.up - transform.position), _currentSpeed * _rotationMultiplier * Time.deltaTime));
+                _rigidbody.MoveRotation(Quaternion.RotateTowards(_rigidbody.rotation, Quaternion.LookRotation(_target.gameObject.transform.position + Vector3.up - transform.position), _currentSpeed * _rotationMultiplier * Time.deltaTime));
             }
             _rigidbody.MovePosition(_rigidbody.position + _currentSpeed * Time.deltaTime * (_rigidbody.rotation * Vector3.forward));
 

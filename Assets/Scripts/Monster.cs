@@ -19,7 +19,7 @@ namespace MonsterArena
 
     [RequireComponent(typeof(MonsterAnimation))]
     [RequireComponent(typeof(IMonsterAbility))]
-    public class Monster : MonoBehaviour
+    public class Monster : MonoBehaviour, IHealthComponent
     {
         private const string _Radius = "_Radius";
         private const string _Angle = "_Angle";
@@ -78,6 +78,7 @@ namespace MonsterArena
         public MonsterInformation Information => _information;
         public Helicopter Helicopter => _helicopter;
         public float HP => _hp / _maxHP;
+        public float MaxHP => _maxHP;
         public bool IsAlive => _hp > 0;
         public float AbilityCooldown => _ability.Cooldown;
         public float MovementSpeed => _ability.TransformSpeed(_information.MovementSpeed);
