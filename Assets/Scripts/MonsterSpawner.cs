@@ -55,7 +55,7 @@ namespace MonsterArena
 
         private void LateUpdate()
         {
-            if (_timeText == null)
+            if (_timeText == null || Camera.main == null)
             {
                 return;
             }

@@ -105,6 +105,11 @@ namespace MonsterArena
 
             var direction = _input.Value.Direction.AsXZ();
 
+            if (direction == Vector3.zero)
+            {
+                return;
+            }
+
             _currentSpeed = Mathf.Lerp(_currentSpeed, _monster.MovementSpeed * _speedFactor, _AccelerationSpeed * Time.deltaTime);
 
             _monster.Rigidbody.MoveRotation(Quaternion.Lerp(_monster.Rigidbody.rotation, Quaternion.LookRotation(direction, Vector3.up), _RotationSpeedMultiplier * Time.deltaTime));

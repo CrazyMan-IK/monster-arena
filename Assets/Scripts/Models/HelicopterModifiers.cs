@@ -11,11 +11,6 @@ namespace MonsterArena.Models
         public event Action Changed = null;
         public event Action LevelChanged = null;
 
-        private const string _HealthLevel = "_healthLevel";
-        private const string _DamageLevel = "_damageLevel";
-        private const string _CargoLevel = "_cargoLevel";
-        private const string _SpeedLevel = "_speedLevel";
-
         private int _healthLevel = 0;
         private int _damageLevel = 0;
         private int _cargoLevel = 0;
@@ -39,7 +34,7 @@ namespace MonsterArena.Models
                 if (_healthLevel != value)
                 {
                     _healthLevel = value;
-                    PlayerPrefs.SetInt(_HealthLevel, _healthLevel);
+                    PlayerPrefs.SetInt(Constants.HealthLevelKey, _healthLevel);
 
                     OnModifierChanged();
                 }
@@ -53,7 +48,7 @@ namespace MonsterArena.Models
                 if (_damageLevel != value)
                 {
                     _damageLevel = value;
-                    PlayerPrefs.SetInt(_DamageLevel, _damageLevel);
+                    PlayerPrefs.SetInt(Constants.DamageLevelKey, _damageLevel);
 
                     OnModifierChanged();
                 }
@@ -67,7 +62,7 @@ namespace MonsterArena.Models
                 if (_cargoLevel != value)
                 {
                     _cargoLevel = value;
-                    PlayerPrefs.SetInt(_CargoLevel, _cargoLevel);
+                    PlayerPrefs.SetInt(Constants.CargoLevelKey, _cargoLevel);
 
                     OnModifierChanged();
                 }
@@ -81,7 +76,7 @@ namespace MonsterArena.Models
                 if (_speedLevel != value)
                 {
                     _speedLevel = value;
-                    PlayerPrefs.SetInt(_SpeedLevel, _speedLevel);
+                    PlayerPrefs.SetInt(Constants.SpeedLevelKey, _speedLevel);
 
                     OnModifierChanged();
                 }
@@ -140,10 +135,10 @@ namespace MonsterArena.Models
 
         private void OnEnable()
         {
-            _healthLevel = PlayerPrefs.GetInt(_HealthLevel, 0);
-            _damageLevel = PlayerPrefs.GetInt(_DamageLevel, 0);
-            _cargoLevel = PlayerPrefs.GetInt(_CargoLevel, 0);
-            _speedLevel = PlayerPrefs.GetInt(_SpeedLevel, 0);
+            _healthLevel = PlayerPrefs.GetInt(Constants.HealthLevelKey, 0);
+            _damageLevel = PlayerPrefs.GetInt(Constants.DamageLevelKey, 0);
+            _cargoLevel = PlayerPrefs.GetInt(Constants.CargoLevelKey, 0);
+            _speedLevel = PlayerPrefs.GetInt(Constants.SpeedLevelKey, 0);
         }
 
         public float TransformHealth(float health)

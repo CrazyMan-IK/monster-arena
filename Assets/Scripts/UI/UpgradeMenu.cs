@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using GameAnalyticsSDK;
-using MonsterArena.Extensions;
-using MonsterArena.Models;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using MonsterArena.Extensions;
+using MonsterArena.Interfaces;
+using MonsterArena.Models;
 
 namespace MonsterArena.UI
 {
-    public class UpgradeMenu : MonoBehaviour
+    public class UpgradeMenu : MonoBehaviour, IZoneMenu
     {
         [SerializeField] private HelicopterModifiers _modifiers = null;
         [SerializeField] private Wallet _wallet = null;
@@ -56,6 +56,16 @@ namespace MonsterArena.UI
             _damageUpgradeButton.onClick.RemoveListener(UpgradeDamage);
             _cargoUpgradeButton.onClick.RemoveListener(UpgradeCargo);
             _speedUpgradeButton.onClick.RemoveListener(UpgradeSpeed);
+        }
+
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Deactivate()
+        {
+            gameObject.SetActive(false);
         }
 
         private void CloseMenu()

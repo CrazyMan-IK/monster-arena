@@ -21,11 +21,6 @@ namespace MonsterArena
     [RequireComponent(typeof(IMonsterAbility))]
     public class Monster : MonoBehaviour, IHealthComponent
     {
-        private const string _Radius = "_Radius";
-        private const string _Angle = "_Angle";
-        private const string _Fill = "_Fill";
-        private const string _CircleActive = "_CircleActive";
-        private const string _OrthographicSize = "_OrthographicSize";
         private const float _RadiusChangingSpeedMultiplier = 5;
         private const float _RotationSpeedMultiplier = 15;
         private const float _CellsToLevelUp = 3;
@@ -123,9 +118,9 @@ namespace MonsterArena
 
             _information = information;
 
-            _shadow.material.SetFloat(_Radius, AttackArea);
-            _shadow.material.SetFloat(_Angle, information.AttackAngle);
-            _shadow.material.SetFloat(_OrthographicSize, _shadow.orthographicSize);
+            _shadow.material.SetFloat(Constants.Radius, AttackArea);
+            _shadow.material.SetFloat(Constants.Angle, information.AttackAngle);
+            _shadow.material.SetFloat(Constants.OrthographicSize, _shadow.orthographicSize);
 
             _animation.Initialize(information, 3 / _attackDelay);
             
@@ -172,8 +167,8 @@ namespace MonsterArena
                 _tickedTime += Time.deltaTime;
             }
 
-            _shadow.material.SetFloat(_Radius, Mathf.Lerp(_shadow.material.GetFloat(_Radius), AttackArea, Time.deltaTime * _RadiusChangingSpeedMultiplier));
-            _shadow.material.SetFloat(_Fill, Mathf.Min(_tickedTime / _targetTime, 1.0f));
+            _shadow.material.SetFloat(Constants.Radius, Mathf.Lerp(_shadow.material.GetFloat(Constants.Radius), AttackArea, Time.deltaTime * _RadiusChangingSpeedMultiplier));
+            _shadow.material.SetFloat(Constants.Fill, Mathf.Min(_tickedTime / _targetTime, 1.0f));
 
             if (!HasProp)
             {
@@ -223,7 +218,7 @@ namespace MonsterArena
                 return;
             }
 
-            _shadow.material.SetInt(_CircleActive, 1);
+            _shadow.material.SetInt(Constants.CircleActive, 1);
 
             _hp = _maxHP;
             _animation.Rigidbody.isKinematic = false;
@@ -320,7 +315,7 @@ namespace MonsterArena
                 return;
             }
 
-            _shadow.material.SetInt(_CircleActive, 0);
+            _shadow.material.SetInt(Constants.CircleActive, 0);
             
             _hp = 0;
             _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;

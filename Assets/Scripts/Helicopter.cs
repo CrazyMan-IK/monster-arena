@@ -24,9 +24,6 @@ namespace MonsterArena
     [RequireComponent(typeof(HelicopterMovement))]
     public class Helicopter : MonoBehaviour, IHealthComponent
     {
-        private const string _CargoKey = "_cargo";
-        private const string _CircleActive = "_CircleActive";
-        private const string _Radius = "_Radius";
         private const float _CameraSpeed = 5;
         private const float _RadiusChangingSpeedMultiplier = 15;
         
@@ -81,8 +78,8 @@ namespace MonsterArena
             _movement = GetComponent<HelicopterMovement>();
             _movement.Initialize(this, _modifiers);
 
-            _shadow.material.SetFloat(_Radius, 0);
-            _shadow.material.SetInt(_CircleActive, 1);
+            _shadow.material.SetFloat(Constants.Radius, 0);
+            _shadow.material.SetInt(Constants.CircleActive, 1);
 
             _baseSize = transform.localScale;
             _baseRotorSize = _rotor.localScale;
@@ -105,7 +102,7 @@ namespace MonsterArena
             _modifiers.Changed += OnModifiersChanged;
             _modifiers.LevelChanged += OnModifiersLevelChanged;
 
-            Cargo = PlayerPrefs.GetInt(_CargoKey, 0);
+            Cargo = PlayerPrefs.GetInt(Constants.CargoKey, 0);
         }
 
         private void OnDisable()
@@ -184,7 +181,7 @@ namespace MonsterArena
                     _cameraPosition.AddMember(constraint.target, constraint.weight, constraint.radius);
                 }
 
-                _shadow.material.SetFloat(_Radius, Mathf.Lerp(_shadow.material.GetFloat(_Radius), hasTarget ? _radius : 0, _RadiusChangingSpeedMultiplier * Time.deltaTime));
+                _shadow.material.SetFloat(Constants.Radius, Mathf.Lerp(_shadow.material.GetFloat(Constants.Radius), hasTarget ? _radius : 0, _RadiusChangingSpeedMultiplier * Time.deltaTime));
 
                 for (var i = 0; i < _constraints.Count; i++)
                 {
@@ -259,7 +256,7 @@ namespace MonsterArena
             {
                 foreach (var zone in zones)
                 {
-                    if (_movement.AirMultiplier > 0 && zone is UpgradeZone upgrade)
+                    if (_movement.AirMultiplier > 0 && zone is MenuZone upgrade)
                     {
                         upgrade.Enter();
                     }
@@ -285,7 +282,7 @@ namespace MonsterArena
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out UpgradeZone upgrade))
+            if (other.TryGetComponent(out MenuZone upgrade))
             {
                 upgrade.Exit();
             } 
@@ -302,7 +299,7 @@ namespace MonsterArena
                 return;
             }
 
-            _shadow.material.SetInt(_CircleActive, 1);
+            _shadow.material.SetInt(Constants.CircleActive, 1);
 
             _hp = MaxHP;
 
@@ -349,7 +346,7 @@ namespace MonsterArena
                 return;
             }
 
-            _shadow.material.SetInt(_CircleActive, 0);
+            _shadow.material.SetInt(Constants.CircleActive, 0);
 
             _hp = 0;
 
@@ -428,7 +425,7 @@ namespace MonsterArena
         {
             CargoChanged?.Invoke(difference, cause);
             
-            PlayerPrefs.SetInt(_CargoKey, Cargo);
+            PlayerPrefs.SetInt(Constants.CargoKey, Cargo);
         }
     }
 }

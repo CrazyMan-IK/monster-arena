@@ -13,32 +13,42 @@ namespace MonsterArena
     {
         [SerializeField] private Image _fadeImage = null;
 
-        public void Load(SceneReference scene, Action<GameObject[]> onLoaded = null)
+        public void Load(SceneReference scene, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
-            LoadAsync(scene, onLoaded);
+            LoadAsync(scene, unloadCurrent, onLoaded, onPreLoad);
         }
 
-        public YieldInstruction LoadAsync(SceneReference scene, Action<GameObject[]> onLoaded = null)
+        public YieldInstruction LoadAsync(SceneReference scene, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
-            return StartCoroutine(LoadScene(scene, onLoaded));
+            return StartCoroutine(LoadScene(scene, unloadCurrent, onLoaded, onPreLoad));
         }
 
-        public void ReloadCurrent(Action<GameObject[]> onLoaded = null)
+        public void Load(string path, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
-            ReloadCurrentAsync(onLoaded);
+            LoadAsync(path, unloadCurrent, onLoaded, onPreLoad);
         }
 
-        public YieldInstruction ReloadCurrentAsync(Action<GameObject[]> onLoaded = null)
+        public YieldInstruction LoadAsync(string path, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
-            return StartCoroutine(LoadScene(SceneManager.GetActiveScene().path, onLoaded));
+            return StartCoroutine(LoadScene(path, unloadCurrent, onLoaded, onPreLoad));
         }
 
-        private IEnumerator LoadScene(SceneReference scene, Action<GameObject[]> onLoaded = null)
+        public void ReloadCurrent(bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
-            return LoadScene(scene.ScenePath, onLoaded);
+            ReloadCurrentAsync(unloadCurrent, onLoaded, onPreLoad);
         }
 
-        private IEnumerator LoadScene(string path, Action<GameObject[]> onLoaded = null)
+        public YieldInstruction ReloadCurrentAsync(bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
+        {
+            return StartCoroutine(LoadScene(SceneManager.GetActiveScene().path, unloadCurrent, onLoaded, onPreLoad));
+        }
+
+        private IEnumerator LoadScene(SceneReference scene, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
+        {
+            return LoadScene(scene.ScenePath, unloadCurrent, onLoaded, onPreLoad);
+        }
+
+        private IEnumerator LoadScene(string path, bool unloadCurrent = true, Action<Scene, GameObject[]> onLoaded = null, Action onPreLoad = null)
         {
             _fadeImage.raycastTarget = true;
             _fadeImage.maskable = true;
@@ -47,9 +57,12 @@ namespace MonsterArena
             Camera.main.gameObject.SetActive(false);
 
             var currentScene = SceneManager.GetActiveScene();
-            foreach (var root in currentScene.GetRootGameObjects().Where(x => x.transform != transform))
+            if (unloadCurrent)
             {
-                root.SetActive(false);
+                foreach (var root in currentScene.GetRootGameObjects().Where(x => x.transform != transform))
+                {
+                    root.SetActive(false);
+                }
             }
 
             yield return null;
@@ -63,14 +76,17 @@ namespace MonsterArena
             var rootGOs = targetScene.GetRootGameObjects();
             /*var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
             level.Initialize(levelNum);*/
-            onLoaded?.Invoke(rootGOs);
+            onLoaded?.Invoke(targetScene, rootGOs);
 
             yield return _fadeImage.DOFade(0, 0.5f).SetEase(Ease.InQuad).WaitForCompletion();
             _fadeImage.raycastTarget = false;
             _fadeImage.maskable = false;
 
             SceneManager.SetActiveScene(targetScene);
-            yield return SceneManager.UnloadSceneAsync(currentScene);
+            if (unloadCurrent)
+            {
+                yield return SceneManager.UnloadSceneAsync(currentScene);
+            }
         }
     }
 }

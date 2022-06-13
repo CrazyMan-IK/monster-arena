@@ -10,15 +10,6 @@ namespace MonsterArena
     [RequireComponent(typeof(Rigidbody))]
     public class MonsterAnimation : MonoBehaviour
     {
-        private const string _Attack = "Attack";
-        private const string _Alive = "Alive";
-        private const string _Speed = "Speed";
-        private const string _AttackSpeedMultiplier = "AttackSpeedMultiplier";
-        private const string _Win = "Win";
-        private const string _Once = "Once";
-        private const string _Ability = "Ability";
-        private const string _AbilitySpeedMultiplier = "AbilitySpeedMultiplier";
-
         [SerializeField] private Animator _animator = null;
         [SerializeField] private AnimationClip _attackClip = null;
         [SerializeField] private MonsterAnimationEventsRepeater _attackEventRepeater = null;
@@ -66,9 +57,9 @@ namespace MonsterArena
 
         private void Update()
         {
-            _animator.SetBool(_Attack, IsAttacking || IsThrowing);
-            _animator.SetFloat(_AttackSpeedMultiplier, _attackSpeedMultiplier); //IsThrowing || !IsAttacking ? 1 : 2);
-            _animator.SetBool(_Alive, IsAlive);
+            _animator.SetBool(Constants.Attack, IsAttacking || IsThrowing);
+            _animator.SetFloat(Constants.AttackSpeedMultiplier, _attackSpeedMultiplier); //IsThrowing || !IsAttacking ? 1 : 2);
+            _animator.SetBool(Constants.Alive, IsAlive);
 
             if (_rigidbody.isKinematic)
             {
@@ -87,7 +78,7 @@ namespace MonsterArena
 
             _delta = Mathf.Lerp(_delta, _information.MovementSpeed * Mathf.Clamp01(currentDelta * 10), _accelerationMultiplier * Time.deltaTime);
 
-            _animator.SetFloat(_Speed, _delta);
+            _animator.SetFloat(Constants.Speed, _delta);
 
             _previousPosition = _rigidbody.position;
         }
@@ -108,32 +99,32 @@ namespace MonsterArena
             //var transition = _animator.GetAnimatorTransitionInfo(1);
             var nextState = _animator.GetNextAnimatorStateInfo(1);
 
-            state = state.IsName(_Attack) ? state : nextState;
+            state = state.IsName(Constants.Attack) ? state : nextState;
 
             //return state.IsName(_Attack) ? state.normalizedTime * GetFirstAttackTime() : 0;
             //return state.IsName(_Attack) ? state.normalizedTime * state.length : 0;
-            return state.IsName(_Attack) ? state.normalizedTime * state.length * state.speed * state.speedMultiplier : 0;
+            return state.IsName(Constants.Attack) ? state.normalizedTime * state.length * state.speed * state.speedMultiplier : 0;
             //return state.IsName(_Attack) ? state.normalizedTime : 0;
         }
         
         public void StartAbility(float speed = 1.0f)
         {
-            _animator.SetBool(_Ability, true);
-            _animator.SetFloat(_AbilitySpeedMultiplier, speed);
+            _animator.SetBool(Constants.Ability, true);
+            _animator.SetFloat(Constants.AbilitySpeedMultiplier, speed);
         }
 
         public void StopAbility()
         {
-            _animator.SetBool(_Ability, false);
+            _animator.SetBool(Constants.Ability, false);
         }
 
         public void ActivateWinAnimation(bool isOnce)
         {
             //_animator.SetBool(_Win, true);
-            _animator.SetBool(_Once, isOnce);
-            _animator.SetTrigger(_Win);
-            _animator.SetTrigger(_Win);
-            _animator.SetTrigger(_Win);
+            _animator.SetBool(Constants.Once, isOnce);
+            _animator.SetTrigger(Constants.Win);
+            _animator.SetTrigger(Constants.Win);
+            _animator.SetTrigger(Constants.Win);
             enabled = false;
         }
 

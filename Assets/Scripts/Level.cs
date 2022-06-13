@@ -18,22 +18,18 @@ namespace MonsterArena
 {
     public class Level : MonoBehaviour
     {
-        private const string _TotalPassedLevelsKey = "_passedLevels";
-
         public event Action<Monster> EnemyDied = null;
+        public event Action LevelsMapRequested = null;
+        public event Action Completed = null;
 
-        [SerializeField] private int _killReward = 300;
         [SerializeField] private List<MonsterMovement> _enemies = new List<MonsterMovement>();
 
         [Header("Scene")]
-        [SerializeField] private LevelTasks _levelTasks = null;
-        [SerializeField] private SceneTransition _sceneTransition = null;
-        [SerializeField] private TextMeshProUGUI _levelNumberText = null;
-        [SerializeField] private Wallet _wallet = null;
-        [SerializeField] private Button _abilityButton = null;
+        [SerializeField] private int _levelNum = 0;
+        [SerializeField] private Button _chooseLevelButton = null;
+        [SerializeField] private LevelTasks _tasks = null;
 
         [Header("Logic")]
-        [SerializeField] private InterfaceReference<IInput> _input = null;
         [SerializeField] private Helicopter _player = null;
         [SerializeField] private MonsterHealthBar _healthBarPrefab = null;
         [SerializeField] private Transform _healthBarsRoot = null;
@@ -57,17 +53,10 @@ namespace MonsterArena
         [SerializeField] private WinnerPanel _winnerPanel = null;*/
 
         //private Monster _playerMonster = null;
-        private int _levelNum = 0;
         private bool _inited = false;
-        private bool _isPlayerWin = false;
-
-        public static int TotalLevelsPassed
-        {
-            get => PlayerPrefs.GetInt(_TotalPassedLevelsKey, 0);
-            set => PlayerPrefs.SetInt(_TotalPassedLevelsKey, value);
-        }
 
         public IReadOnlyList<MonsterMovement> Enemies => _enemies;
+        public bool IsCompleted => _tasks.IsCompleted;
 
         /*private void Update()
         {
@@ -83,34 +72,34 @@ namespace MonsterArena
 
         private void OnEnable()
         {
+            _chooseLevelButton.onClick.AddListener(OnChooseLevelButtonClicked);
+            _tasks.Completed += OnAllTasksCompleted;
             _player.Died += OnPlayerDied;
             
             foreach (var enemy in _enemies)
             {
                 enemy.Monster.Died += OnEnemyDied;
-                enemy.Monster.Killed += OnEnemyKilledByEnemy;
             }
         }
 
         private void OnDisable()
         {
-            /*_playerMonster.LevelChanged -= OnLevelChanged;
-            _playerMonster.Killed -= OnEnemyKilled;*/
+            _chooseLevelButton.onClick.RemoveListener(OnChooseLevelButtonClicked);
+            _tasks.Completed -= OnAllTasksCompleted;
             _player.Died -= OnPlayerDied;
 
             foreach (var enemy in _enemies)
             {
                 enemy.Monster.Died -= OnEnemyDied;
-                enemy.Monster.Killed -= OnEnemyKilledByEnemy;
             }
         }
 
         public void GameStarted()
         {
-            Initialize(TotalLevelsPassed);
+            Initialize();
         }
 
-        public void Initialize(int levelNum)
+        public void Initialize()
         {
             if (_inited)
             {
@@ -118,9 +107,7 @@ namespace MonsterArena
             }
             _inited = true;
 
-            _levelNum = levelNum;
-
-            _levelNumberText.text = (TotalLevelsPassed + 1).ToString();
+            //_levelNumberText.text = (TotalLevelsPassed + 1).ToString();
 
             /*_playerMonster = Instantiate(playerInformation.MonsterPrefab, _playerSpawn);
             _playerMonster.InitializeAsPlayer(playerInformation, _enemies.Count);
@@ -152,20 +139,6 @@ namespace MonsterArena
             AnalyticsExtensions.SendLevelStartEvent(_levelNum);
         }
 
-        public void BackToMainMenu()
-        {
-            //_sceneTransition.Load(_mainMenuScene);
-        }
-
-        public void Restart()
-        {
-            _sceneTransition.ReloadCurrent(rootGOs =>
-            {
-                var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(_levelNum);
-            });
-        }
-
         private IEnumerator RevivePlayer(float seconds)
         {
             yield return new WaitForSeconds(seconds);
@@ -175,45 +148,19 @@ namespace MonsterArena
             _player.Revive();
         }
 
-        private void OnLevelChanged(int level)
+        private void OnChooseLevelButtonClicked()
         {
-            ActivateAbilityButton();
+            LevelsMapRequested?.Invoke();
         }
         
-        private void OnEnemyKilled(Monster monster, Transform enemy)
+        private void OnAllTasksCompleted()
         {
-            _wallet.Add(enemy, _killReward);
-
-            /*if (!_enemies.Any(x => x.Monster.IsAlive))
-            {
-                _input.Value.Lock();
-
-                _isPlayerWin = true;
-
-                TotalLevelsPassed++;
-                _winnerUI.Activate(true, _results);
-                _playerMonster.RunWinningAnimation();
-            }*/
-        }
-
-        private void OnEnemyKilledByEnemy(Monster monster, Transform enemy)
-        {
-            
+            Completed?.Invoke();
         }
 
         private void OnEnemyDied(Monster monster, DamageSource source)
         {
             EnemyDied?.Invoke(monster);
-
-            /*if (!_enemies.Any(x => x.Monster.IsAlive))// && _playerMonster.IsAlive)
-            {
-                _input.Value.Lock();
-
-                _isPlayerWin = true;
-
-                TotalLevelsPassed++;
-                //_playerMonster.RunWinningAnimation();
-            }*/
         }
 
         private void OnPlayerDied()
@@ -222,43 +169,5 @@ namespace MonsterArena
 
             StartCoroutine(RevivePlayer(2));
         }
-
-        private void OnWinnerUIClicked()
-        {
-            if (_isPlayerWin)
-            {
-                BackToMainMenu();
-                return;
-            }
-
-            BackToMainMenu();
-        }
-
-        private void ActivateAbilityButton()
-        {
-            _abilityButton.interactable = true;
-        }
-
-        /*private void OnWinnerPanelClicked()
-        {
-            //_winnerPanel.Clicked -= OnWinnerPanelClicked;
-
-            if (_isPlayerWin)
-            {
-                LoadNextLevel();
-                return;
-            }
-
-            _sceneTransition.ReloadCurrent(rootGOs =>
-            {
-                var level = rootGOs.Select(x => x.GetComponent<Level>()).First(x => x != null);
-                level.Initialize(_levelNum, _playerInformation);
-            });
-        }*/
-
-        /*private void OnStartPanelClosed()
-        {
-            //_startPanel.Closed -= OnStartPanelClosed;
-        }*/
     }
 }

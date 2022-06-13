@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using MonsterArena.UI;
 using MonsterArena.Interfaces;
+using AYellowpaper;
 
 namespace MonsterArena
 {
-    public class UpgradeZone : MonoBehaviour, IZone
+    public class MenuZone : MonoBehaviour, IZone
     {
-        [SerializeField] private UpgradeMenu _menu = null;
+        [SerializeField] private InterfaceReference<IZoneMenu> _menu = null;
 
         private bool _isInZone = false;
 
@@ -20,7 +21,7 @@ namespace MonsterArena
             }
 
             _isInZone = true;
-            _menu.gameObject.SetActive(true);
+            _menu.Value.Activate();
         }
 
         public void Exit()
@@ -31,7 +32,7 @@ namespace MonsterArena
             }
 
             _isInZone = false;
-            _menu.gameObject.SetActive(false);
+            _menu.Value.Deactivate();
         }
     }
 }

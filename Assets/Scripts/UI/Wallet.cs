@@ -11,8 +11,6 @@ namespace MonsterArena.UI
 {
     public class Wallet : MonoBehaviour
     {
-        private const string _WalletCoinsKey = "_walletCoins";
-
         [SerializeField] private Transform _icon = null;
         [SerializeField] private TextMeshProUGUI _text = null;
         [SerializeField] private Transform _coinPrefab = null;
@@ -31,7 +29,7 @@ namespace MonsterArena.UI
         private void Awake()
         {
             InitCoinsPool();
-            _targetValue = PlayerPrefs.GetInt(_WalletCoinsKey, 0);
+            _targetValue = PlayerPrefs.GetInt(Constants.WalletCoinsKey, 0);
             //_targetValue = 3000;
             if (_targetValue > 0)
             {
@@ -73,7 +71,7 @@ namespace MonsterArena.UI
 
             _targetValue -= count;
             AnalyticsExtensions.UpdateUserSoft(_targetValue);
-            PlayerPrefs.SetInt(_WalletCoinsKey, _targetValue);
+            PlayerPrefs.SetInt(Constants.WalletCoinsKey, _targetValue);
             UpdateValue(_targetValue);
 
             return null;
@@ -99,7 +97,7 @@ namespace MonsterArena.UI
             var coinsToSpawn = _maxSpawnedCoins / 4;
             _targetValue += count;
             AnalyticsExtensions.UpdateUserSoft(_targetValue);
-            PlayerPrefs.SetInt(_WalletCoinsKey, _targetValue);
+            PlayerPrefs.SetInt(Constants.WalletCoinsKey, _targetValue);
             var rootAnimation = DOTween.Sequence().OnComplete(() =>
             {
                 UpdateValue(_targetValue);

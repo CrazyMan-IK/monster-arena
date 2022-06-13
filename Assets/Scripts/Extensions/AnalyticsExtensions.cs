@@ -7,15 +7,12 @@ namespace MonsterArena.Extensions
 {
     public static class AnalyticsExtensions
     {
-        private const string _SoftSpentsKey = "_softSpents";
-        private const string _RegistrationDayKey = "_registrationDayKey";
-
         private static YandexAppMetricaUserProfile _userProfile = new YandexAppMetricaUserProfile();
 
         private static int SoftSpents
         {
-            get => PlayerPrefs.GetInt(_SoftSpentsKey, 0);
-            set => PlayerPrefs.SetInt(_SoftSpentsKey, value);
+            get => PlayerPrefs.GetInt(Constants.SoftSpentsKey, 0);
+            set => PlayerPrefs.SetInt(Constants.SoftSpentsKey, value);
         }
 
         public static void SendGameStartEvent(int sessionsCount)
@@ -26,11 +23,11 @@ namespace MonsterArena.Extensions
             AppMetrica.Instance.ReportEvent("game_start", props);
 
             var now = DateTime.Now;
-            if (!PlayerPrefs.HasKey(_RegistrationDayKey))
+            if (!PlayerPrefs.HasKey(Constants.RegistrationDayKey))
             {
-                PlayerPrefs.SetString(_RegistrationDayKey, now.ToString("dd.MM.yy"));
+                PlayerPrefs.SetString(Constants.RegistrationDayKey, now.ToString("dd.MM.yy"));
             }
-            var cached = DateTime.ParseExact(PlayerPrefs.GetString(_RegistrationDayKey, now.ToString("dd.MM.yy")), "dd.MM.yy", null);
+            var cached = DateTime.ParseExact(PlayerPrefs.GetString(Constants.RegistrationDayKey, now.ToString("dd.MM.yy")), "dd.MM.yy", null);
 
             _userProfile.Apply(YandexAppMetricaAttribute.CustomNumber("session_count").WithValue(sessionsCount));
             _userProfile.Apply(YandexAppMetricaAttribute.CustomString("reg_day").WithValueIfUndefined(now.ToString("dd.MM.yy")));

@@ -49,7 +49,7 @@ namespace MonsterArena
 
         private void LateUpdate()
         {
-            if (_monster == null || _monster.HP <= 0)
+            if (_monster == null || _monster.HP <= 0 || Camera.main == null)
             {
                 return;
             }

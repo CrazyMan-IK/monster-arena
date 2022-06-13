@@ -9,8 +9,6 @@ namespace MonsterArena.Traps
     public class Barrel : MonoBehaviour
     {
         private const float _AnimationDuration = 0.05f;
-        private const string _ColorKey = "_Color";
-        private const string _ColorDimKey = "_ColorDim";
 
         [SerializeField] private float _range = 1;
         [SerializeField] private float _damage = 1;
@@ -30,8 +28,8 @@ namespace MonsterArena.Traps
         {
             var sequence = DOTween.Sequence();
 
-            var baseColor = _renderer.material.GetColor(_ColorKey);
-            var shadowColor = _renderer.material.GetColor(_ColorDimKey);
+            var baseColor = _renderer.material.GetColor(Constants.ColorKey);
+            var shadowColor = _renderer.material.GetColor(Constants.ColorDimKey);
             var delay = _explodeDelay / (_ticks * 2);
 
             for (int i = 0; i < _ticks; i++)
@@ -46,8 +44,8 @@ namespace MonsterArena.Traps
 
             static void AppendColorAnimation(Sequence sequence, Renderer renderer, Color baseColor, Color shadowColor)
             {
-                sequence.Append(renderer.material.DOColor(baseColor, _ColorKey, _AnimationDuration));
-                sequence.Join(renderer.material.DOColor(shadowColor, _ColorDimKey, _AnimationDuration));
+                sequence.Append(renderer.material.DOColor(baseColor, Constants.ColorKey, _AnimationDuration));
+                sequence.Join(renderer.material.DOColor(shadowColor, Constants.ColorDimKey, _AnimationDuration));
             }
         }
 

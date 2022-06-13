@@ -13,8 +13,6 @@ namespace MonsterArena.UI
         public event Action WinAnimationCompleted = null;
 
         private const float _AnimationDuration = 0.5f;
-        private const string _ColorKey = "_Color";
-        private const string _ColorDimKey = "_ColorDim";
 
         private Renderer[] _renderers = null;
         private Monster _monster = null;
@@ -42,15 +40,15 @@ namespace MonsterArena.UI
 
         private void Start()
         {
-            _baseColor = _monster.Renderer.material.GetColor(_ColorKey);
-            _baseShadowColor = _monster.Renderer.material.GetColor(_ColorDimKey);
+            _baseColor = _monster.Renderer.material.GetColor(Constants.ColorKey);
+            _baseShadowColor = _monster.Renderer.material.GetColor(Constants.ColorDimKey);
 
             if (!Information.IsUnlocked)
             {
                 var targetColor = Color.black; //Color.white / 8;
 
-                _monster.Renderer.material.DOColor(targetColor, _ColorKey, _AnimationDuration);
-                _monster.Renderer.material.DOColor(targetColor, _ColorDimKey, _AnimationDuration);
+                _monster.Renderer.material.DOColor(targetColor, Constants.ColorKey, _AnimationDuration);
+                _monster.Renderer.material.DOColor(targetColor, Constants.ColorDimKey, _AnimationDuration);
             }
 
             _monster.DisableRadiusPreview();
@@ -68,8 +66,8 @@ namespace MonsterArena.UI
 
         public void Unlock()
         {
-            _monster.Renderer.material.DOColor(_baseColor, _ColorKey, _AnimationDuration);
-            _monster.Renderer.material.DOColor(_baseShadowColor, _ColorDimKey, _AnimationDuration);
+            _monster.Renderer.material.DOColor(_baseColor, Constants.ColorKey, _AnimationDuration);
+            _monster.Renderer.material.DOColor(_baseShadowColor, Constants.ColorDimKey, _AnimationDuration);
 
             _monster.RunWinningAnimationOnce();
         }

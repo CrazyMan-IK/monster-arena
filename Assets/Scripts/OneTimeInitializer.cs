@@ -9,8 +9,6 @@ namespace MonsterArena
     [DefaultExecutionOrder(-9999)]
     public class OneTimeInitializer : MonoBehaviour
     {
-        private const string _SessionsCountKey = "_sessionsCount";
-
         private static OneTimeInitializer _instance = null;
 
         private void Awake()
@@ -29,17 +27,21 @@ namespace MonsterArena
                 loadable.SceneLoaded();
             }*/
 
+#if UNITY_EDITOR
             Application.targetFrameRate = 60;
-            var sessionsCount = PlayerPrefs.GetInt(_SessionsCountKey, 0);
+#else
+            Application.targetFrameRate = Screen.currentResolution.refreshRate;
+#endif
+            var sessionsCount = PlayerPrefs.GetInt(Constants.SessionsCountKey, 0);
             sessionsCount++;
-            PlayerPrefs.SetInt(_SessionsCountKey, sessionsCount);
+            PlayerPrefs.SetInt(Constants.SessionsCountKey, sessionsCount);
         }
 
         private void Start()
         {
             GameAnalytics.Initialize();
 
-            AnalyticsExtensions.SendGameStartEvent(PlayerPrefs.GetInt(_SessionsCountKey, 0));
+            AnalyticsExtensions.SendGameStartEvent(PlayerPrefs.GetInt(Constants.SessionsCountKey, 0));
 
             var level = FindObjectOfType<Level>();
             if (level != null)

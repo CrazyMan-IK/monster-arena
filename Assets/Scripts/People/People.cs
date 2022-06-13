@@ -9,8 +9,6 @@ namespace MonsterArena.People
     [RequireComponent(typeof(Animator))]
     public class People : MonoBehaviour
     {
-        private const string _Speed = "Speed";
-
         private NavMeshAgent _agent = null;
         private Animator _animator = null;
         private PeopleState _state = null;
@@ -36,7 +34,7 @@ namespace MonsterArena.People
             _state.Update(Time.deltaTime);
 
             var currentSpeed = (transform.position - _lastPosition).magnitude;
-            _animator.SetFloat(_Speed, currentSpeed / Time.deltaTime / _agent.speed / 2);
+            _animator.SetFloat(Constants.Speed, currentSpeed / Time.deltaTime / _agent.speed / 2);
 
             _lastPosition = transform.position;
         }

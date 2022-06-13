@@ -54,6 +54,11 @@ namespace MonsterArena
 
         private void FixedUpdate()
         {
+            if (Camera.main == null)
+            {
+                return;
+            }
+
             transform.position = (Vector2)Camera.main.WorldToScreenPoint(_player.transform.position + _offset);
         }
 
