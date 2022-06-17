@@ -31,10 +31,15 @@ namespace MonsterArena.UI
         private void Awake()
         {
             _currentLevel = PlayerPrefs.GetInt(Constants.RadarLevelKey, 0);
+        }
 
+        private void Start()
+        {
             _radar.SetOffset(_levels[_currentLevel].offset);
 
             UpdateUI();
+
+            Deactivate();
         }
 
         private void OnEnable()
@@ -71,7 +76,7 @@ namespace MonsterArena.UI
             else
             {
                 _level.text = $"Level {_currentLevel + 1}  ► Level {_currentLevel + 2}";
-                _price.text = $"{_levels[_currentLevel + 1].cost}$";
+                _price.text = $"{_levels[_currentLevel + 1].cost} <sprite=0>";
             }
         }
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: OceanMonster 3
+  m_Controller: {fileID: 9100000, guid: 51af78a6ca99d234cb8322485b5cf351, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -6781760076158531847, guid: 07e1830a30235c74a935a2313859b5fc, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: fe02d79f80f664d4d95ca809354183dd, type: 3}
+  - m_OriginalClip: {fileID: -8716418447889771690, guid: 07e1830a30235c74a935a2313859b5fc, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 5c58933387b06c046a5f6eb866055790, type: 3}
+  - m_OriginalClip: {fileID: -3100369314251171874, guid: 07e1830a30235c74a935a2313859b5fc, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c87cf6f81b4b72a4eb3acfa19f05bcc7, type: 3}
+  - m_OriginalClip: {fileID: -5749590217152047306, guid: 07e1830a30235c74a935a2313859b5fc, type: 3}
+    m_OverrideClip: {fileID: 3186895161888580160, guid: 213affdf711ce3140b303f4c756f40f5, type: 3}
+  - m_OriginalClip: {fileID: 4348485665485846014, guid: 07e1830a30235c74a935a2313859b5fc, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: f98e921a4bf7e9644ad07becaccbf218, type: 3}

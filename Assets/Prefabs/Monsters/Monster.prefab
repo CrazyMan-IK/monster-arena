@@ -52,7 +52,7 @@ Animator:
   m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -115,6 +115,7 @@ MonoBehaviour:
   _helicopterLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  _attackDelay: 3
   _maxHP: 1
   _damage: 1
   <ResourcesCount>k__BackingField: 1

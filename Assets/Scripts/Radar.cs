@@ -19,7 +19,8 @@ namespace MonsterArena
 
         private void Awake()
         {
-            _targetOffset = _defaultOffset;
+            //_targetOffset = _defaultOffset;
+            _currentOffset = _defaultOffset;
         }
 
         private void Update()
@@ -32,6 +33,7 @@ namespace MonsterArena
             _currentOffset = Mathf.Lerp(_currentOffset, _targetOffset, Time.deltaTime * 1.5f);
 
             _cloudsMaterial.SetFloat(Constants.Offset, _currentOffset);
+            _cloudsCollider.transform.localScale = _currentOffset / 210.0f * Vector3.one;
         }
 
         public void SetOffset(float newOffset, bool animated = false)

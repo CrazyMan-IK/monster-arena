@@ -80,6 +80,7 @@ namespace MonsterArena
             PlayerPrefs.DeleteKey(Constants.DamageLevelKey);
             PlayerPrefs.DeleteKey(Constants.CargoLevelKey);
             PlayerPrefs.DeleteKey(Constants.SpeedLevelKey);
+            PlayerPrefs.DeleteKey(Constants.RadarLevelKey);
 
             PlayerPrefs.SetString(Constants.ActiveLevelKey, scene);
 

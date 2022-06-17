@@ -72,7 +72,7 @@ Material:
     - _Draw: 0
     - _DrawCircle: 1
     - _DstBlend: 0
-    - _Fill: 0
+    - _Fill: 0.12
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
