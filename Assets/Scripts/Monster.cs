@@ -8,6 +8,7 @@ using MonsterArena.Models;
 using MonsterArena.Extensions;
 using MonsterArena.Interfaces;
 using RayFire;
+using Source.EnemyView;
 
 namespace MonsterArena
 {
@@ -42,6 +43,7 @@ namespace MonsterArena
         //[SerializeField] private Vector3 _bombOffset = Vector3.zero;
         [SerializeField] private Transform _propRoot = null;
         [SerializeField] private MonsterAnimationEventsRepeater _repeater = null;
+        [SerializeField] private FieldOfView _fieldOfView;
         [SerializeField] private LayerMask _propLayerMask = default;
         [SerializeField] private LayerMask _helicopterLayerMask = default;
         [SerializeField] private float _attackDelay = 3;
@@ -82,6 +84,7 @@ namespace MonsterArena
         public bool CanUseAbility => _ability.CanUse;
         //public bool HasProp => _prop != null;
         public bool IsStunned { get; private set; } = false;
+        public bool IsThrowing => _animation.IsThrowing;
 
         private void Awake()
         {
@@ -169,7 +172,10 @@ namespace MonsterArena
             _shadow.material.SetFloat(Constants.Radius, Mathf.Lerp(_shadow.material.GetFloat(Constants.Radius), AttackArea, Time.deltaTime * _RadiusChangingSpeedMultiplier));
             _shadow.material.SetFloat(Constants.Fill, Mathf.Min(_tickedTime / _targetTime, 1.0f));
 
-            _attackTimer.Update(Time.deltaTime);
+            if (HelicopterInRange(out Helicopter _))
+                _attackTimer.Update(Time.deltaTime);
+            else
+                _attackTimer.Reset();
         }
 
         private void OnDrawGizmos()
@@ -194,35 +200,47 @@ namespace MonsterArena
             _animation.IsAlive = true;
 
             _attackTimer.Reset();
+            _attackTimer.Start();
         }
 
         public void ThrowProp()
         {
+            if (HelicopterInRange(out Helicopter helicopter))
+            {
+                if (!_animation.IsThrowing)
+                {
+                    _attackTimer.Stop();
+
+                    _tickedTime = _animation.GetCurrentTime();
+                }
+
+                SetThrowing(true);
+
+                _lastTarget = helicopter.transform;
+            }
+        }
+
+        private bool HelicopterInRange(out Helicopter helicopter)
+        {
             var center = transform.position + _helicopter.CurrentHeight / 2.0f * Vector3.back;
             var centerXZ = center.GetXZ();
-
+            helicopter = null;
+            
             var count = Physics.SphereCastNonAlloc(center, 10, Vector3.up, _lastHits, 1000, _helicopterLayerMask);
             for (int i = 0; i < count; i++)
             {
                 var collider = _lastHits[i].collider;
                 var xzPos = _lastHits[i].transform.position.GetXZ();
 
-                if (collider.TryGetComponent(out Helicopter helicopter) && helicopter.IsAlive && Vector2.Distance(centerXZ, xzPos) < 10)
+                if (collider.TryGetComponent(out Helicopter target) && target.IsAlive &&
+                    Vector2.Distance(centerXZ, xzPos) < 10)
                 {
-                    if (!_animation.IsThrowing)
-                    {
-                        _attackTimer.Stop();
-
-                        _tickedTime = _animation.GetCurrentTime();
-                    }
-
-                    _animation.IsThrowing = true;
-                        
-                    _lastTarget = helicopter.transform;
-
-                    return;
+                    helicopter = target;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public void EnableRadiusPreview()
@@ -279,7 +297,8 @@ namespace MonsterArena
             _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             _animation.Rigidbody.isKinematic = true;
             _collider.enabled = false;
-
+            SetThrowing(false);
+            
             Died?.Invoke(this, source);
 
             SpawnResources();
@@ -337,26 +356,22 @@ namespace MonsterArena
             {
                 _attackTimer.Start();
 
-                _animation.IsThrowing = false;
-
+                SetThrowing(false);
                 _tickedTime = 0;
+                
+                if(_fieldOfView.TryFindVisibleTarget(out Helicopter helicopter))
+                    helicopter.TakeDamage(_information.Damage);
                 
                 return;
             }
             
-            var count = Physics.OverlapSphereNonAlloc(transform.position, 1, _lastColliders, _propLayerMask);
-            for (int i = 0; i < count; i++)
-            {
-                var collider = _lastColliders[i];
-
-                if (collider.TryGetComponent(out Prop prop) && prop.IsBase)
-                {
-                    prop.Demolish(transform.position);
-                }
-            }
-            
             _animation.IsAttacking = false;
-            _bomb.Explode(0.05f);
+        }
+
+        private void SetThrowing(bool active)
+        {
+            _animation.IsThrowing = active;
+            _fieldOfView.gameObject.SetActive(active);
         }
 
         private void OnKilledByAbility(Transform target)

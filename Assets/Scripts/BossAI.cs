@@ -82,6 +82,9 @@ namespace MonsterArena
 
             if (_lastHeliTarget != null)
             {
+                if(_monster.IsThrowing)
+                    return;
+                
                 var center = _monster.Helicopter.transform.position +
                              _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward;
                 var target = (center - transform.position).GetXZ();

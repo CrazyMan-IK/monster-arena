@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Autodesk.Fbx;
 using UnityEngine;
 
 namespace Source.EnemyView
@@ -36,8 +37,6 @@ namespace Source.EnemyView
             viewMesh = new Mesh();
             viewMesh.name = "View Mesh";
             viewMeshFilter.mesh = viewMesh;
-
-            StartCoroutine(FindTargetsWithDelay(_castDelay));
         }
 
 
@@ -46,7 +45,6 @@ namespace Source.EnemyView
             while (true)
             {
                 yield return new WaitForSeconds(delay);
-                FindVisibleTargets();
             }
         }
 
@@ -55,11 +53,12 @@ namespace Source.EnemyView
             DrawFieldOfView();
         }
 
-        void FindVisibleTargets()
+        public bool TryFindVisibleTarget<TTarget>(out TTarget foundTarget) where TTarget : MonoBehaviour 
         {
             visibleTargets.Clear();
             Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
+            foundTarget = null;
+            
             for (int i = 0; i < targetsInViewRadius.Length; i++)
             {
                 Transform target = targetsInViewRadius[i].transform;
@@ -73,9 +72,17 @@ namespace Source.EnemyView
                     {
                         SightedTarget?.Invoke(target.transform);
                         visibleTargets.Add(target);
+
+                        if (target.TryGetComponent(out TTarget component))
+                        {
+                            foundTarget = component;
+                            return true;
+                        }
                     }
                 }
             }
+
+            return false;
         }
 
         void DrawFieldOfView()

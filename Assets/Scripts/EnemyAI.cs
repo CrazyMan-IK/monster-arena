@@ -13,7 +13,7 @@ namespace MonsterArena
     [RequireComponent(typeof(Monster))]
     public class EnemyAI : MonoBehaviour, IInput
     {
-        private const float _RotationSpeed = 10.0f;
+        private const float _RotationSpeed = 5.0f;
 
         public event Action AbilityUsed = null;
         public event Action PropThrowed = null;
@@ -103,8 +103,11 @@ namespace MonsterArena
 
             if (_lastHeliTarget != null)
             {
-                var center = _monster.Helicopter.transform.position +
-                             _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward;
+                if(_monster.IsThrowing)
+                    return;
+                
+                var center = _monster.Helicopter.transform.position/* +
+                             _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward*/;
                 var target = (center - transform.position).GetXZ();
                 Direction = Vector2.Lerp(Direction, target.normalized / 500, _RotationSpeed * Time.deltaTime);
             }

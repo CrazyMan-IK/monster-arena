@@ -828,6 +828,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Huggy_Wuggy
       objectReference: {fileID: 0}
+    - target: {fileID: 1724192448674835760, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724192448674835760, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.685
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724192448674835769, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1874937357755865140, guid: 542c0046b505f2847a4e1613bc0ad27a, type: 3}
       propertyPath: m_RootOrder
       value: 0
