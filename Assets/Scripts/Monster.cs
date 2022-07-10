@@ -56,7 +56,7 @@ namespace MonsterArena
         private readonly RaycastHit[] _lastHits = new RaycastHit[64];
         private MonsterAnimation _animation = null;
         private IMonsterAbility _ability = null;
-        private Prop _prop = null;
+        //private Prop _prop = null;
         //private Helicopter _lastClosestHelicopter = null;
         private Transform _lastTarget = null;
         private Timer _attackTimer = null;
@@ -80,7 +80,7 @@ namespace MonsterArena
         public float AttackArea => _ability.TransformRange(_information.AttackArea);// * (_prop != null ? 1.5f : 1.0f);
         public float CameraDistance => _ability.TransformRange(10);// * (_prop != null ? 1.5f : 1.0f);// _prop != null ? 15 : 10);
         public bool CanUseAbility => _ability.CanUse;
-        public bool HasProp => _prop != null;
+        //public bool HasProp => _prop != null;
         public bool IsStunned { get; private set; } = false;
 
         private void Awake()
@@ -113,7 +113,6 @@ namespace MonsterArena
         {
             _ability.Initialize(information, _helicopterLayerMask);
 
-            //_maxHP = information.HP;
             _hp = _maxHP;
 
             _information = information;
@@ -170,40 +169,7 @@ namespace MonsterArena
             _shadow.material.SetFloat(Constants.Radius, Mathf.Lerp(_shadow.material.GetFloat(Constants.Radius), AttackArea, Time.deltaTime * _RadiusChangingSpeedMultiplier));
             _shadow.material.SetFloat(Constants.Fill, Mathf.Min(_tickedTime / _targetTime, 1.0f));
 
-            if (!HasProp)
-            {
-                var count = Physics.OverlapSphereNonAlloc(transform.position, 1, _lastColliders, _propLayerMask);
-                for (int i = 0; i < count; i++)
-                {
-                    var collider = _lastColliders[i];
-
-                    if (collider.TryGetComponent(out Prop prop) && prop.IsBase)
-                    {
-                        _animation.IsAttacking = true;
-                        break;
-                    }
-                }
-            }
-
             _attackTimer.Update(Time.deltaTime);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!HasProp && other.TryGetComponent(out Prop prop) && !prop.IsFaded && !prop.IsThrowed)
-            {
-                /*if (prop.IsBase)
-                {
-                    _near
-                }
-                else*/
-                if (!prop.IsBase)
-                {
-                    _prop = prop;
-                    
-                    _prop.Take(_propRoot);
-                }
-            }
         }
 
         private void OnDrawGizmos()
@@ -232,11 +198,6 @@ namespace MonsterArena
 
         public void ThrowProp()
         {
-            if (!HasProp)
-            {
-                return;
-            }
-
             var center = transform.position + _helicopter.CurrentHeight / 2.0f * Vector3.back;
             var centerXZ = center.GetXZ();
 
@@ -255,8 +216,6 @@ namespace MonsterArena
                         _tickedTime = _animation.GetCurrentTime();
                     }
 
-                    //_prop.Throw(transform, collider.transform.position);
-                    //_prop = null;
                     _animation.IsThrowing = true;
                         
                     _lastTarget = helicopter.transform;
@@ -264,7 +223,6 @@ namespace MonsterArena
                     return;
                 }
             }
-            //_animation.IsThrowing = true;
         }
 
         public void EnableRadiusPreview()
@@ -368,43 +326,21 @@ namespace MonsterArena
             WinAnimationCompleted?.Invoke();
         }
 
-        //private float _lastTime = 0;
-
         private void OnAttacked()
         {
-            /*for (int i = 0; i < 16384; i++)
-            {
-                var point = transform.position.GetXZ() + URandom.insideUnitCircle * AttackArea;
-                var isInside = point.IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, AttackArea, _information.AttackAngle);
-
-                Debug.DrawRay(point.AsXZ(), Vector3.up, isInside ? Color.green : Color.red, 1.0f);
-            }
-            return;*/
-
             if (!IsAlive || IsStunned)
             {
                 return;
             }
 
-            //float distance = float.MaxValue;
-            //Monster closest = null;
-            if (_animation.IsThrowing && HasProp)
+            if (_animation.IsThrowing)
             {
                 _attackTimer.Start();
-
-                //var prop = Instantiate(_propsPrefabs[URandom.Range(0, _propsPrefabs.Count)], _propRoot.position, Quaternion.identity);
-                
-                _prop.Throw(transform, _lastTarget.position + Vector3.up * 0.5f, _damage);
-                _prop = null;
 
                 _animation.IsThrowing = false;
 
                 _tickedTime = 0;
                 
-                //Debug.Log($"Secs: {Time.time - _lastTime}");
-
-                //_lastTime = Time.time;
-
                 return;
             }
             
@@ -416,61 +352,11 @@ namespace MonsterArena
                 if (collider.TryGetComponent(out Prop prop) && prop.IsBase)
                 {
                     prop.Demolish(transform.position);
-
-                    //break;
                 }
             }
             
             _animation.IsAttacking = false;
             _bomb.Explode(0.05f);
-
-            //UnityEditor.EditorApplication.isPaused = true;
-
-            /*var center = transform.position + Vector3.back * 10;//_movement.CurrentHeight / 2.0f;
-
-            var count = Physics.SphereCastNonAlloc(center, 5, Vector3.up, _lastColliders, 1000, _helicopterLayerMask);
-            for (int i = 0; i < count; i++)
-            {
-                var collider = _lastColliders[i].collider;
-
-                if (collider.TryGetComponent(out Helicopter helicopter) && helicopter.HP > 0)
-                {
-                    //var current = Vector2.Distance(transform.position.GetXZ(), collider.transform.position.GetXZ());
-                    *//*if (_prop != null && _animation.IsThrowing && current < distance)
-                    {
-                        distance = current;
-                        closest = monster;
-
-                        continue;
-                    }*//*
-                    if (!collider.transform.position.GetXZ().IsInsideCircleSector(transform.position.GetXZ(), transform.localEulerAngles.y, AttackArea, _information.AttackAngle))
-                    {
-                        continue;
-                    }
-
-                    if (monster._tutorialHP > 0)
-                    {
-                        monster.TakeDamage(monster._maxHP / monster._tutorialHP, DamageSource.Player);
-                    }
-                    else if (Level >= monster.Level)
-                    {
-                        monster.Die(DamageSource.Player);
-                    }
-                    else
-                    {
-                        monster.TakeDamage(monster._maxHP / (monster.Level - Level + 1), DamageSource.Player);
-                    }
-                    
-                    if (monster.IsAlive)
-                    {
-                        continue;
-                    }
-
-                    LevelChanged?.Invoke(++Level);
-                    
-                    Killed?.Invoke(this, monster.transform);
-                }
-            }*/
         }
 
         private void OnKilledByAbility(Transform target)

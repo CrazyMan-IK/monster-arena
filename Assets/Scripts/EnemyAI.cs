@@ -14,7 +14,7 @@ namespace MonsterArena
     public class EnemyAI : MonoBehaviour, IInput
     {
         private const float _RotationSpeed = 10.0f;
-        
+
         public event Action AbilityUsed = null;
         public event Action PropThrowed = null;
 
@@ -26,7 +26,7 @@ namespace MonsterArena
         private readonly Collider[] _lastColliders = new Collider[256];
         private readonly RaycastHit[] _lastHits = new RaycastHit[64];
         private Monster _monster = null;
-        private Transform _lastPropTarget = null;
+        //private Transform _lastPropTarget = null;
         private Transform _lastHeliTarget = null;
         private Vector3[] _path = null;
         private int _currentPropWaypoint = 0;
@@ -39,7 +39,7 @@ namespace MonsterArena
         private void Awake()
         {
             _monster = GetComponent<Monster>();
-            
+
             for (int i = 0; i < _waypoints.Count; i++)
             {
                 var current = _waypoints[i];
@@ -73,49 +73,10 @@ namespace MonsterArena
             {
                 return;
             }
-            
+
             if (!_monster.IsAlive)
             {
                 _currentWaypoint = 0;
-            }
-
-            if (_monster.HasProp && _lastPropTarget != null)// && !_lastTarget.IsAlive)
-            {
-                if (_time < 0.5f)
-                {
-                    _time += Time.deltaTime;
-                    //Direction = Vector2.zero;
-                    Direction = (_lastPropTarget.position - transform.position).GetXZ().Rotate(_additionalHitAngle * Mathf.Deg2Rad) / 500.0f;
-                    //UnityEditor.EditorApplication.isPaused = true;
-                    return;
-                }
-                _time = 0;
-                
-                var closestWaypoint = _waypoints[0];
-                var closestDistance = Vector3.Distance(closestWaypoint.position, transform.position);
-                for (int i = 1; i < _waypoints.Count; i++)
-                {
-                    var distance = Vector3.Distance(_waypoints[i].position, transform.position);
-
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestWaypoint = _waypoints[i];
-                        _currentWaypoint = i;
-                    }
-                }
-
-                var path = new NavMeshPath();
-                NavMesh.CalculatePath(transform.position, _waypoints[_currentWaypoint].position, 1, path);
-
-                _path = null;
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    _path = path.corners;
-                }
-                _currentPropWaypoint = 0;
-
-                _lastPropTarget = null;
             }
             
             if (_lastHeliTarget != null)
@@ -123,95 +84,29 @@ namespace MonsterArena
                 _lastHeliTarget = null;
             }
 
-            if (!_monster.HasProp && _lastPropTarget == null)
+            var origin = transform.position + _monster.Helicopter.CurrentHeight / 2.0f * Vector3.back;
+            var centerXZ = origin.GetXZ();
+
+            var count = Physics.SphereCastNonAlloc(origin, 10, Vector3.up, _lastHits, 1000, _helicopterLayerMask);
+            for (int i = 0; i < count; i++)
             {
-                var minDist = float.MaxValue;
+                var collider = _lastHits[i].collider;
+                var xzPos = collider.transform.position.GetXZ();
 
-                var count = Physics.OverlapSphereNonAlloc(transform.position, 100, _lastColliders, _propLayerMask);
-                for (int i = 0; i < count; i++)
+                if (collider.TryGetComponent(out Helicopter helicopter) && helicopter.IsAlive &&
+                    Vector2.Distance(centerXZ, xzPos) < 10)
                 {
-                    var collider = _lastColliders[i];
-                    var dist = Vector3.Distance(transform.position, collider.transform.position);
-
-                    if (collider.TryGetComponent(out Prop prop) && !prop.IsFaded && !prop.IsThrowed && dist < minDist)
-                    {
-                        _lastPropTarget = prop.transform;
-                        minDist = dist;
-                    }
-                }
-
-                if (_lastPropTarget != null)
-                {
-                    var path = new NavMeshPath();
-                    NavMesh.CalculatePath(transform.position, _lastPropTarget.position, 1, path);
-
-                    _path = null;
-                    if (path.status == NavMeshPathStatus.PathComplete)
-                    {
-                        _path = path.corners;
-                    }
-                    _currentPropWaypoint = 0;
-                }
-            }
-            else
-            {
-                var center = transform.position + _monster.Helicopter.CurrentHeight / 2.0f * Vector3.back;
-                var centerXZ = center.GetXZ();
-
-                var count = Physics.SphereCastNonAlloc(center, 10, Vector3.up, _lastHits, 1000, _helicopterLayerMask);
-                for (int i = 0; i < count; i++)
-                {
-                    var collider = _lastHits[i].collider;
-                    var xzPos = collider.transform.position.GetXZ();
-
-                    if (collider.TryGetComponent(out Helicopter helicopter) && helicopter.IsAlive && Vector2.Distance(centerXZ, xzPos) < 10)
-                    {
-                        _lastHeliTarget = helicopter.transform;
-                        break;
-                    }
+                    _lastHeliTarget = helicopter.transform;
+                    break;
                 }
             }
 
-            if (_lastPropTarget != null && !_monster.HasProp && _path != null)
+            if (_lastHeliTarget != null)
             {
-                if (_currentPropWaypoint < _path.Length)// || (_lastTarget.position - transform.position).magnitude <= 0.5f)
-                {
-                    var waypoint = _currentPropWaypoint == _path.Length - 1 ? _lastPropTarget.position : _path[_currentPropWaypoint];
-
-                    var target = (waypoint - transform.position).GetXZ();
-                    var mag = target.magnitude;
-                    if (mag <= 1.0f)
-                    {
-                        _currentPropWaypoint++;
-                    }
-
-                    target.Normalize();
-
-                    //Direction = target;
-                    Direction = target;// * Mathf.Min((_lastTarget.position - transform.position).magnitude, 1);
-                }
-                else
-                {
-                    Direction = (_lastPropTarget.position - transform.position).GetXZ();
-                    Direction.Normalize();
-                    Direction /= 500; //new Vector2(500, -500);
-                }
-            }
-            else if (_lastHeliTarget != null)
-            {
-                var center = _monster.Helicopter.transform.position + _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward;
-                //var target = (_lastTarget.transform.position - transform.position).GetXZ();
+                var center = _monster.Helicopter.transform.position +
+                             _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward;
                 var target = (center - transform.position).GetXZ();
-
-                //Direction = Vector2.Lerp(Direction, target.magnitude > _monster.AttackArea / 1.25f ? (target / Mathf.Max(target.magnitude, _monster.AttackArea)) : (target.normalized / 500), _RotationSpeed * Time.deltaTime);
                 Direction = Vector2.Lerp(Direction, target.normalized / 500, _RotationSpeed * Time.deltaTime);
-                //Direction = target.magnitude > _monster.AttackArea / 1.25f ? (target / Mathf.Max(target.magnitude, _monster.AttackArea)) : (target.normalized / 500);
-                //Direction = (target / Mathf.Max(target.magnitude, 5)).GetXZ();
-
-                /*if (target.magnitude < _monster.Information.ViewArea)
-                {
-                    PropThrowed?.Invoke();
-                }*/
             }
             else
             {
@@ -222,7 +117,7 @@ namespace MonsterArena
                     waypoints = _path;
                     currentWaypoint = ref _currentPropWaypoint;
                 }
-                
+
                 var waypoint = waypoints[currentWaypoint];
 
                 var target = (waypoint - transform.position).GetXZ();
@@ -248,7 +143,7 @@ namespace MonsterArena
             DrawWay(_waypoints.Select(x => x.position), true, Color.white);
             DrawWay(_path, false, Color.black);
         }
-        
+
         private void DrawWay(IEnumerable<Vector3> waypoints, bool isLooped, Color baseColor)
         {
             var count = waypoints?.Count() ?? 0;
@@ -304,7 +199,6 @@ namespace MonsterArena
         private void OnDied(Monster monster, DamageSource source)
         {
             _path = null;
-            _lastPropTarget = null;
             _lastHeliTarget = null;
 
             _currentWaypoint = 0;
