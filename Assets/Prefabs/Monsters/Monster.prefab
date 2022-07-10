@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1247159801383060110}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4758855616508646123}
   - {fileID: 6154978011652642108}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341fdecb1250a14428a408a62a71929e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _information: {fileID: 0}
+  _information: {fileID: 11400000, guid: f86888f4e28f88b4cbd37cb6f2c3858c, type: 2}
   _stunEffect: {fileID: 6315412598002982510}
   _resourcePrefab: {fileID: 7496716322116620624, guid: 6be26d1e908ce4b4c9e3e0bcb791923c, type: 3}
   _renderer: {fileID: 0}
