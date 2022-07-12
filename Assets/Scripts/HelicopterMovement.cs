@@ -32,6 +32,7 @@ namespace MonsterArena
 
         //public Monster Monster => _monster;
         public float AirMultiplier { get; private set; } = 0;
+        public bool Moving { get; private set; } = false;
         public float CurrentHeight => _rigidbody.position.y - _basePosition.y;
         public float CargoVisual => _modifiers.CargoVisual;
 
@@ -90,12 +91,13 @@ namespace MonsterArena
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+            Moving = false;
 
             if (!_helicopter.IsAlive || _input.Value == null)
             {
                 return;
             }
-
+            
             var direction = _input.Value.Direction.AsXZ();
             var mag = direction.magnitude;
             
@@ -146,6 +148,7 @@ namespace MonsterArena
                 _lastDirection = direction;
 
                 AirMultiplier = Mathf.Lerp(AirMultiplier, 1, mag * (1 - AirMultiplier) * Time.deltaTime);
+                Moving = true;
             }
         }
 

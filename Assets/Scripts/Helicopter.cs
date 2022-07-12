@@ -213,7 +213,8 @@ namespace MonsterArena
                 }
             }
             
-            _timer.Update(Time.deltaTime);
+            if(_movement.Moving == false)
+                _timer.Update(Time.deltaTime);
 
             if (_isInsideHealZone)
             {
