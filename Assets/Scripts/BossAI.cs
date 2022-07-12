@@ -85,17 +85,10 @@ namespace MonsterArena
                 if(_monster.IsThrowing)
                     return;
                 
-                var center = _monster.Helicopter.transform.position +
-                             _monster.Helicopter.CurrentHeight / 2.0f * Vector3.forward;
+                var center = _monster.Helicopter.transform.position;
                 var target = (center - transform.position).GetXZ();
 
                 Direction = Vector2.Lerp(Direction, target.normalized / 500, _RotationSpeed * Time.deltaTime);
-            }
-            else
-            {
-                var target = (_basePosition - transform.position).GetXZ();
-
-                Direction = target / Mathf.Max(target.magnitude, 1);
             }
 
             PropThrowed?.Invoke();

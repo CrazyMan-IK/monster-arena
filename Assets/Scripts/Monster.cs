@@ -124,9 +124,9 @@ namespace MonsterArena
             _shadow.material.SetFloat(Constants.Angle, information.AttackAngle);
             _shadow.material.SetFloat(Constants.OrthographicSize, _shadow.orthographicSize);
 
-            _animation.Initialize(information, 3 / _attackDelay);
+            _animation.Initialize(information, _animation.GetAttackDuration() / 3 / 0.66f);
             
-            _attackTimer = new Timer((_attackDelay - _animation.GetAttackDuration()) * 3.7f);
+            _attackTimer = new Timer(_attackDelay);
             _attackTimer.Ticked += ThrowProp;
         }
 
