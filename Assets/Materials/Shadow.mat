@@ -66,7 +66,7 @@ Material:
     m_Floats:
     - _Angle: 55
     - _BumpScale: 1
-    - _CircleActive: 1
+    - _CircleActive: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _Draw: 0
@@ -84,7 +84,7 @@ Material:
     - _Orthogonal: 0
     - _OrthographicSize: 10
     - _Parallax: 0.02
-    - _Radius: 6.053126e-23
+    - _Radius: 9.999999
     - _ShadowRadius: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
