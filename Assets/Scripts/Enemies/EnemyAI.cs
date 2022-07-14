@@ -103,7 +103,7 @@ namespace MonsterArena
 
             if (_lastHeliTarget != null)
             {
-                if(_monster.IsThrowing)
+                if(_monster.Attacking)
                     return;
                 
                 var center = _monster.Helicopter.transform.position/* +

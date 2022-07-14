@@ -23,12 +23,22 @@ namespace MonsterArena
             _monster = GetComponent<Monster>();
         }
 
+        private void OnEnable()
+        {
+            _monster.Died += OnDied;
+        }
+
+        private void OnDisable()
+        {
+            _monster.Died -= OnDied;
+        }
+
         private void Update()
         {
-            if (_monster.HelicopterInRange(out Helicopter _))
+            if (_monster.HelicopterInRange(out Helicopter _) || _monster.Attacking || !_monster.IsAlive)
             {
                 Direction = Vector2.zero;
-                
+
                 return;
             }
 
@@ -39,6 +49,11 @@ namespace MonsterArena
 
         public void Lock()
         {
+        }
+
+        private void OnDied(Monster monster, DamageSource source)
+        {
+            time = 0;
         }
     }
 }

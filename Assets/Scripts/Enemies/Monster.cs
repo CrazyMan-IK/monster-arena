@@ -55,7 +55,7 @@ namespace MonsterArena
         public bool IsAlive => _hp > 0;
         public float MovementSpeed => _information.MovementSpeed;
         public bool IsStunned { get; private set; } = false;
-        public bool IsThrowing => _animation.IsThrowing;
+        public bool Attacking => _animation.IsThrowing;
 
         private void Awake()
         {
@@ -128,6 +128,7 @@ namespace MonsterArena
 
             _hp = _maxHP;
             _animation.Rigidbody.isKinematic = false;
+            _animation.Rigidbody.useGravity = true;
             _animation.Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             _collider.enabled = true;
             
@@ -245,7 +246,7 @@ namespace MonsterArena
             WinAnimationCompleted?.Invoke();
         }
 
-        private void OnAttacked()
+        public void OnAttacked()
         {
             if (!IsAlive || IsStunned)
                 return;

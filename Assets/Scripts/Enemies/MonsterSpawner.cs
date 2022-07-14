@@ -67,6 +67,7 @@ namespace MonsterArena
         {
             _monster.Revive();
             _monster.transform.localPosition = Vector3.zero;
+            _monster.transform.localRotation = Quaternion.identity;
 
             _timeText.gameObject.SetActive(false);
 
