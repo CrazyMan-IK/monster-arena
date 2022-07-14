@@ -149,7 +149,7 @@ namespace MonsterArena
             }
         }
 
-        private bool HelicopterInRange(out Helicopter helicopter)
+        public bool HelicopterInRange(out Helicopter helicopter)
         {
             var center = transform.position + _helicopter.CurrentHeight / 2.0f * Vector3.back;
             var centerXZ = center.GetXZ();
