@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MilitaryBase.unity
     guid: 2e19d3e8db8e7234a9173c2f85e69d41
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Ocean.unity
     guid: 8cdf6fbd2f11de644ae1d23b89fa4a48
   - enabled: 0

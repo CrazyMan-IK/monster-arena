@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &724250173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 724250174}
+  - component: {fileID: 724250175}
+  m_Layer: 8
+  m_Name: ForwardTrigger (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &724250174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724250173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1997801773583075781}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &724250175
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724250173}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2.5
+  m_Height: 500
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3794384750651380373
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3682845162619086157}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftSP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3895792315822669498}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightSP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +117,7 @@ GameObject:
   - component: {fileID: 1323303109831901409}
   - component: {fileID: 5076754750760739738}
   - component: {fileID: 1003230967508293836}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rotor Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1502,7 +1547,7 @@ GameObject:
   - component: {fileID: 7294141818184855172}
   - component: {fileID: 626109560939874307}
   - component: {fileID: 5011555434047824831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Helicopter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1518,7 +1563,7 @@ Transform:
   m_GameObject: {fileID: 6332119522628228655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 5934159736519823288}
   - {fileID: 1798036097792184488}
@@ -1526,6 +1571,7 @@ Transform:
   - {fileID: 3682845162619086157}
   - {fileID: 3895792315822669498}
   - {fileID: 2006843331811986124}
+  - {fileID: 724250174}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1667,7 +1713,7 @@ MonoBehaviour:
   _rotor: {fileID: 1798036097792184488}
   _leftSP: {fileID: 3682845162619086157}
   _rightSP: {fileID: 3895792315822669498}
-  _forwardTrigger: {fileID: 2006843331811986124}
+  _forwardTrigger: {fileID: 724250174}
   _castingLayerMask:
     serializedVersion: 2
     m_Bits: 558080
@@ -1687,7 +1733,7 @@ GameObject:
   - component: {fileID: 5934159736519823288}
   - component: {fileID: 7248102314759343962}
   - component: {fileID: 5273171179031467620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Missiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1768,7 +1814,7 @@ GameObject:
   - component: {fileID: 1798036097792184488}
   - component: {fileID: 6517846613037589043}
   - component: {fileID: 4980094898638757777}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rotor Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1854,7 +1900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2006843331811986124
 Transform:
   m_ObjectHideFlags: 0

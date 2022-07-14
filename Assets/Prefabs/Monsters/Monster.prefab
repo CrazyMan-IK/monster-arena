@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7007175308815195450}
   - component: {fileID: 9198950949748636790}
   - component: {fileID: 6460624711226307148}
+  - component: {fileID: 7326261644279295828}
   m_Layer: 10
   m_Name: Monster
   m_TagString: Untagged
@@ -102,24 +103,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _information: {fileID: 11400000, guid: f86888f4e28f88b4cbd37cb6f2c3858c, type: 2}
-  _stunEffect: {fileID: 6315412598002982510}
+  _monsterAttack:
+    _underlyingValue: {fileID: 7326261644279295828}
   _resourcePrefab: {fileID: 7496716322116620624, guid: 6be26d1e908ce4b4c9e3e0bcb791923c, type: 3}
   _renderer: {fileID: 0}
-  _shadow: {fileID: 3266140198621508558}
   _collider: {fileID: -8457940167223531592}
-  _bomb: {fileID: 4539454898330328992}
-  _propRoot: {fileID: 0}
   _repeater: {fileID: 9198950949748636790}
-  _fieldOfView: {fileID: 1724192448674835775}
-  _propLayerMask:
-    serializedVersion: 2
-    m_Bits: 8192
   _helicopterLayerMask:
     serializedVersion: 2
     m_Bits: 512
   _attackDelay: 1.5
   _maxHP: 1
-  _damage: 1
   <ResourcesCount>k__BackingField: 1
   <Level>k__BackingField: 1
   _helicopter: {fileID: 0}
@@ -153,6 +147,20 @@ MonoBehaviour:
   _hitEffect: {fileID: 0}
   _hitPositionTarget: {fileID: 0}
   _accelerationMultiplier: 15
+--- !u!114 &7326261644279295828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247159801383060110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f26442e9a6475a96871d28dbe295e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fieldOfView: {fileID: 1724192448674835775}
+  _animation: {fileID: 6460624711226307148}
 --- !u!1 &1747779111653472673
 GameObject:
   m_ObjectHideFlags: 0
@@ -29134,7 +29142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8841790720406312830
 Transform:
   m_ObjectHideFlags: 0

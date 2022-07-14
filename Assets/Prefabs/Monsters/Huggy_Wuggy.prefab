@@ -990,11 +990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5186b4db041f40c479f6fc2d82825c5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _waypoints: []
   _propLayerMask:
     serializedVersion: 2
     m_Bits: 8192

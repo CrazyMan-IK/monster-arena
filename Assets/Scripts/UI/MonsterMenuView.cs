@@ -50,8 +50,6 @@ namespace MonsterArena.UI
                 _monster.Renderer.material.DOColor(targetColor, Constants.ColorKey, _AnimationDuration);
                 _monster.Renderer.material.DOColor(targetColor, Constants.ColorDimKey, _AnimationDuration);
             }
-
-            _monster.DisableRadiusPreview();
         }
 
         private void Update()
