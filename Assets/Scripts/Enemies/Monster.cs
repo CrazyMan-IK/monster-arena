@@ -22,6 +22,7 @@ namespace MonsterArena
     {
         public event Action WinAnimationCompleted = null;
         public event Action<Monster, DamageSource> Died = null;
+        public event Action<Monster> Revived;
 
         [Header("Main")]
         [SerializeField] private MonsterInformation _information = null;
@@ -136,6 +137,7 @@ namespace MonsterArena
 
             _attackTimer.Reset();
             _attackTimer.Start();
+            Revived?.Invoke(this);
         }
 
         private void Attack()
