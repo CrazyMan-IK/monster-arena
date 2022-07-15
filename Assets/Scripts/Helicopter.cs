@@ -142,7 +142,7 @@ namespace MonsterArena
                     closest = distance;
                     _target = monster;
                 }
-                else if (Cargo < MaxCargo && collider.TryGetComponent(out Resource resource) && !resource.IsAttracted && Vector2.Distance(centerXZ, xzPos) < _radius / 2.5f)
+                else if (Cargo < MaxCargo && collider.TryGetComponent(out Resource resource) && !resource.IsAttracted && Vector2.Distance(centerXZ, xzPos) < _radius / 2f)
                 {
                     Cargo++;
 
