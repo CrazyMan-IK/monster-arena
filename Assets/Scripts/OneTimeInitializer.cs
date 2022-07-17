@@ -26,12 +26,9 @@ namespace MonsterArena
             {
                 loadable.SceneLoaded();
             }*/
-
-#if UNITY_EDITOR
+            
             Application.targetFrameRate = 60;
-#else
-            Application.targetFrameRate = Screen.currentResolution.refreshRate;
-#endif
+
             var sessionsCount = PlayerPrefs.GetInt(Constants.SessionsCountKey, 0);
             sessionsCount++;
             PlayerPrefs.SetInt(Constants.SessionsCountKey, sessionsCount);

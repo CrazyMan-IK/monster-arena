@@ -24,7 +24,7 @@ namespace MonsterArena
         {
             _sceneTransition = GetComponent<SceneTransition>();
 
-            _sceneTransition.Load(PlayerPrefs.GetString(Constants.ActiveLevelKey, _buttons[1].Scene), false, OnSceneLoaded);
+            _sceneTransition.Load(PlayerPrefs.GetString(Constants.ActiveLevelKey, _buttons[0].Scene), false, OnSceneLoaded);
         }
 
         private void OnEnable()

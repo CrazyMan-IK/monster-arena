@@ -561,7 +561,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Avatar Rig Configuration mis-match. Inbetween bone rotation
       in configuration does not match rotation in animation file:\n\t'MonsterSpine1'
-      : rotation error = 3.069901 deg\n\t'MonsterSpine2' : rotation error = 20.206827
+      : rotation error = 3.069901 deg\n\t'MonsterSpine2' : rotation error = 20.206829
       deg\n\t'MonsterSpine' : rotation error = 4.896206 deg\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
@@ -617,7 +617,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
