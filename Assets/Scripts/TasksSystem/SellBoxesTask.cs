@@ -41,7 +41,7 @@ namespace MonsterArena.TasksSystem
         public bool IsCompleted => _selledBoxesCount >= _boxesCount;
         public Sprite Icon => _icon;
         public float Progress => _selledBoxesCount * 1.0f / _boxesCount;
-        public string Description => $"Sell {_boxesCount} boxes";
+        public string Description => $"Sell {_boxesCount} barrels";
         public string Status => $"{_selledBoxesCount} / {_boxesCount}";
 
         public void Enable()
