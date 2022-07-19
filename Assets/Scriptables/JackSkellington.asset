@@ -16,7 +16,7 @@ MonoBehaviour:
   <MonsterPrefab>k__BackingField: {fileID: 3107565083384402541, guid: 87ea75a852c42894b88a6cc05e3f9c54, type: 3}
   <Name>k__BackingField: Jack Skellington
   <HP>k__BackingField: 3
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 1.5
   <MovementSpeed>k__BackingField: 4
   <AttackArea>k__BackingField: 3
   <AttackAngle>k__BackingField: 60

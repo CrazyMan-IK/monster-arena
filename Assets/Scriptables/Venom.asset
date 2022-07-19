@@ -16,7 +16,7 @@ MonoBehaviour:
   <MonsterPrefab>k__BackingField: {fileID: 1605276960212274606, guid: c93ca01afc1460b45b6d462500dd036b, type: 3}
   <Name>k__BackingField: Venom
   <HP>k__BackingField: 3
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 2.5
   <MovementSpeed>k__BackingField: 2
   <AttackArea>k__BackingField: 4
   <AttackAngle>k__BackingField: 25

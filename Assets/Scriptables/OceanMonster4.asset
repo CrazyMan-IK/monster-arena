@@ -16,7 +16,7 @@ MonoBehaviour:
   <MonsterPrefab>k__BackingField: {fileID: 2747206154854841298, guid: 5c592e652002bc34eb1a28dcfeafc3b1, type: 3}
   <Name>k__BackingField: OceanMonster4
   <HP>k__BackingField: 3
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 3.5
   <MovementSpeed>k__BackingField: 2
   <AttackArea>k__BackingField: 4
   <AttackAngle>k__BackingField: 25

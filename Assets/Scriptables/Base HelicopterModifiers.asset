@@ -15,15 +15,15 @@ MonoBehaviour:
   _baseHealthVisual: {fileID: 2100000, guid: c22de10f3be8f9c40b3bb9b287ecbeeb, type: 2}
   _baseDamageVisual: {fileID: 2100000, guid: c22de10f3be8f9c40b3bb9b287ecbeeb, type: 2}
   _healthValues:
-  - <Price>k__BackingField: 6
+  - <Price>k__BackingField: 3
     <Value>k__BackingField: 1
     <Experience>k__BackingField: 5
     <Visual>k__BackingField: {fileID: 2100000, guid: c22de10f3be8f9c40b3bb9b287ecbeeb, type: 2}
-  - <Price>k__BackingField: 8
+  - <Price>k__BackingField: 5
     <Value>k__BackingField: 3
     <Experience>k__BackingField: 10
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}
-  - <Price>k__BackingField: 10
+  - <Price>k__BackingField: 7
     <Value>k__BackingField: 6
     <Experience>k__BackingField: 15
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}

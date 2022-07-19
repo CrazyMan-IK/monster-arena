@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 432564264982077
+  - 1483187562107407
   appLabels:
-  - MonsterArena
+  - Monster arena
   cookie: 1
   logging: 0
   status: 1

@@ -64,7 +64,7 @@ namespace MonsterArena
 
         public float CurrentHeight => _movement.CurrentHeight;
         public float HP => _hp / MaxHP;
-        public float MaxHP => _modifiers.TransformHealth(10);
+        public float MaxHP => _modifiers.TransformHealth(3);
         public float Radius => _radius;
         public bool IsAlive => _hp > 0;
         public int MaxCargo => _modifiers.TransformCargo(5);
