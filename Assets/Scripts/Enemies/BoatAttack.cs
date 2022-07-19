@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using DG.Tweening;
-using Source.EnemyView;
 using UnityEngine;
 
 namespace MonsterArena
@@ -8,7 +7,7 @@ namespace MonsterArena
     [RequireComponent(typeof(Monster))]
     public class BoatAttack : MonoBehaviour, IMonsterAttack
     {
-        private const float AimingDelay = 2f;
+        private const float AimingDelay = 1.2f;
         
         [SerializeField] private MonsterAnimation _animation;
         [SerializeField] private Transform _attackCenter;
