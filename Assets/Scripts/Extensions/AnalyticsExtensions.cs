@@ -56,5 +56,15 @@ namespace MonsterArena.Extensions
             _userProfile.Apply(YandexAppMetricaAttribute.CustomNumber("current_soft").WithValue(currentValue));
             AppMetrica.Instance.ReportUserProfile(_userProfile);
         }
+
+        public static void LogTime(int timeTotalMinutes)
+        {
+            var properties = new Dictionary<string, object>()
+            {
+                {"elapsed_minutes", timeTotalMinutes}
+            };
+
+            AppMetrica.Instance.ReportEvent("play_time", properties);
+        }
     }
 }
