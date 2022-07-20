@@ -42,7 +42,6 @@ namespace MonsterArena
             PlayerPrefs.SetInt($"_levelEnabled {_scene.ScenePath}", 1);
         
             IsActive = true;
-            _button.enabled = true;
         }
 
         private void OnButtonClicked()

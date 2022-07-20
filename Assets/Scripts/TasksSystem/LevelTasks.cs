@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 using AYellowpaper;
@@ -37,7 +36,8 @@ namespace MonsterArena.TasksSystem
             _taskModels.AddRange(_tasks.Select(x => x.Value.ToModel()));
 
             CurrentTaskIndex = PlayerPrefs.GetInt(Constants.CurrentTaskIndexKey, 0);
-            UpdateProgressBarText();
+            UpdateProgressBarState();
+            
             if (IsCompleted)
             {
                 _chooseLevelButton.DOFade(1, 0.5f).OnComplete(() => {
@@ -82,6 +82,8 @@ namespace MonsterArena.TasksSystem
             {
                 task.Completed -= OnTaskCompleted;
             }
+            
+            SaveCurrentState();
         }
 
         private void OnValidate()
@@ -114,7 +116,7 @@ namespace MonsterArena.TasksSystem
         private void OnTaskCompleted()
         {
             CurrentTaskIndex++;
-            UpdateProgressBarText();
+            UpdateProgressBarState();
 
             PlayerPrefs.SetInt(Constants.CurrentTaskIndexKey, CurrentTaskIndex);
 
@@ -138,9 +140,10 @@ namespace MonsterArena.TasksSystem
             _taskView.SwapTask(CurrentTask);
         }
 
-        private void UpdateProgressBarText()
+        private void UpdateProgressBarState()
         {
             _totalProgressText.text = $"{CurrentTaskIndex} / {_tasks.Count}";
+            _totalProgressBar.gameObject.SetActive(!IsCompleted);
         }
     }
 }

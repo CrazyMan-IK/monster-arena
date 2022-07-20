@@ -45,7 +45,7 @@ namespace MonsterArena
 
         public void Open()
         {
-            _mainPanel.DOMoveY(_mainPanel.sizeDelta.y, 1.0f);
+            _mainPanel.gameObject.SetActive(true);
         }
 
         private void ActivateButton(string scenePath)
@@ -72,23 +72,14 @@ namespace MonsterArena
 
         private void OnLevelButtonClicked(SceneReference scene)
         {
-            PlayerPrefs.DeleteKey(Constants.CurrentTaskIndexKey);
-            PlayerPrefs.DeleteKey(Constants.CurrentTaskKey);
-            PlayerPrefs.DeleteKey(Constants.CargoKey);
-            PlayerPrefs.DeleteKey(Constants.WalletCoinsKey);
-            PlayerPrefs.DeleteKey(Constants.HealthLevelKey);
-            PlayerPrefs.DeleteKey(Constants.DamageLevelKey);
-            PlayerPrefs.DeleteKey(Constants.CargoLevelKey);
-            PlayerPrefs.DeleteKey(Constants.SpeedLevelKey);
             PlayerPrefs.DeleteKey(Constants.RadarLevelKey);
-
             PlayerPrefs.SetString(Constants.ActiveLevelKey, scene);
 
             PlayerPrefs.Save();
 
             _sceneTransition.Load(scene, true, OnSceneLoaded);
             
-            _mainPanel.DOMoveY(0, 1.0f);
+            _mainPanel.gameObject.SetActive(false);
         }
         
         private void OnSceneLoaded(Scene scene, GameObject[] rootObjects)

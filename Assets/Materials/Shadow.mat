@@ -84,7 +84,7 @@ Material:
     - _Orthogonal: 0
     - _OrthographicSize: 10
     - _Parallax: 0.02
-    - _Radius: 2.2053418e-22
+    - _Radius: 0
     - _ShadowRadius: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
