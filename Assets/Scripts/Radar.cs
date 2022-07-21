@@ -19,8 +19,8 @@ namespace MonsterArena
 
         private void Awake()
         {
-            //_targetOffset = _defaultOffset;
-            _currentOffset = _defaultOffset;
+            _currentOffset = _targetOffset;
+            SetMaterialOffset();
         }
 
         private void Update()
@@ -32,7 +32,7 @@ namespace MonsterArena
 
             _currentOffset = Mathf.Lerp(_currentOffset, _targetOffset, Time.deltaTime * 1.5f);
 
-            _cloudsMaterial.SetFloat(Constants.Offset, _currentOffset);
+            SetMaterialOffset();
             _cloudsCollider.transform.localScale = _currentOffset / 210.0f * Vector3.one;
         }
 
@@ -60,6 +60,11 @@ namespace MonsterArena
             {
                 _targetOffset = newOffset;
             }
+        }
+
+        private void SetMaterialOffset()
+        {
+            _cloudsMaterial.SetFloat(Constants.Offset, _currentOffset);
         }
 
         private void ResetAnimation()

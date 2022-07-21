@@ -28,13 +28,10 @@ namespace MonsterArena.UI
 
         private int _currentLevel = 0;
 
-        private void Awake()
-        {
-            _currentLevel = PlayerPrefs.GetInt(Constants.RadarLevelKey, 0);
-        }
-
         private void Start()
         {
+            _currentLevel = PlayerPrefs.GetInt(Constants.RadarLevelKey, 0);
+            Debug.Log(_levels[_currentLevel].offset);
             _radar.SetOffset(_levels[_currentLevel].offset);
 
             UpdateUI();

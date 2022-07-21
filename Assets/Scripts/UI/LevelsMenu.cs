@@ -73,6 +73,8 @@ namespace MonsterArena
         private void OnLevelButtonClicked(SceneReference scene)
         {
             PlayerPrefs.DeleteKey(Constants.RadarLevelKey);
+            PlayerPrefs.DeleteKey(Constants.CurrentTaskIndexKey);
+            PlayerPrefs.DeleteKey(Constants.CurrentTaskKey);
             PlayerPrefs.SetString(Constants.ActiveLevelKey, scene);
 
             PlayerPrefs.Save();

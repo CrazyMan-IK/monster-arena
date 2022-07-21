@@ -292,8 +292,8 @@ MonoBehaviour:
   _mainPanel: {fileID: 542970093}
   _temporaryCamera: {fileID: 1318419314}
   _buttons:
-  - {fileID: 936311723}
   - {fileID: 863788125}
+  - {fileID: 936311723}
 --- !u!114 &144179783
 MonoBehaviour:
   m_ObjectHideFlags: 0
