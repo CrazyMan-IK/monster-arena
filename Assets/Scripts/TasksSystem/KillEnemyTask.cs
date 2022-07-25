@@ -41,7 +41,7 @@ namespace MonsterArena.TasksSystem
         public bool IsCompleted => _killedEnemiesCount >= _enemiesCount;
         public Sprite Icon => _icon;
         public float Progress => _killedEnemiesCount * 1.0f / _enemiesCount;
-        public string Description => $"Kill {_enemiesCount} enemies with minimum {_minLevel} level";
+        public string Description => _enemiesCount == 1 ? $"Kill {_minLevel} level 1 enemy" : $"Kill {_minLevel} level {_enemiesCount} enemies" ;
         public string Status => $"{_killedEnemiesCount} / {_enemiesCount}";
 
         public void Enable()

@@ -30,7 +30,7 @@ namespace MonsterArena.UI
         {
             InitCoinsPool();
             _targetValue = PlayerPrefs.GetInt(Constants.WalletCoinsKey, 0);
-            _targetValue = 3000;
+            //_targetValue = 3000;
             if (_targetValue > 0)
             {
                 UpdateValue(_targetValue);

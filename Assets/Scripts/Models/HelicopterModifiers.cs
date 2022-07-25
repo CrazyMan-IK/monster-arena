@@ -40,6 +40,7 @@ namespace MonsterArena.Models
                 }
             }
         }
+
         public int DamageLevel
         {
             get => _damageLevel;
@@ -54,6 +55,7 @@ namespace MonsterArena.Models
                 }
             }
         }
+
         public int CargoLevel
         {
             get => _cargoLevel;
@@ -68,6 +70,7 @@ namespace MonsterArena.Models
                 }
             }
         }
+
         public int SpeedLevel
         {
             get => _speedLevel;
@@ -105,7 +108,7 @@ namespace MonsterArena.Models
                 return health + damage + cargo + speed;
             }
         }
-        
+
         public float CurrentExperienceMapped
         {
             get
@@ -143,53 +146,102 @@ namespace MonsterArena.Models
 
         public float TransformHealth(float health)
         {
-            if (_healthLevel <= 0)
-            {
-                return health;
-            }
-            
-            return health + _healthValues[_healthLevel - 1].Value;
+            return TransformHealth(health, _healthLevel - 1);
         }
 
         public float TransformDamage(float damage)
         {
-            if (_damageLevel <= 0)
-            {
-                return damage;
-            }
-
-            return damage + _damageValues[_damageLevel - 1].Value;
+            return TransformDamage(damage, _damageLevel - 1);
         }
 
         public int TransformCargo(int cargo)
         {
-            if (_cargoLevel <= 0)
-            {
-                return cargo;
-            }
-
-            return cargo + _cargoValues[_cargoLevel - 1].Value;
+            return TransformCargo(cargo, _cargoLevel - 1);
         }
 
         public float TransformSpeed(float speed)
         {
-            if (_speedLevel <= 0)
+            return TransformSpeed(speed, _speedLevel - 1);
+        }
+
+        public float TransformNextLevelHealth(int health)
+        {
+            return TransformHealth(health, _healthLevel);
+        }
+
+        public float TransformNextLevelDamage(float damage)
+        {
+            return TransformDamage(damage, _damageLevel);
+        }
+
+        public int TransformNextLevelCargo(int cargo)
+        {
+            return TransformCargo(cargo, _cargoLevel);
+        }
+
+        public float TransformNextLevelSpeed(float speed)
+        {
+            return TransformSpeed(speed, _speedLevel);
+        }
+
+        private float TransformHealth(float health, int healthLevel)
+        {
+            if (healthLevel < 0)
+            {
+                return health;
+            }
+
+            if (healthLevel >= _healthValues.Count)
+                healthLevel = _healthValues.Count - 1;
+
+            return health + _healthValues[healthLevel].Value;
+        }
+
+        private float TransformDamage(float damage, int damageLevel)
+        {
+            if (damageLevel < 0)
+            {
+                return damage;
+            }
+
+            if (damageLevel >= _damageValues.Count)
+                damageLevel = _damageValues.Count - 1;
+
+            return damage + _damageValues[damageLevel].Value;
+        }
+
+        private int TransformCargo(int cargo, int cargoLevel)
+        {
+            if (cargoLevel < 0)
+            {
+                return cargo;
+            }
+
+            if (cargoLevel >= _cargoValues.Count)
+                cargoLevel = _cargoValues.Count - 1;
+
+            return cargo + _cargoValues[cargoLevel].Value;
+        }
+
+        private float TransformSpeed(float speed, int speedLevel)
+        {
+            if (speedLevel < 0)
             {
                 return speed;
             }
 
-            return speed + _speedValues[_speedLevel - 1].Value;
+            if (speedLevel >= _speedValues.Count)
+                speedLevel = _speedValues.Count - 1;
+
+            return speed + _speedValues[speedLevel].Value;
         }
 
         private void OnModifierChanged()
         {
-            if (CurrentLevel > _lastLevel)
-            {
-                LevelChanged?.Invoke();
+            LevelChanged?.Invoke();
 
-                _lastLevel = CurrentLevel;
-            }
-            
+            _lastLevel = CurrentLevel;
+
             Changed?.Invoke();
         }
     }

@@ -117,23 +117,28 @@ namespace MonsterArena.UI
         {
             bool isMax = _modifiers.HealthPrice < 0;
             _healthUpgradeButton.interactable = !isMax && _wallet.HaveCoins(_modifiers.HealthPrice);
-            _healthUpgradeCurrentBonus.text = "+" + _modifiers.TransformHealth(0).ToString();
+            _healthUpgradeCurrentBonus.text = GetString(_modifiers.HealthLevel, isMax);
             _healthUpgradeCost.text = isMax ? "Max" : $"{_modifiers.HealthPrice} <sprite=0>";
 
             isMax = _modifiers.DamagePrice < 0;
             _damageUpgradeButton.interactable = !isMax && _wallet.HaveCoins(_modifiers.DamagePrice);
-            _damageUpgradeCurrentBonus.text = "+" + _modifiers.TransformDamage(0).ToString();
+            _damageUpgradeCurrentBonus.text = GetString(_modifiers.DamageLevel, isMax);
             _damageUpgradeCost.text = isMax ? "Max" : $"{_modifiers.DamagePrice} <sprite=0>";
 
             isMax = _modifiers.CargoPrice < 0;
             _cargoUpgradeButton.interactable = !isMax && _wallet.HaveCoins(_modifiers.CargoPrice);
-            _cargoUpgradeCurrentBonus.text = "+" + _modifiers.TransformCargo(0).ToString();
+            _cargoUpgradeCurrentBonus.text = GetString(_modifiers.CargoLevel, isMax);
             _cargoUpgradeCost.text = isMax ? "Max" : $"{_modifiers.CargoPrice} <sprite=0>";
 
             isMax = _modifiers.SpeedPrice < 0;
             _speedUpgradeButton.interactable = !isMax && _wallet.HaveCoins(_modifiers.SpeedPrice);
-            _speedUpgradeCurrentBonus.text = "+" + _modifiers.TransformSpeed(0).ToString();
+            _speedUpgradeCurrentBonus.text = GetString(_modifiers.SpeedLevel, isMax);
             _speedUpgradeCost.text = isMax ? "Max" : $"{_modifiers.SpeedPrice} <sprite=0>";
+        }
+
+        private string GetString(int level, bool isMax)
+        {
+            return isMax ? $"lvl {level + 2}" : $"lvl {level + 1} ► lvl {level + 2}";
         }
     }
 }

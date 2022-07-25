@@ -13,7 +13,7 @@ namespace MonsterArena
     [RequireComponent(typeof(Monster))]
     public class EnemyAI : MonoBehaviour, IInput
     {
-        private const float _RotationSpeed = 5.0f;
+        private const float _RotationSpeed = 8.0f;
 
         public event Action AbilityUsed = null;
         public event Action PropThrowed = null;

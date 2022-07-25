@@ -34,6 +34,7 @@ namespace MonsterArena
         [SerializeField] private LayerMask _helicopterLayerMask = default;
         [SerializeField] private float _attackDelay = 3;
         [SerializeField] private float _maxHP = 1;
+        [SerializeField] private float _firstAttackMultiplier = 1.5f;
 
         [field: SerializeField] public int ResourcesCount { get; private set; } = 1;
         [field: SerializeField] public int Level { get; private set; } = 1;
@@ -45,6 +46,7 @@ namespace MonsterArena
         private float _hp = 0;
         private int _cellsConsumed = 0;
         private bool _isWin = false;
+        private int _attacksInRow;
 
         public Renderer Renderer => _renderer;
         public Collider Collider => _collider;
@@ -110,9 +112,14 @@ namespace MonsterArena
             }
 
             if (HelicopterInRange(out Helicopter _))
-                _attackTimer.Update(Time.deltaTime);
+            {
+                _attackTimer.Update(Time.deltaTime * (_attacksInRow > 0 ? 1 : _firstAttackMultiplier));
+            }
             else
+            {
+                _attacksInRow = 0;
                 _attackTimer.Reset();
+            }
         }
 
         private void OnDrawGizmos()
@@ -252,7 +259,8 @@ namespace MonsterArena
         {
             if (!IsAlive || IsStunned)
                 return;
-            
+
+            _attacksInRow++;
             StartTimer();
             _monsterAttack.Value.Hit(_information.Damage);
             _animation.IsAttacking = false;

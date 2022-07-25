@@ -532,7 +532,7 @@ MonoBehaviour:
   _attackDelay: 1.5
   _maxHP: 5
   <ResourcesCount>k__BackingField: 2
-  <Level>k__BackingField: 4
+  <Level>k__BackingField: 6
   _helicopter: {fileID: 0}
 --- !u!114 &1542724454925624614
 MonoBehaviour:

@@ -26,13 +26,14 @@ namespace MonsterArena.UI
         [SerializeField] private Radar _radar = null;
         [SerializeField] private List<RadarLevel> _levels = new List<RadarLevel>();
 
-        private int _currentLevel = 0;
+        public event Action Upgraded;
+        
+        public int CurrentLevel { get; private set; } = 0;
 
         private void Start()
         {
-            _currentLevel = PlayerPrefs.GetInt(Constants.RadarLevelKey, 0);
-            Debug.Log(_levels[_currentLevel].offset);
-            _radar.SetOffset(_levels[_currentLevel].offset);
+            CurrentLevel = PlayerPrefs.GetInt(Constants.RadarLevelKey, 0);
+            _radar.SetOffset(_levels[CurrentLevel].offset);
 
             UpdateUI();
 
@@ -63,7 +64,7 @@ namespace MonsterArena.UI
 
         private void UpdateUI()
         {
-            if (_currentLevel >= _levels.Count - 1)
+            if (CurrentLevel >= _levels.Count - 1)
             {
                 _upgradeButton.interactable = false;
 
@@ -72,22 +73,23 @@ namespace MonsterArena.UI
             }
             else
             {
-                _level.text = $"Level {_currentLevel + 1}  ► Level {_currentLevel + 2}";
-                _price.text = $"{_levels[_currentLevel + 1].cost} <sprite=0>";
+                _level.text = $"Level {CurrentLevel + 1}  ► Level {CurrentLevel + 2}";
+                _price.text = $"{_levels[CurrentLevel + 1].cost} <sprite=0>";
             }
         }
 
         private void OnUpgrade()
         {
-            if (_wallet.HaveCoins(_levels[_currentLevel + 1].cost))
+            if (_wallet.HaveCoins(_levels[CurrentLevel + 1].cost))
             {
-                _wallet.Take(_upgradeButton.transform, _levels[_currentLevel + 1].cost);
+                _wallet.Take(_upgradeButton.transform, _levels[CurrentLevel + 1].cost);
                 
-                _radar.SetOffset(_levels[_currentLevel + 1].offset, true);
+                _radar.SetOffset(_levels[CurrentLevel + 1].offset, true);
 
-                _currentLevel++;
+                CurrentLevel++;
 
-                PlayerPrefs.SetInt(Constants.RadarLevelKey, _currentLevel);
+                PlayerPrefs.SetInt(Constants.RadarLevelKey, CurrentLevel);
+                Upgraded?.Invoke();
             }
 
             UpdateUI();

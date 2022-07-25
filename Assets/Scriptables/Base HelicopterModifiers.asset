@@ -17,56 +17,64 @@ MonoBehaviour:
   _healthValues:
   - <Price>k__BackingField: 3
     <Value>k__BackingField: 1
-    <Experience>k__BackingField: 5
+    <Experience>k__BackingField: 10
     <Visual>k__BackingField: {fileID: 2100000, guid: c22de10f3be8f9c40b3bb9b287ecbeeb, type: 2}
   - <Price>k__BackingField: 5
     <Value>k__BackingField: 3
-    <Experience>k__BackingField: 10
+    <Experience>k__BackingField: 20
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}
   - <Price>k__BackingField: 7
     <Value>k__BackingField: 6
-    <Experience>k__BackingField: 15
+    <Experience>k__BackingField: 30
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}
   _damageValues:
   - <Price>k__BackingField: 12
-    <Value>k__BackingField: 0.5
-    <Experience>k__BackingField: 8
+    <Value>k__BackingField: 1
+    <Experience>k__BackingField: 10
     <Visual>k__BackingField: {fileID: 2100000, guid: c22de10f3be8f9c40b3bb9b287ecbeeb, type: 2}
   - <Price>k__BackingField: 24
-    <Value>k__BackingField: 1
-    <Experience>k__BackingField: 16
+    <Value>k__BackingField: 2
+    <Experience>k__BackingField: 20
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}
   - <Price>k__BackingField: 36
-    <Value>k__BackingField: 1.5
-    <Experience>k__BackingField: 24
+    <Value>k__BackingField: 3
+    <Experience>k__BackingField: 30
     <Visual>k__BackingField: {fileID: 2100000, guid: 5c42437826002fa4fa6af4ec11343a7c, type: 2}
   _cargoValues:
   - <Price>k__BackingField: 10
     <Value>k__BackingField: 2
-    <Experience>k__BackingField: 10
+    <Experience>k__BackingField: 5
     <Visual>k__BackingField: 0.1
   - <Price>k__BackingField: 20
     <Value>k__BackingField: 4
-    <Experience>k__BackingField: 20
+    <Experience>k__BackingField: 10
     <Visual>k__BackingField: 0.2
   - <Price>k__BackingField: 30
     <Value>k__BackingField: 6
-    <Experience>k__BackingField: 30
+    <Experience>k__BackingField: 15
     <Visual>k__BackingField: 0.3
   _speedValues:
   - <Price>k__BackingField: 20
     <Value>k__BackingField: 2
-    <Experience>k__BackingField: 20
+    <Experience>k__BackingField: 5
     <Visual>k__BackingField: 0.1
   - <Price>k__BackingField: 40
     <Value>k__BackingField: 5
-    <Experience>k__BackingField: 40
+    <Experience>k__BackingField: 10
     <Visual>k__BackingField: 0.2
   - <Price>k__BackingField: 60
     <Value>k__BackingField: 10
-    <Experience>k__BackingField: 60
+    <Experience>k__BackingField: 15
     <Visual>k__BackingField: 0.3
   _levels:
   - 0
   - 10
+  - 20
+  - 30
+  - 40
   - 50
+  - 60
+  - 70
+  - 80
+  - 90
+  - 100

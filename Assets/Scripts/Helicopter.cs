@@ -72,6 +72,7 @@ namespace MonsterArena
         public int Level => _modifiers.CurrentLevel;
         public float CargoVisual => _modifiers.CargoVisual;
         public HelicopterModifiers Modifiers => _modifiers;
+        public float Damage { get; } = 0.5f;
 
         private void Awake()
         {
@@ -396,7 +397,7 @@ namespace MonsterArena
             var sp = _isLeft ? _leftSP : _rightSP;
             var missile = Instantiate(_missilePrefab, sp.position, sp.rotation);
             //missile.Initialize(_target.transform.position + Vector3.up, _modifiers.TransformDamage(1));
-            missile.Initialize(_target, _modifiers.TransformDamage(0.5f), _modifiers.DamageVisual);
+            missile.Initialize(_target, _modifiers.TransformDamage(Damage), _modifiers.DamageVisual);
 
             _isLeft = !_isLeft;
         }
