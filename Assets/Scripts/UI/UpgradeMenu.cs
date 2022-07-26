@@ -138,7 +138,7 @@ namespace MonsterArena.UI
 
         private string GetString(int level, bool isMax)
         {
-            return isMax ? $"lvl {level + 2}" : $"lvl {level + 1} ► lvl {level + 2}";
+            return isMax ? $"lvl {level + 1}" : $"lvl {level + 1} ► lvl {level + 2}";
         }
     }
 }
